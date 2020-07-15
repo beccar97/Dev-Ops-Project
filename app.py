@@ -32,6 +32,11 @@ def uncomplete_item(id):
     trello.uncomplete_item(id)
     return redirect(url_for('index')) 
 
+@app.route('/items/<id>/delete')
+def delete_item(id):
+    trello.delete_item(id)
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run()

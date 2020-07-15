@@ -1,32 +1,44 @@
 {% extends "layout.html" %}
 
+{%macro action_buttons(item) -%}
+{% if item.status == 'Done' %}
+<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-outline-secondary mr-3">Mark as Incomplete</a>
+{% elif item.status == 'To Do' %}
+<a href="{{ url_for('start_item', id=item.id) }}" class="btn btn-sm btn-outline-success mr-3">Start</a>
+{% else %}
+<a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-outline-primary mr-3">Complete</a>
+{% endif %}
+<a href="{{ url_for('delete_item', id=item.id) }}" class="btn btn-sm btn-outline-dark">Delete</a>
+
+{%- endmacro %}
+
 {% macro display_item(item) -%}
 <li class="list-group-item">
-  <div class="d-flex w-100 justify-content-between">
-    <h5 class="mb-1">{{ item.name }}</h5>
-    {% if item.status == 'Done' %}
-      {% set badge_style = 'badge-success' %}
-    {% elif item.status == 'To Do' %}
-      {% set badge_style = 'badge-secondary' %}
-    {% else %}
-      {% set badge_style = 'badge-primary' %}
-    {% endif %}
-    <div><span class="badge {{ badge_style }}">{{ item.status }}</span></div>
+  <div class="row">
+    <div class="col-sm-10">
+      <h5 >{{ item.name }}</h5>
+      <div>
+        {% if item.status == 'Done' %}
+          {% set badge_style = 'badge-success' %}
+        {% elif item.status == 'To Do' %}
+          {% set badge_style = 'badge-secondary' %}
+        {% else %}
+          {% set badge_style = 'badge-primary' %}
+        {% endif %}
+        <div><span class="badge {{ badge_style }}">{{ item.status }}</span></div>
+      </div>
+    </div>
+    <div class="col-sm-2 d-sm-flex align-items-center justify-content-end p-3">
+      {{ action_buttons(item) }}
+    </div>
   </div>
-  {% if item.status == 'Done' %}
-    <a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-secondary">Mark as Incomplete</a>
-  {% elif item.status == 'To Do' %}
-    <a href="{{ url_for('start_item', id=item.id) }}" class="btn btn-sm btn-success">Start</a>
-  {% else %}
-    <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Complete</a>
-  {% endif %}
 </li>
 {%- endmacro %}
 
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
+  <div class="jumbotron index-jumbotron">
     <h1 class="display-4">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
   </div>
@@ -49,31 +61,28 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
-      <div class="col-md-11">
-        <h3>To Do</h3>
-        <ul class="list-group mb-4">
-          {% for item in view_model.get_items('To Do') %}
-            {{ display_item(item) }}
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col-md-11">
-        <h3>Doing</h3>
-        <ul class="list-group mb-4">
-          {% for item in view_model.get_items('Doing') %}
-            {{ display_item(item) }}
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col-md-11">
-        <h3>Done</h3>
-        <ul class="list-group mb-4">
-          {% for item in view_model.get_items('Done') %}
-            {{ display_item(item) }}
-          {% endfor %}
-        </ul>
-      </div>
+      <h2>To Do</h2>
+      <ul class="list-group mb-4">
+        {% for item in view_model.get_items('To Do') %}
+          {{ display_item(item) }}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-12">
+      <h2>Doing</h2>
+      <ul class="list-group mb-4">
+        {% for item in view_model.get_items('Doing') %}
+          {{ display_item(item) }}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-12">
+      <h2>Done</h2>
+      <ul class="list-group mb-4">
+        {% for item in view_model.get_items('Done') %}
+          {{ display_item(item) }}
+        {% endfor %}
+      </ul>
     </div>
   </div>
 {% endblock %}

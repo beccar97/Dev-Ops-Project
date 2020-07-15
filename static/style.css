@@ -1,0 +1,18 @@
+:root {
+    --dark-blue:  #495867;
+    --med-blue: #577399;
+    --light-blue: #bdd5ea;
+    --neutral: #f7f7ff;
+    --warning-red: #c33c54;
+    --danger-red: #fe5f55 ;
+    --green: #8acb88
+}
+
+* {
+    font-family: 'Raleway', sans-serif;
+}
+
+.index-jumbotron {
+    background-color: var(--dark-blue);
+    color: var(--neutral);
+}

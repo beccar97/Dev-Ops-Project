@@ -1,4 +1,4 @@
-from todo_item import Item
+from models.todo_item import Item
 from models.index_view_model import IndexViewModel
 
 def get_task(status):

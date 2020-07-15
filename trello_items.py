@@ -1,4 +1,4 @@
-from todo_item import Item
+from models.todo_item import Item
 import requests
 import trello_config as config
 
@@ -160,7 +160,7 @@ def complete_item(id):
 
 def uncomplete_item(id):
     """
-    Moves the item with the specified ID to the "To-Do" list in Trello.
+    Moves the item with the specified ID to the "Doing" list in Trello.
 
     Args:
         id (str): The ID of the item.
@@ -168,7 +168,7 @@ def uncomplete_item(id):
     Returns:
         item: The saved item, or None if no items match the specified ID.
     """
-    todo_list = get_list('To Do')
+    todo_list = get_list('Doing')
     card = move_card_to_list(id, todo_list)
 
     return Item.fromTrelloCard(card, todo_list)
@@ -182,3 +182,16 @@ def move_card_to_list(card_id, list):
     card = response.json()
 
     return card
+
+def delete_item(card_id):
+    """
+    Deletes the item with the specified ID
+
+    Args:
+        id (str): The ID of the item.
+    """
+    params = build_params()
+    url = build_url('/cards/%s' % card_id)
+
+    response = requests.delete(url, params = params)
+    print(response.json())
