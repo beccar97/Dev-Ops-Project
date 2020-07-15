@@ -50,11 +50,30 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      <ul class="list-group mb-4">
-        {% for item in view_model.items %}
-          {{ display_item(item) }}
-        {% endfor %}
-      </ul>
+      <div class="col-md-11">
+        <h3>To Do</h3>
+        <ul class="list-group mb-4">
+          {% for item in view_model.get_items('To Do') %}
+            {{ display_item(item) }}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-11">
+        <h3>Doing</h3>
+        <ul class="list-group mb-4">
+          {% for item in view_model.get_items('Doing') %}
+            {{ display_item(item) }}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-11">
+        <h3>Done</h3>
+        <ul class="list-group mb-4">
+          {% for item in view_model.get_items('Done') %}
+            {{ display_item(item) }}
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 {% endblock %}

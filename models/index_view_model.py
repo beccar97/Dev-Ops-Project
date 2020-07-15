@@ -5,3 +5,6 @@ class IndexViewModel:
     @property
     def items(self):
         return self._items
+
+    def get_items(self, status):
+        return [item for item in self._items if item.status == status]
