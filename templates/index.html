@@ -78,11 +78,31 @@
     </div>
     <div class="col-md-12">
       <h2>Done</h2>
-      <ul class="list-group mb-4">
-        {% for item in view_model.get_items('Done') %}
-          {{ display_item(item) }}
-        {% endfor %}
+      <ul id="all-done-items" class="list-group mb-4">
+        {% if view_model.show_all_done_items()%}
+          {% for item in view_model.get_items('Done') %}
+            {{ display_item(item) }}
+          {% endfor %}
+        {% else %}
       </ul>
+      <div>
+        <ul id="recent-done-items" class="list-group mb-4">
+          {% for item in view_model.recent_done_items() %}
+            {{ display_item(item) }}
+          {% endfor %}
+        </ul>
+        <details class="details list-group mb-4">
+          <summary show-more-summary>
+            Previously completed items
+          </summary>
+          <ul id="older-done-items" class="list-group mb-4">
+            {% for item in view_model.older_done_items() %}
+              {{ display_item(item) }}
+            {% endfor %}
+          </ul>
+        </details>        
+      </div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

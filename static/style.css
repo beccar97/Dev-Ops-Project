@@ -16,3 +16,35 @@
     background-color: var(--dark-blue);
     color: var(--neutral);
 }
+
+details > summary {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+
+summary::before {
+    display: inline-block;
+    content: "";
+    width: 2rem;
+    height: 2rem;
+    background-position: center;
+    background-image: url(/static/expand_more-24px.svg);
+    background-repeat: no-repeat;
+    background-size: 2rem 2rem;
+}
+
+summary::marker {
+    display: none;
+}
+details[open] summary::before {
+    background-image: url(/static/expand_less-24px.svg);
+}
+
