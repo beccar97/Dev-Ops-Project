@@ -1,13 +1,18 @@
+from dateutil.parser import parse
+from datetime import datetime
 class Item:
-
-    def __init__(self, id, name, status = 'To Do'):
+    def __init__(self, id, name, status = 'To Do', dateLastActivity = datetime.now()):
         self.id = id
         self.name = name
         self.status = status
+        self.dateLastActivity = dateLastActivity
 
     @classmethod
     def fromTrelloCard(cls, card, list):
-        return cls(card['id'], card['name'], list['name'])
+        return cls(card['id'], card['name'], list['name'], parse(card['dateLastActivity']))
+
+    def dateLastActivityString(self): 
+        return datetime.strftime(self.dateLastActivity, "%a %-d %b")
 
     def reset(self):
         self.status = 'To Do'
@@ -17,3 +22,6 @@ class Item:
 
     def complete(self):
         self.status = 'Done'
+
+    def completedToday(self):
+        return self.dateLastActivity.day == datetime.now().day
