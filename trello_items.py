@@ -43,6 +43,43 @@ def get_board(name):
     boards = get_boards()
     return next((board for board in boards if board['name'] == name), None)
 
+def create_board(name):
+    """
+    Creates a new trello board with the given name.
+
+    Args:
+        name (str): The name of the board.
+
+    Returns:
+        board: The board.
+    """
+
+    params = build_params({ 'name': name })
+    url = build_url('/boards')
+
+    response = requests.post(url, params = params)
+    board = response.json()
+
+    return board
+
+def delete_board(name):
+    """
+    Deletes the trello board with the given name.
+
+    Args:
+        name (str): The name of the board.
+
+    Returns:
+        None
+    """
+
+    board = get_board(name)
+    board_id = board['id']
+
+    params = build_params()
+    url = build_url('/boards/%s' % board_id)
+
+    response = requests.delete(url, params = params)
 
 def get_lists():
     """
