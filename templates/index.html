@@ -2,13 +2,13 @@
 
 {%macro action_buttons(item) -%}
 {% if item.status == 'Done' %}
-<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="btn btn-sm btn-outline-secondary mr-3">Mark as Incomplete</a>
+<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="uncomplete-btn btn btn-sm btn-outline-secondary mr-3">Mark as Incomplete</a>
 {% elif item.status == 'To Do' %}
-<a href="{{ url_for('start_item', id=item.id) }}" class="btn btn-sm btn-outline-success mr-3">Start</a>
+<a href="{{ url_for('start_item', id=item.id) }}" class="start-btn btn btn-sm btn-outline-success mr-3">Start</a>
 {% else %}
-<a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-outline-primary mr-3">Complete</a>
+<a href="{{ url_for('complete_item', id=item.id) }}" class="complete-btn btn btn-sm btn-outline-primary mr-3">Complete</a>
 {% endif %}
-<a href="{{ url_for('delete_item', id=item.id) }}" class="btn btn-sm btn-outline-dark">Delete</a>
+<a href="{{ url_for('delete_item', id=item.id) }}" class="delete-btn btn btn-sm btn-outline-dark">Delete</a>
 
 {%- endmacro %}
 
@@ -52,7 +52,7 @@
             <input type="text" name="name" id="name-input" class="form-control" placeholder="Name" aria-label="Name">
           </div>
           <div class="col-auto">
-            <button type="submit" class="btn btn-success">Add Item</button>
+            <button type="submit" class="btn btn-success" id="add-item-btn">Add Item</button>
           </div>
         </div>
       </form>
@@ -62,7 +62,7 @@
   <div class="row">
     <div class="col-md-12">
       <h2>To Do</h2>
-      <ul class="list-group mb-4">
+      <ul id="to-do-items" class="list-group mb-4">
         {% for item in view_model.get_items('To Do') %}
           {{ display_item(item) }}
         {% endfor %}
@@ -70,7 +70,7 @@
     </div>
     <div class="col-md-12">
       <h2>Doing</h2>
-      <ul class="list-group mb-4">
+      <ul id="doing-items" class="list-group mb-4">
         {% for item in view_model.get_items('Doing') %}
           {{ display_item(item) }}
         {% endfor %}
