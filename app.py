@@ -4,7 +4,6 @@ import trello_items as trello
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('flask_config.Config')
 
     @app.route('/')
     def index():
