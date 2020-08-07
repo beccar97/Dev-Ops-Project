@@ -4,8 +4,9 @@ from models.index_view_model import IndexViewModel
 
 def get_task(status: str, old: bool = False):
      timestamp = datetime.now() if not old else datetime.now() - timedelta(days = 2)
+     task_name = '%s %s task' %('Old' if old else '', status)
      
-     return Item(1, 'task', status, timestamp)
+     return Item(1, task_name, status, timestamp)
 
 def get_tasks(status: str, old: bool = False, number: int = 5, ):
     tasks = []

@@ -120,7 +120,7 @@ def get_items():
     items = []
     for card_list in lists:
         for card in card_list['cards']:
-            items.append(Item.fromTrelloCard(card, card_list))
+            items.append(Item.from_trello_card(card, card_list))
 
     return items
 
@@ -157,7 +157,7 @@ def add_item(name):
     response = requests.post(url, params = params)
     card = response.json()
 
-    return Item.fromTrelloCard(card, todo_list)
+    return Item.from_trello_card(card, todo_list)
 
 
 def start_item(id):
@@ -173,7 +173,7 @@ def start_item(id):
     doing_list = get_list('Doing')
     card = move_card_to_list(id, doing_list)
 
-    return Item.fromTrelloCard(card, doing_list)
+    return Item.from_trello_card(card, doing_list)
 
 
 def complete_item(id):
@@ -189,7 +189,7 @@ def complete_item(id):
     done_list = get_list('Done')
     card = move_card_to_list(id, done_list)
 
-    return Item.fromTrelloCard(card, done_list)
+    return Item.from_trello_card(card, done_list)
 
 
 def uncomplete_item(id):
@@ -205,7 +205,7 @@ def uncomplete_item(id):
     todo_list = get_list('Doing')
     card = move_card_to_list(id, todo_list)
 
-    return Item.fromTrelloCard(card, todo_list)
+    return Item.from_trello_card(card, todo_list)
 
 
 def move_card_to_list(card_id, list):

@@ -8,7 +8,7 @@ class Item:
         self.dateLastActivity = dateLastActivity
 
     @classmethod
-    def fromTrelloCard(cls, card, list):
+    def from_trello_card(cls, card, list):
         return cls(card['id'], card['name'], list['name'], parse(card['dateLastActivity']))
 
     def dateLastActivityString(self): 
