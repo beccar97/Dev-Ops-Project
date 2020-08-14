@@ -8,7 +8,7 @@ $pyenvInstall = <<-'SCRIPT'
   libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
   xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
-  # Instally pyenv
+  # Install pyenv
   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
   echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
@@ -17,17 +17,19 @@ $pyenvInstall = <<-'SCRIPT'
   echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.profile
 
   source ~/.profile
-
 SCRIPT
 
-#Setup of python installations in pyenv
-
+# Setup of python installations in pyenv
 
 $pyenvSetup = <<-'SCRIPT'
 
   pyenv install 3.8.5
   pyenv global 3.8.5
+SCRIPT
 
+# Download and install poetry
+$poetryInstall = <<-'SCRIPT'
+   curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 SCRIPT
 
 
@@ -36,6 +38,7 @@ Vagrant.configure("2") do |config|
 
  config.vm.provision "shell", privileged: false, inline: $pyenvInstall
  config.vm.provision "shell", privileged: false, inline: $pyenvSetup
+ config.vm.provision "shell", privileged: false, inline: $poetryInstall
 
 
 end
