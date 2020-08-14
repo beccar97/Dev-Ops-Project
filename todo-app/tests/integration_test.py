@@ -1,9 +1,9 @@
 import pytest
 import requests
-import app
+import src.app as app
 import os
 from dotenv import find_dotenv, load_dotenv
-from request_get_mock import mock_get_requests
+from tests.request_get_mock import mock_get_requests
 
 @pytest.fixture
 def client():

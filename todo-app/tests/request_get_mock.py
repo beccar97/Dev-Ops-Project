@@ -1,4 +1,4 @@
-import trello_config as config
+import src.trello_config as config
 import json
 from datetime import datetime, timedelta
 

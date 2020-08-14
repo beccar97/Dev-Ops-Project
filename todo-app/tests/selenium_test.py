@@ -1,7 +1,7 @@
 import pytest
 import os
-import app
-import trello_items as trello
+import src.app as app
+import src.trello_items as trello
 from threading import Thread
 from selenium import webdriver
 from dotenv import find_dotenv, load_dotenv

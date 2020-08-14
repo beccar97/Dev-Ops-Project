@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from models.todo_item import Item
-from models.index_view_model import IndexViewModel
+from src.models.todo_item import Item
+from src.models.index_view_model import IndexViewModel
 
 def get_task(status: str, old: bool = False):
      timestamp = datetime.now() if not old else datetime.now() - timedelta(days = 2)

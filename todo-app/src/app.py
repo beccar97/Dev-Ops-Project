@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models.index_view_model import IndexViewModel 
-import trello_items as trello
+from src.models.index_view_model import IndexViewModel 
+import src.trello_items as trello
 
 def create_app():
     app = Flask(__name__)

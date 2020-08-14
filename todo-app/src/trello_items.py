@@ -1,6 +1,6 @@
-from models.todo_item import Item
+from src.models.todo_item import Item
 import requests
-import trello_config as config
+import src.trello_config as config
 
 def get_auth_params():
     return { 'key': config.TRELLO_API_KEY, 'token': config.TRELLO_API_SECRET }
