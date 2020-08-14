@@ -20,10 +20,22 @@ $pyenvInstall = <<-'SCRIPT'
 
 SCRIPT
 
+#Setup of python installations in pyenv
+
+
+$pyenvSetup = <<-'SCRIPT'
+
+  pyenv install 3.8.5
+  pyenv global 3.8.5
+
+SCRIPT
+
+
 Vagrant.configure("2") do |config| 
  config.vm.box = "hashicorp/bionic64"
 
  config.vm.provision "shell", privileged: false, inline: $pyenvInstall
+ config.vm.provision "shell", privileged: false, inline: $pyenvSetup
 
 
 end
