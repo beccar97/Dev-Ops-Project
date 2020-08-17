@@ -36,7 +36,7 @@ SCRIPT
 $runProject = <<-'SCRIPT'
   cd "/vagrant/todo-app"
   poetry install
-  poetry run flask run
+  poetry run flask run --host '0.0.0.0'
 SCRIPT
 
 Vagrant.configure("2") do |config| 
@@ -45,6 +45,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", privileged: false, inline: $pyenvInstall
   config.vm.provision "shell", privileged: false, inline: $pyenvSetup
   config.vm.provision "shell", privileged: false, inline: $poetryInstall
+
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
 
   config.trigger.after :up do |trigger|
     trigger.name = "Launch app"
