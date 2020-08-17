@@ -32,13 +32,23 @@ $poetryInstall = <<-'SCRIPT'
    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 SCRIPT
 
+# Run the project
+$runProject = <<-'SCRIPT'
+  cd "/vagrant/todo-app"
+  poetry install
+  poetry run flask run
+SCRIPT
 
 Vagrant.configure("2") do |config| 
- config.vm.box = "hashicorp/bionic64"
+  config.vm.box = "hashicorp/bionic64"
 
- config.vm.provision "shell", privileged: false, inline: $pyenvInstall
- config.vm.provision "shell", privileged: false, inline: $pyenvSetup
- config.vm.provision "shell", privileged: false, inline: $poetryInstall
+  config.vm.provision "shell", privileged: false, inline: $pyenvInstall
+  config.vm.provision "shell", privileged: false, inline: $pyenvSetup
+  config.vm.provision "shell", privileged: false, inline: $poetryInstall
 
-
+  config.trigger.after :up do |trigger|
+    trigger.name = "Launch app"
+    trigger.info = "Running TODO app setup script"
+    trigger.run_remote = {privileged: false, inline: $runProject }
+  end
 end
