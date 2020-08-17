@@ -3,7 +3,8 @@ import requests
 import src.app as app
 import os
 from dotenv import find_dotenv, load_dotenv
-from tests.request_get_mock import mock_get_requests
+from tests.request_get_mock import RequestGetMock
+
 
 @pytest.fixture
 def client():
@@ -15,7 +16,9 @@ def client():
     with test_app.test_client() as client:
         yield client
 
+
 def test_index_page(monkeypatch, client):
+    mock_get_requests = RequestGetMock().mock_get_requests
     monkeypatch.setattr(requests, "get", mock_get_requests)
 
     response = client.get('/')
