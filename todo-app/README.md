@@ -2,25 +2,19 @@
 
 ## Getting started
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal:
+The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal, in the `todo-app` directory:
 
-### On macOS and Linux
 ```bash
-$ source setup.sh
+$ poetry install
 ```
-### On Windows (Using Git Bash)
-```bash
-$ source setup.sh --windows
-```
-
 Once the setup script has completed and all packages have been installed, start the Flask app by running:
 ```bash
-$ flask run
+$ poetry run flask run
 ```
 
 You should see output similar to the following:
 ```bash
- * Serving Flask app "app" (lazy loading)
+ * Serving Flask app "src.app" (lazy loading)
  * Environment: development
  * Debug mode: on
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
