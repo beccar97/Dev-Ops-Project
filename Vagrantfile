@@ -34,7 +34,7 @@ SCRIPT
 
 # Run the project
 $runProject = <<-'SCRIPT'
-  cd "/vagrant/todo-app"
+  cd "/vagrant"
   poetry install
   poetry run flask run --host '0.0.0.0'
 SCRIPT

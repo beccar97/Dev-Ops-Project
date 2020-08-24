@@ -5,7 +5,7 @@
 The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal, in the project root directory:
 
 ```bash
-$ poetry install
+$ vagrant up
 ```
 
 To create the basic .env file for this project run 
