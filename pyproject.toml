@@ -19,9 +19,6 @@ pylint = "^2.5.3"
 rope = "^0.17.0"
 autopep8 = "^1.5.4"
 
-[tool.poetry.scripts]
-setup-script = "cp -n .env.template .env"
-
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"

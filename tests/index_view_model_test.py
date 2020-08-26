@@ -46,7 +46,7 @@ def test_returns_done_items():
 
 
 def test_returns_recent_items():
-    items = get_tasks('Done') + get_tasks('Done', old=True)
+    items = get_tasks('Done', number = 5) + get_tasks('Done', old=True, number=4)
     view_model = IndexViewModel(items)
 
     recent_done_items = view_model.recent_done_items()
@@ -55,7 +55,7 @@ def test_returns_recent_items():
 
 
 def test_returns_old_items():
-    items = get_tasks('Done') + get_tasks('Done', old=True, number=6)
+    items = get_tasks('Done', number=5) + get_tasks('Done', old=True, number=6)
     view_model = IndexViewModel(items)
 
     older_done_items = view_model.older_done_items()

@@ -18,34 +18,6 @@ class TrelloClient:
         full_params.update(params)
         return full_params
 
-    def get_boards(self):
-        """
-        Fetches all boards from Trello.
-
-        Returns:
-            list: The list of Trello boards.
-        """
-        params = self.build_params()
-        url = self.build_url('/members/me/boards')
-
-        response = requests.get(url, params=params)
-        boards = response.json()
-
-        return boards
-
-    def get_board(self, name):
-        """
-        Fetches the board from Trello with the specified name.
-
-        Args:
-            name (str): The name of the list.
-
-        Returns:
-            board: The board, or None if no board matches the specified name.
-        """
-        boards = self.get_boards()
-        return next((board for board in boards if board['name'] == name), None)
-
     def create_board(self, name='Trello Board'):
         """
         Creates a new trello board with the given name.

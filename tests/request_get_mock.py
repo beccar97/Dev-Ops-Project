@@ -222,10 +222,6 @@ class RequestGetMock:
             def json(self):
                 return self.data
 
-        if url == "%s/members/me/boards" % self.config.base_url:
-            return {
-                # fake board response
-            }
-        elif url == '%s/boards/%s/lists' % (self.config.base_url, self.config.board_id):
+        if url == '%s/boards/%s/lists' % (self.config.base_url, self.config.board_id):
             response = MockRequestGetResponse(self.fake_get_list_data, 200)
             return response
