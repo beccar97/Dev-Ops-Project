@@ -1,12 +1,19 @@
 # DevOps Apprenticeship: Project Exercise
 
+- [DevOps Apprenticeship: Project Exercise](#devops-apprenticeship-project-exercise)
+  - [Getting started](#getting-started)
+    - [Environment Variable setup](#environment-variable-setup)
+    - [Trello setup](#trello-setup)
+  - [Virtual environment setup](#virtual-environment-setup)
+    - [Running the project using vagrant](#running-the-project-using-vagrant)
+        - [Running the tests](#running-the-tests)
+    - [Running the project locally using poetry](#running-the-project-locally-using-poetry)
+      - [Running the app](#running-the-app)
+      - [Running the tests](#running-the-tests-1)
+
 ## Getting started
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal, in the project root directory:
-
-```bash
-$ vagrant up
-```
+### Environment Variable setup
 
 To create the basic .env file for this project run 
 ```bash
@@ -28,7 +35,58 @@ You will also require a trello api key and api token. In order to generate these
 More information about generation api keys and tokens for trello can be found [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/)
 
 
-### Running the app
+## Virtual environment setup
+
+
+The project uses a virtual environment to isolate package dependencies. The project uses poetry, and the virtual environment can be set up either locally or using Vagrant to run it on a virtual machine.
+
+
+### Running the project using vagrant
+
+In order to run the project using vagrant you must have installed a Hypervisor , VirtualBox is recommended. You must also download and install vagrant from the [official website](https://www.vagrantup.com/). 
+
+
+ To create the virtual environment and install required packages, run the following from a bash shell terminal, in the project root directory:
+
+```bash
+$ vagrant up
+```
+
+Running the `vagrant up` command will cause the app to run as a background process, visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+To stop the app running, destroy the virtual machine using
+
+```bash
+$ vagrant destroy
+```
+
+##### Running the tests
+
+To run the tests when using Vagrant you must access the vagrant shell using 
+```bash
+$ vagrant ssh
+```
+
+To run the tests navigate to the project directory by running
+```bash
+$ cd /vagrant
+```
+and then run the tests using
+```bash
+$ poetry run pytest
+```
+
+### Running the project locally using poetry
+
+To run the project locally you must have poetry installed, installation instructions can be found at https://pypi.org/project/poetry/.
+
+To create the virtual environment and install required packages, run the following from a bash shell terminal, in the project root directory:
+
+```bash
+poetry install
+```
+
+#### Running the app
 Once the poetry install is complete, and the .env file set up, start the Flask app by running:
 ```bash
 $ poetry run flask run
@@ -46,9 +104,8 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
-### 
 
-## Running the tests
+#### Running the tests
 
 In order to run the tests you need to install the Firefox browser, and GeckoDriver. the geckodriver executable needs to be placed either in the project root directory, or in a location which is on your path.
 
