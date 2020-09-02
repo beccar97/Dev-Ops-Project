@@ -12,8 +12,11 @@ from datetime import datetime
 
 @pytest.fixture(scope='module')
 def test_app():
-    file_path = find_dotenv('.env.selenium.test')
-    load_dotenv(file_path, override=True)
+    env_file_path = find_dotenv('.env')
+    load_dotenv(env_file_path, override=True)
+
+    selenium_env_file_path = find_dotenv('.env.selenium.test')
+    load_dotenv(selenium_env_file_path, override=True)
 
     trello_client = TrelloClient(TrelloConfig())
 
@@ -22,10 +25,12 @@ def test_app():
     os.environ['TRELLO_BOARD_ID'] = board_id
 
     application = app.create_app()
-    thread = Thread(target=lambda: application.run(use_reloader=False))
+
+    thread = Thread(target=lambda: application.run(use_reloader=False, port=8080))
     thread.daemon = True
     thread.start()
-    yield app.create_app()
+    
+    yield application
 
     thread.join(1)
     trello_client.delete_board(board_id)
@@ -33,7 +38,9 @@ def test_app():
 
 @pytest.fixture(scope='module')
 def driver():
-    with webdriver.Firefox() as driver:
+    opts = webdriver.FirefoxOptions()
+    opts.add_argument('--headless')
+    with webdriver.Firefox(options=opts) as driver:
         yield driver
 
 
@@ -81,7 +88,7 @@ def check_in_done_list(driver, item_name, shouldBeInList=True):
 def test_task_journey(driver, test_app):
     current_date_time = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     newTaskName = 'New task: created %s' % current_date_time
-    driver.get('http://localhost:5000')
+    driver.get('http://localhost:8080')
 
     assert driver.title == 'To-Do App'
 

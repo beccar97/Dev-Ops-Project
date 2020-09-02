@@ -25,4 +25,4 @@ build-backend = "poetry.masonry.api"
 
 [virtualenvs]
 create = true
-in-project = true
+in-project = false
