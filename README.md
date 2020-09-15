@@ -10,6 +10,7 @@
     - [Running the project locally using poetry](#running-the-project-locally-using-poetry)
       - [Running the app](#running-the-app)
       - [Running the tests](#running-the-tests-1)
+  - [Running the app using docker](#running-the-app-using-docker)
 
 ## Getting started
 
@@ -36,6 +37,7 @@ More information about generation api keys and tokens for trello can be found [h
 
 
 ## Virtual environment setup
+
 
 
 The project uses a virtual environment to isolate package dependencies. The project uses poetry, and the virtual environment can be set up either locally or using Vagrant to run it on a virtual machine.
@@ -134,3 +136,9 @@ on a Mac/Linux, or
 poetry run where python
 ```
 from Windows PowerShell to get the path to the python interpreter. Then in the bottom left of VSCode click the Python version in VSCode to bring up interpreter selection options, then point it at the virtual environment python executable.
+
+## Running the app using docker
+Production enviormnet image:
+- `docker build --tag todo-app .`
+- `docker run -p 5000:5000 -d --env-file .env todo-app`
+
