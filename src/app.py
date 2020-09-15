@@ -2,12 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from src.models.index_view_model import IndexViewModel
 from src.trello_items import TrelloClient
 from src.trello_config import TrelloConfig
-from dotenv import find_dotenv, load_dotenv
 
 def create_app():
-    file_path = find_dotenv('.env')
-    load_dotenv(file_path)
-
     app = Flask(__name__)
     trello_client = TrelloClient(TrelloConfig())
 

@@ -7,6 +7,7 @@ COPY poetry.lock .
 RUN poetry install --no-root
 
 COPY . .
+
 RUN poetry install
 
 EXPOSE 5000

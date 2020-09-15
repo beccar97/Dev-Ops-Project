@@ -1,0 +1,22 @@
+# Environment Variables
+.env
+.env.template
+
+# Python
+**/__pycache__
+**/.pytest_cache
+**/*.pyc
+
+# IDE Settings
+.vscode/
+
+# Vagrant
+Vagrantfile
+.vagrant
+
+# Logs
+geckodriver.log
+logfile
+
+# git
+.git
