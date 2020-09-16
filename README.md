@@ -138,7 +138,14 @@ poetry run where python
 from Windows PowerShell to get the path to the python interpreter. Then in the bottom left of VSCode click the Python version in VSCode to bring up interpreter selection options, then point it at the virtual environment python executable.
 
 ## Running the app using docker
-Production enviormnet image:
-- `docker build --tag todo-app .`
-- `docker run -p 5000:5000 -d --env-file .env todo-app`
 
+There is a multi-stage docker file for this project, containing a production build and a development build:
+
+Production:
+- To produce the image: `docker build -- target production --tag todo-app:prod .`
+- To run: `docker run -p 5100:80 -d --env-file .env todoapp:prod`
+
+Development: 
+- To produce the image: `docker build --target development --tag todo-app:dev .`
+- To run `docker run -p 5000:5000 -d --env-file .env --mount type=bind,source="$(pwd)",target=/app todo-app:dev`
+  

@@ -8,5 +8,9 @@ RUN poetry install --no-root
 
 FROM base as production
 COPY . .
+EXPOSE 80
+ENTRYPOINT [ "poetry", "run", "gunicorn", "-b 0.0.0.0:80", "src.app:create_app()"]
+
+FROM base as development
 EXPOSE 5000
-ENTRYPOINT [ "poetry", "run", "gunicorn", "-b 0.0.0.0:5000", "src.app:create_app()"]
+ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
