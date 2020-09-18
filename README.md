@@ -4,13 +4,13 @@
   - [Getting started](#getting-started)
     - [Environment Variable setup](#environment-variable-setup)
     - [Trello setup](#trello-setup)
+  - [Running the app using docker](#running-the-app-using-docker)
   - [Virtual environment setup](#virtual-environment-setup)
     - [Running the project using vagrant](#running-the-project-using-vagrant)
         - [Running the tests](#running-the-tests)
     - [Running the project locally using poetry](#running-the-project-locally-using-poetry)
       - [Running the app](#running-the-app)
       - [Running the tests](#running-the-tests-1)
-  - [Running the app using docker](#running-the-app-using-docker)
 
 ## Getting started
 
@@ -36,9 +36,26 @@ You will also require a trello api key and api token. In order to generate these
 More information about generation api keys and tokens for trello can be found [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/)
 
 
+## Running the app using docker
+
+There is a multi-stage docker file for this project, containing a production build and a development build:
+
+Production:
+- To produce the image: `docker build -- target production --tag todo-app:prod .`
+- To run: `docker run -p 5100:80 -d --env-file .env todoapp:prod`
+
+Development: 
+
+The development container can be launched using `docker-compose up -d`. The app can then be accessed at localhost:5000 and will reload whenever changes are made to the app files locally.
+
+ If you would prefer to build and run the image and container manually:
+- To produce the image: `docker build --target development --tag todo-app:dev .`
+- To run `docker run -p 5000:5000 -d --env-file .env --mount type=bind,source="$(pwd)",target=/app todo-app:dev`
+  
+
+
+
 ## Virtual environment setup
-
-
 
 The project uses a virtual environment to isolate package dependencies. The project uses poetry, and the virtual environment can be set up either locally or using Vagrant to run it on a virtual machine.
 
@@ -137,15 +154,3 @@ poetry run where python
 ```
 from Windows PowerShell to get the path to the python interpreter. Then in the bottom left of VSCode click the Python version in VSCode to bring up interpreter selection options, then point it at the virtual environment python executable.
 
-## Running the app using docker
-
-There is a multi-stage docker file for this project, containing a production build and a development build:
-
-Production:
-- To produce the image: `docker build -- target production --tag todo-app:prod .`
-- To run: `docker run -p 5100:80 -d --env-file .env todoapp:prod`
-
-Development: 
-- To produce the image: `docker build --target development --tag todo-app:dev .`
-- To run `docker run -p 5000:5000 -d --env-file .env --mount type=bind,source="$(pwd)",target=/app todo-app:dev`
-  
