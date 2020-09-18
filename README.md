@@ -5,6 +5,8 @@
     - [Environment Variable setup](#environment-variable-setup)
     - [Trello setup](#trello-setup)
   - [Running the app using docker](#running-the-app-using-docker)
+    - [Production:](#production)
+    - [Development:](#development)
   - [Virtual environment setup](#virtual-environment-setup)
     - [Running the project using vagrant](#running-the-project-using-vagrant)
         - [Running the tests](#running-the-tests)
@@ -40,11 +42,13 @@ More information about generation api keys and tokens for trello can be found [h
 
 There is a multi-stage docker file for this project, containing a production build and a development build:
 
-Production:
-- To produce the image: `docker build -- target production --tag todo-app:prod .`
-- To run: `docker run -p 5100:80 -d --env-file .env todoapp:prod`
+### Production:
+- To produce the image: `docker build --target production --tag todo-app:prod .`
+- To run: `docker run -p 5100:80 -d --env-file .env todo-app:prod`
 
-Development: 
+The app will then run be accessible on localhost:5100.
+
+### Development: 
 
 The development container can be launched using `docker-compose up -d`. The app can then be accessed at localhost:5000 and will reload whenever changes are made to the app files locally.
 
