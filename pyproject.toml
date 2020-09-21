@@ -7,10 +7,9 @@ authors = ["Becky Carter <becky.carter@softwire.com>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2.24.0"
-selenium = "^3.141.0"
-pylint = "^2.5.3"
 python-dateutil = "^2.8.1"
 python-dotenv = "^0.14.0"
+gunicorn = "^20.0.4"
 Flask = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
@@ -18,6 +17,7 @@ pytest = "^6.0.1"
 pylint = "^2.5.3"
 rope = "^0.17.0"
 autopep8 = "^1.5.4"
+selenium = "^3.141.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

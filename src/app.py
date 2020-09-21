@@ -3,7 +3,6 @@ from src.models.index_view_model import IndexViewModel
 from src.trello_items import TrelloClient
 from src.trello_config import TrelloConfig
 
-
 def create_app():
     app = Flask(__name__)
     trello_client = TrelloClient(TrelloConfig())
