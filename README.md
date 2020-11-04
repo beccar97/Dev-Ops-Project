@@ -1,5 +1,7 @@
 # DevOps Apprenticeship: Project Exercise
 
+[![Build Status](https://travis-ci.com/beccar97/Dev-Ops-Project.svg?branch=master)](https://travis-ci.com/beccar97/Dev-Ops-Project)
+
 - [DevOps Apprenticeship: Project Exercise](#devops-apprenticeship-project-exercise)
   - [Getting started](#getting-started)
     - [Environment Variable setup](#environment-variable-setup)
