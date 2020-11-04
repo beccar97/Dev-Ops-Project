@@ -2,11 +2,11 @@ services:
     - docker
 
 env:
-    - secure: "OZjVo7CKTPNgcy2LKAS3S35KmbOGZ7B9su+ftmO6JFSRMIKTGEpjeHSNVO1tUvsQzawOakoRLrSuU6cfJBpgC1cbinuM+ItwdDl6UsIyG9/1BKGx1DHDZFBIXSWmxBIbmochQZlmkGEBEIcmxwbfJjfUF7m7S3X0nDJBVEnXl9sL48hQlcPZvVP4qOU/yaK72NJ5GFq2KvmpTDPNsyfW2sX9GZyb9y4w7Ny9Mfs7YfGT2Nf/0tfNT5UCM4VF5B3OdEF5ovmMwuSE1al2iTmTTHWQwOZ7TiWWUCpmHuVS8M7MDc1ZvwS4jeoIm36MWAdVu/mjxhbKGdYJvdee8aYuhe4pF9vZTrXTNKR/Msc77DLeh1qPop84zyAx3vbr9LHzQ/MMVCA04aADDlm7pABaFlQHRV+l8BpFcHmsvRALrgkm7gcJfVpb+FeM4S0YJF1gLZjDh2HuRx00eJmeZJb2VvsfN70Uhw1eHsKGSoL77qCdmeKcEBNEp+Sejm16shpUfs4tpIlFz7OVbCKwXD9t0FEmCcM+9grBoIjQYdq0XGQawEgAMEEDLuIrfWoQkb7KMJDM/lg9wWgIb8c3oUviPA/EwIahvL7Wl/SJET/KSXV1FO1LcomzpIofDY6hYpcmeakcAyzC20oaOLaViqlkODiu8fIMqxj9xl3dNua9EWQ="
+    - secure: "jq0r7xvk+XAETGrVRZ3gWgxVlkYTJs+W7WsYHu2VLx6JAweitL4MGgXn45mzgQGw+P4nA/KDZWw0VsvEluvA22kjsq87QtawMm3ZzqIUPe5U7wtdLIvLDSFcOb4SBEh6FfN2uLfLsECv4x4+2LyCZPLHmMuXOpFLd/xatC7wMBhEXt2YPdC2PYZnZ7UQDCNe9OJXzZrRUfLnHuUhBMGtd7hoCWjr84ePeBWg/PC6ec+4p+zajU9DQEzne0e44z7r//qU6O4dfLixke0jgPVBXdVEfSeM2UWL6tCFx+ntEqDR1w/c9qp3lfDEqcye2P6X+2BEqWbL5xv3bySnXvSDm8d3KEoy/XDef7CyfmImcMQGtMi9H1ZPBZ988rJVmJu8jLlrKIsx1VE5+ZekCuT9Ol0atiBWmoyyDd1y8Kumd9UKMicY7h7EeOJtV3b5fvLm1mK3/AEapqjpRrbTa4dKFQyz/7qZp+hJrf2Gf3YlAU8fOZeCDuamrU/3sBbR+vfI5zhErTp74PwgDJwmRAPWsMRb+aQjanD2VjPFND65FjwByvcQ3IOV4NSP3nq4d/Wu95Fzx59JSauTihR3716POaWq5/dzG6IXwdN30le39NJsI8zvl9UFGD0h7VwI2UeKODlLjGrgJ20UhiOJ3GdWmk1/E3B7iuGdJBrGE5kG0s4="
 before_install:
     - docker build --target test --tag todo-app:test .
 
 script:
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
-    - docker run --env TRELLO_API_KEY=TRELLO_API_KEY TRELLO_API_SECRET=TRELLO_API_SECRET  --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
+    - docker run -e TRELLO_API_KEY=trello_key -e TRELLO_API_SECRET=trello_secret  --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
