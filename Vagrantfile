@@ -25,12 +25,16 @@ SCRIPT
 
 
 $seleniumInstall = <<-'SCRIPT'
-  sudo apt install firefox -y -q
+  curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb
+  apt-get install ./chrome.deb -y -q
+  sudo mv chrome /usr/local/bin
+  rm ./chrome.deb
 
-  wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
-  tar -xvzf geckodriver*
-  sudo mv geckodriver /usr/local/bin/
-  rm -r geckodriver*
+  curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip &&\
+  apt-get install unzip -y -q
+  unzip ./chromedriver_linux64.zip
+  sudo mv chromedriver /usr/local/bin/
+  rm -r chromedriver*
 
 SCRIPT
 

@@ -68,7 +68,6 @@ The development container can be launched using `docker-compose up -d --build`. 
 - To produce the image: `docker build --target test --tag todo-app:test .`
 - To run `docker run  --env-file .env --mount type=bind,source="$(pwd)",target=/app todo-app:test`
 
-  
 ## Virtual environment setup
 
 The project uses a virtual environment to isolate package dependencies. The project uses poetry, and the virtual environment can be set up either locally or using Vagrant to run it on a virtual machine.
@@ -145,7 +144,7 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 
 #### Running the tests
 
-In order to run the tests you need to install the Firefox browser, and GeckoDriver. the geckodriver executable needs to be placed either in the project root directory, or in a location which is on your path.
+In order to run the tests you need to install the Chrome browser, and [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/). The chromedriver executable needs to be placed either in the project root directory, or in a location which is on your path.
 
 Tests can be run from the command line by running:
 
