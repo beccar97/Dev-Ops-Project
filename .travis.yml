@@ -9,5 +9,5 @@ before_install:
 script:
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
-    - docker run -e TRELLO_API_KEY=trello_key -e TRELLO_API_SECRET=trello_secret  --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
+    - docker run -e TRELLO_API_KEY=$trello_key -e TRELLO_API_SECRET=$trello_secret  --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
     
