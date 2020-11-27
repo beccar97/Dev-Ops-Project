@@ -1,13 +1,12 @@
 services:
     - docker
-
 env:
-    - secure: "jq0r7xvk+XAETGrVRZ3gWgxVlkYTJs+W7WsYHu2VLx6JAweitL4MGgXn45mzgQGw+P4nA/KDZWw0VsvEluvA22kjsq87QtawMm3ZzqIUPe5U7wtdLIvLDSFcOb4SBEh6FfN2uLfLsECv4x4+2LyCZPLHmMuXOpFLd/xatC7wMBhEXt2YPdC2PYZnZ7UQDCNe9OJXzZrRUfLnHuUhBMGtd7hoCWjr84ePeBWg/PC6ec+4p+zajU9DQEzne0e44z7r//qU6O4dfLixke0jgPVBXdVEfSeM2UWL6tCFx+ntEqDR1w/c9qp3lfDEqcye2P6X+2BEqWbL5xv3bySnXvSDm8d3KEoy/XDef7CyfmImcMQGtMi9H1ZPBZ988rJVmJu8jLlrKIsx1VE5+ZekCuT9Ol0atiBWmoyyDd1y8Kumd9UKMicY7h7EeOJtV3b5fvLm1mK3/AEapqjpRrbTa4dKFQyz/7qZp+hJrf2Gf3YlAU8fOZeCDuamrU/3sBbR+vfI5zhErTp74PwgDJwmRAPWsMRb+aQjanD2VjPFND65FjwByvcQ3IOV4NSP3nq4d/Wu95Fzx59JSauTihR3716POaWq5/dzG6IXwdN30le39NJsI8zvl9UFGD0h7VwI2UeKODlLjGrgJ20UhiOJ3GdWmk1/E3B7iuGdJBrGE5kG0s4="
-before_install:
+    - secure: "ZRAcLUM7lpDVa+CU1mzDI1x7prqhOb8haB4W9t9W9IRMQNdR5bV+RM7m6oB8KLOEve66EOZviHrAHqVdLo8hwmREirA9wvEkZPakd93txVNchmti2P4ZL97S/OfYWlAycn9p7KIUFVZ7wxiKTAmY4FqsetAQDCMqXFGf0bn4HDKSrZSyYKUfSx5S+05NWh+wlzje+FERe/rqd9heiSpsR+le6OKDt+hNWvM1epIHoPTCt406+wbTNQbykbsO79QsCUyGpwYBXKz0vSSM3/HXyeYSfmsT9XVTDErlYgfE/eoVuZfWwUUfuWcH4ooHP7X5BCtOMsd42xQK+DdpyJEiwsvS6WVOWLGJtC0NrCws/nVTTDJoDnWmK6YxK6GMNOa8FS2kGnpDTCO53wh0rjvCOmZRvS47Zj+F1ETal1jGkhStNmA24F7ZwUlrRCQ2yR5p/1sc/pj+CT9QHIRO6Y4GGo3EP5A3wwxdPUQbD6m+3wjUr6VjFPgP4lJoVMZ036tsbUjH3ntuChDOYoifKPPbrDS4Wtpxk6FwJqAwJ4VA+1/THq9HOhrA2mDhFhohaS2ploGDsI9NKWnJC2+NQnjDGoa/KZIvAZNg5mPwRPxPFAOjkMY7EM4MbNZI4JtfQQSCtr2E8Vc+mPyue73NFjNwRIUFt5F6Yr2yPQPDHAOqXho="
+install:
     - docker build --target test --tag todo-app:test .
 
 script:
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
-    - docker run -e TRELLO_API_KEY=$trello_key -e TRELLO_API_SECRET=$trello_secret  --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
+    - docker run -e TRELLO_API_KEY -e TRELLO_API_SECRET --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
     

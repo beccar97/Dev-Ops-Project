@@ -119,9 +119,6 @@ env/
 ### VSCode settings ###
 .vscode/
 
-### Geckodriver logs ###
-geckodriver.log
-
 ### Vagrant ###
 .vagrant
 

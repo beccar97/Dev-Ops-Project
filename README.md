@@ -61,12 +61,12 @@ The development container can be launched using `docker-compose up -d --build`. 
  If you would prefer to build and run the image and container manually:
 
 - To produce the image: `docker build --target development --tag todo-app:dev .`
-- To run `docker run -p 5000:5000 -d --env-file .env --mount type=bind,source="$(pwd)",target=/app todo-app:dev`
+- To run `docker run -p 5000:5000 -d --mount type=bind,source="$(pwd)",target=/app todo-app:dev`
 
 ### Test
 
 - To produce the image: `docker build --target test --tag todo-app:test .`
-- To run `docker run  --env-file .env --mount type=bind,source="$(pwd)",target=/app todo-app:test`
+- To run `docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test`
 
 ## Virtual environment setup
 
