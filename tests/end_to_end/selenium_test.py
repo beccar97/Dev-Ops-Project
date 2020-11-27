@@ -38,9 +38,11 @@ def test_app():
 
 @pytest.fixture(scope='module')
 def driver():
-    opts = webdriver.FirefoxOptions()
+    opts = webdriver.ChromeOptions()
     opts.add_argument('--headless')
-    with webdriver.Firefox(options=opts) as driver:
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome(options=opts) as driver:
         yield driver
 
 
