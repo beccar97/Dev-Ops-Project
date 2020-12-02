@@ -1,12 +1,24 @@
 services:
     - docker
 env:
-    - secure: "ZRAcLUM7lpDVa+CU1mzDI1x7prqhOb8haB4W9t9W9IRMQNdR5bV+RM7m6oB8KLOEve66EOZviHrAHqVdLo8hwmREirA9wvEkZPakd93txVNchmti2P4ZL97S/OfYWlAycn9p7KIUFVZ7wxiKTAmY4FqsetAQDCMqXFGf0bn4HDKSrZSyYKUfSx5S+05NWh+wlzje+FERe/rqd9heiSpsR+le6OKDt+hNWvM1epIHoPTCt406+wbTNQbykbsO79QsCUyGpwYBXKz0vSSM3/HXyeYSfmsT9XVTDErlYgfE/eoVuZfWwUUfuWcH4ooHP7X5BCtOMsd42xQK+DdpyJEiwsvS6WVOWLGJtC0NrCws/nVTTDJoDnWmK6YxK6GMNOa8FS2kGnpDTCO53wh0rjvCOmZRvS47Zj+F1ETal1jGkhStNmA24F7ZwUlrRCQ2yR5p/1sc/pj+CT9QHIRO6Y4GGo3EP5A3wwxdPUQbD6m+3wjUr6VjFPgP4lJoVMZ036tsbUjH3ntuChDOYoifKPPbrDS4Wtpxk6FwJqAwJ4VA+1/THq9HOhrA2mDhFhohaS2ploGDsI9NKWnJC2+NQnjDGoa/KZIvAZNg5mPwRPxPFAOjkMY7EM4MbNZI4JtfQQSCtr2E8Vc+mPyue73NFjNwRIUFt5F6Yr2yPQPDHAOqXho="
+    global:
+        - DOCKER_USERNAME=beckycarter
+        - DOCKER_IMAGE_NAME=todo-app
+        - secure: "SCc0bbIw13x5uLj6kyHx5A5qhKmzU9oYD87KgfOtXck6utsyhT8CD4kZIx449XOyT/32FG/HW28xZ4x48riV6ifldbtXFUR+I2JTll1+IWTA6HDY2M4jHtkfEIU1KIo4aJVWd/JHqGsmSq7YYTX1ItjZDFJT2sjEbn6Lrg2q+hQEl0/VqzUBQFoiEwuvOt8ieLFnHlSnGSBgaFaqHamr5q5SHINv1bS0bAGot9zUONaEwq0nL+xA1JiqI0q1CRtSWINPjmJRBfe93NtRJ5zDMJuZLctJ57G9q7+9BbAb0+hvH7qfxGeMIUcDPEU7qPJww2h+3/Y+59ZRxxG6Az20kEj/sQL/5R6u5aJDQ/A54zLrvjkvbWV0c4XHqC7l2Yy66jkNyUkh/nrkaAPruRFsD0Q1eOrfPicvDgu8kclf/UgvcE5fhyJu+J8ps3QSKk8rBDoDPr4AhfbKUTH4/1FbkT3662gm0YHZwqltVLtPUvFVjVqqEkd4w9vHUAuykyTeXgUh7ainm+IVxg7NxdraqkV5Ef4+TTtBcjbCJnaVifmAikCtWRV0Sn5cMbd9kWccgbbZ9W7bw1/TJVvBgtnPct8bpzoAx5Uv8x1AlqXtj719a2dNAdFp5gHaAFQGkMtkOSgQ8fNsZBGqrYN+/FmXKOCFjZ+prdbn1A0PVG1nL6A="
 install:
-    - docker build --target test --tag todo-app:test .
+    - echo install
+    # - docker build --target test --tag todo-app:test .
 
 script:
-    - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
-    - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
-    - docker run -e TRELLO_API_KEY -e TRELLO_API_SECRET --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
+    - echo script
+    # - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
+    # - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
+    # - docker run -e TRELLO_API_KEY -e TRELLO_API_SECRET --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
     
+before_deploy:
+    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+deploy:
+    provider: script
+    script:  bash deploy.sh
+    on:
+      branch: master
