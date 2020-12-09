@@ -50,7 +50,7 @@ There is a multi-stage docker file for this project, containing a production bui
 ### Production
 
 - To produce the image: `docker build --target production --tag todo-app:prod .`
-- To run: `docker run -p 5100:80 -d --env-file .env todo-app:prod`
+- To run: `docker run -p 5100:80 -e PORT=80 -d --env-file .env todo-app:prod`
 
 The app will then run be accessible on localhost:5100.
 

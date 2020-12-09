@@ -6,10 +6,12 @@ COPY pyproject.toml .
 COPY poetry.lock .
 
 FROM base as production
-RUN poetry install --no-root --no-dev
+RUN poetry config virtualenvs.create false --local &&\
+    poetry install --no-root --no-dev
 COPY ./src ./src
-EXPOSE 80
-ENTRYPOINT [ "poetry", "run", "gunicorn", "-b 0.0.0.0:80", "src.app:create_app()"]
+COPY ./scripts ./scripts
+EXPOSE $PORT
+ENTRYPOINT [ "./scripts/docker_entrypoint_prod.sh"]
 
 FROM base as development
 RUN poetry install --no-root
