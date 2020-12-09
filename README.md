@@ -10,6 +10,7 @@
     - [Production](#production)
     - [Development](#development)
     - [Test](#test)
+  - [Continuous Integration and Deployment](#continuous-integration-and-deployment)
   - [Virtual environment setup](#virtual-environment-setup)
     - [Running the project using vagrant](#running-the-project-using-vagrant)
       - [Running the tests](#running-the-tests)
@@ -67,6 +68,26 @@ The development container can be launched using `docker-compose up -d --build`. 
 
 - To produce the image: `docker build --target test --tag todo-app:test .`
 - To run `docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test`
+
+## Continuous Integration and Deployment
+
+Continuous integration and deployment is provided using Travis CI, speificied in `.travis.yml`.
+Tests are automatically run on any pull release branches, and the master branch is built and deployed to both docker hub and heroku. The heroku web app is released so it is always up to date with the current master. The live web app can be reached at [beccar-todo-app.herokuapp.com](https://beccar-todo-app.herokuapp.com/).
+
+The Travis CI relies on several secure environment variables, which are defined by the `secure: <encoded environment variables>` line in the yml file. The encrypted key defining the variables is generated using the Travis CLI, as explained in [their documentation](https://docs.travis-ci.com/user/encryption-keys#usage). You can install the CLI using `gem install travis` and then to generate the encrypted key run the following (filling in the correct values for the environment variables).
+
+```bash
+travis encrypt --pro TRELLO_API_KEY=<TRELLO_API_KEY> \
+TRELLO_API_SECRET=<TRELLO_API_SECRET> \
+DOCKER_PASSWORD=<DOCKER_PASSSWORD> \
+HEROKU_API_KEY=<HEROKU_API_KEY>
+```
+
+Then copy the `secure: <encrypted key>` line from the output into the .travis.yml file under the env:global section.
+
+Instructions on generating a Trello API key and secret can be found under [trello setup](#trello-setup). To get a heroku api key to use here follow the instructions in [this article](https://medium.com/@zulhhandyplast/how-to-create-a-non-expiring-heroku-token-for-daemons-ops-work-da08346286c0) to generate a non-expiring token. Note that the heroku account used will need to have the appropriate permissions to deploy the app.
+
+If you wish to deploy to heroku locally for any reason you will need to login to the heroku container registry using the heroku CLI (see the [heroku documentation](https://devcenter.heroku.com/articles/container-registry-and-runtime#logging-in-to-the-registry)) and then run `./scripts/heroku_deploy_local.sh` from the root of the project.
 
 ## Virtual environment setup
 
