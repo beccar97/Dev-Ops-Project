@@ -8,11 +8,10 @@ env:
         - HEROKU_APP_NAME=beccar-todo-app
         - secure: "WoN9IXgVfvS3GoaT5B6fS7bnjYkpFISE05L5eHBi2J3AQf9pTR9ORsYKJMPgLC2hGwWPY+s81xG09e7uJiJhHfcYGa/XGJgKy6EUxcocePhCf6A9Jk0mA1BjjddSVO8fhJ2s8aJooxdqwSQ2pLOpA+vnaEmqRuknaotD1VsWR4BTVooS0gyA2B0dZsXJSEWaycwSZPVzowsrDxorR6GJQw8gM4wTT87VMJnbt8dtpPu7ctreTzB3IFOSPod0JlOkfoR4K2N+lncDdH+F/Ykv8uUR7vnIbKfHgMY+3VCUBL0bAuQX4SRUtWDq3ZncFY/zSu+JQm4SR78RJgUVYx8E/RtpEZEV7FAlRXzU/ca3U8QLal+VTNudUypMHKioV81eEs+1RkLQfsdXK6CZ4WrHsMGIM0EGLAlMIJUBCr8CrL82R0IQEBYvazNd1pCbMELzSrCCUzvjri5o2LzdaGliHULLPjWjItOFSbpD9zLpURE9gLASKUtvR/HtvJ+NL8I5DmVSDYLWp6xOwocN2xvZugBvrIPhor8Oi+Q9sAolsH+B/MtliM72w1733F73byube9259/HDEeMwgZABxgCc7W9eyTcTJboUGzpJdV6V7S97jqpHRfjsS6C7P+Cp+l/wYqBPnJcIUCtKxZJhjXTESzhkw2BemGENbeFi/faPxG8="
 install:
-    - echo install
-    - docker build --target test --tag todo-app:test .
+    - docker pull $DOCKER_USERNAME/$DOCKER_IMAGE_NAME
+    - docker build --target test --tag todo-app:test --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME .
 
 script:
-    - echo script
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
     - docker run -e TRELLO_API_KEY -e TRELLO_API_SECRET --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
@@ -24,4 +23,4 @@ deploy:
     provider: script
     script:  bash scripts/deploy.sh
     on:
-      branch: module_8
+      branch: master
