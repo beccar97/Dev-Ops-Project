@@ -1,12 +1,26 @@
 services:
     - docker
 env:
-    - secure: "ZRAcLUM7lpDVa+CU1mzDI1x7prqhOb8haB4W9t9W9IRMQNdR5bV+RM7m6oB8KLOEve66EOZviHrAHqVdLo8hwmREirA9wvEkZPakd93txVNchmti2P4ZL97S/OfYWlAycn9p7KIUFVZ7wxiKTAmY4FqsetAQDCMqXFGf0bn4HDKSrZSyYKUfSx5S+05NWh+wlzje+FERe/rqd9heiSpsR+le6OKDt+hNWvM1epIHoPTCt406+wbTNQbykbsO79QsCUyGpwYBXKz0vSSM3/HXyeYSfmsT9XVTDErlYgfE/eoVuZfWwUUfuWcH4ooHP7X5BCtOMsd42xQK+DdpyJEiwsvS6WVOWLGJtC0NrCws/nVTTDJoDnWmK6YxK6GMNOa8FS2kGnpDTCO53wh0rjvCOmZRvS47Zj+F1ETal1jGkhStNmA24F7ZwUlrRCQ2yR5p/1sc/pj+CT9QHIRO6Y4GGo3EP5A3wwxdPUQbD6m+3wjUr6VjFPgP4lJoVMZ036tsbUjH3ntuChDOYoifKPPbrDS4Wtpxk6FwJqAwJ4VA+1/THq9HOhrA2mDhFhohaS2ploGDsI9NKWnJC2+NQnjDGoa/KZIvAZNg5mPwRPxPFAOjkMY7EM4MbNZI4JtfQQSCtr2E8Vc+mPyue73NFjNwRIUFt5F6Yr2yPQPDHAOqXho="
+    global:
+        - DOCKER_USERNAME=beckycarter
+        - DOCKER_IMAGE_NAME=todo-app
+        - HEROKU_USERNAME=becky.carter@softwire.com
+        - HEROKU_APP_NAME=beccar-todo-app
+        - secure: "WoN9IXgVfvS3GoaT5B6fS7bnjYkpFISE05L5eHBi2J3AQf9pTR9ORsYKJMPgLC2hGwWPY+s81xG09e7uJiJhHfcYGa/XGJgKy6EUxcocePhCf6A9Jk0mA1BjjddSVO8fhJ2s8aJooxdqwSQ2pLOpA+vnaEmqRuknaotD1VsWR4BTVooS0gyA2B0dZsXJSEWaycwSZPVzowsrDxorR6GJQw8gM4wTT87VMJnbt8dtpPu7ctreTzB3IFOSPod0JlOkfoR4K2N+lncDdH+F/Ykv8uUR7vnIbKfHgMY+3VCUBL0bAuQX4SRUtWDq3ZncFY/zSu+JQm4SR78RJgUVYx8E/RtpEZEV7FAlRXzU/ca3U8QLal+VTNudUypMHKioV81eEs+1RkLQfsdXK6CZ4WrHsMGIM0EGLAlMIJUBCr8CrL82R0IQEBYvazNd1pCbMELzSrCCUzvjri5o2LzdaGliHULLPjWjItOFSbpD9zLpURE9gLASKUtvR/HtvJ+NL8I5DmVSDYLWp6xOwocN2xvZugBvrIPhor8Oi+Q9sAolsH+B/MtliM72w1733F73byube9259/HDEeMwgZABxgCc7W9eyTcTJboUGzpJdV6V7S97jqpHRfjsS6C7P+Cp+l/wYqBPnJcIUCtKxZJhjXTESzhkw2BemGENbeFi/faPxG8="
 install:
-    - docker build --target test --tag todo-app:test .
+    - docker pull $DOCKER_USERNAME/$DOCKER_IMAGE_NAME
+    - docker build --target test --tag todo-app:test --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME .
 
 script:
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
     - docker run -e TRELLO_API_KEY -e TRELLO_API_SECRET --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
     
+before_deploy:
+    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+    - heroku container:login
+deploy:
+    provider: script
+    script:  bash scripts/deploy.sh
+    on:
+      branch: master
