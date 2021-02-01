@@ -1,8 +1,5 @@
 import pytest
-import os
 import src.app as app
-from src.trello_items import TrelloClient
-from src.trello_config import TrelloConfig
 from threading import Thread
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -18,22 +15,16 @@ def test_app():
     selenium_env_file_path = find_dotenv('.env.selenium.test')
     load_dotenv(selenium_env_file_path, override=True)
 
-    trello_client = TrelloClient(TrelloConfig())
-
-    board_id = trello_client.create_board()
-
-    os.environ['TRELLO_BOARD_ID'] = board_id
-
     application = app.create_app()
 
-    thread = Thread(target=lambda: application.run(use_reloader=False, port=8080))
+    thread = Thread(target=lambda: application.run(
+        use_reloader=False, port=8080))
     thread.daemon = True
     thread.start()
-    
+
     yield application
 
     thread.join(1)
-    trello_client.delete_board(board_id)
 
 
 @pytest.fixture(scope='module')
@@ -128,6 +119,14 @@ def test_task_journey(driver, test_app):
     uncompleteBtn.click()
 
     check_in_done_list(driver, newTaskName, shouldBeInList=False)
-    check_in_list(driver, newTaskName, 'doing-items')
+    addedItem = check_in_list(driver, newTaskName, 'doing-items')
+
+    # Delete task
+    deleteBtn = addedItem.find_element_by_class_name('delete-btn')
+    deleteBtn.click()
+
+    check_in_list(driver, newTaskName, 'todo-items', shouldBeInList=False)
+    check_in_list(driver, newTaskName, 'doing-items', shouldBeInList=False)
+    check_in_done_list(driver, newTaskName, shouldBeInList=False)
 
     driver.close()
