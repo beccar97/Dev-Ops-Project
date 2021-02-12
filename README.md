@@ -5,7 +5,7 @@
 - [DevOps Apprenticeship: Project Exercise](#devops-apprenticeship-project-exercise)
   - [Getting started](#getting-started)
     - [Environment Variable setup](#environment-variable-setup)
-    - [Trello setup](#trello-setup)
+    - [Mongo DB setup](#mongo-db-setup)
   - [Running the app using docker](#running-the-app-using-docker)
     - [Production](#production)
     - [Development](#development)
@@ -13,10 +13,10 @@
   - [Continuous Integration and Deployment](#continuous-integration-and-deployment)
   - [Virtual environment setup](#virtual-environment-setup)
     - [Running the project using vagrant](#running-the-project-using-vagrant)
-      - [Running the tests](#running-the-tests)
+      - [Running the tests within Vagrant](#running-the-tests-within-vagrant)
     - [Running the project locally using poetry](#running-the-project-locally-using-poetry)
       - [Running the app](#running-the-app)
-      - [Running the tests](#running-the-tests-1)
+      - [Running the tests using poetry](#running-the-tests-using-poetry)
 
 ## Getting started
 
@@ -25,24 +25,23 @@
 To create the basic .env file for this project run
 
 ```bash
-$ cp -n .env.template .env
+cp -n .env.template .env
 ```
 
-from the project root directory. You will need to fill in values for the trello related environment variables, as described below.
+from the project root directory. You will need to fill in values for the MongoDB related environment variables, as described below.
 
-### Trello setup
+### Mongo DB setup
 
-In order to run the project you must link it to a Trello board. The app expects the board it is connected to to have three lists:
+This project is set up to connect to a MongoDB cluster to store todo items. You will need to create a cluster authenticated with username and password, making note of these values. You will then need to update the .env file environment variables as follows:
 
-* To Do  
-* Doing
-* Done
+- MONGO_USERNAME: Username for connecting to MongoDB cluser, can be see in the 'Database Access' menu under the 'Security' heading
+- MONGO_PASSWORD: The password for the given user
+- MONGO_URL: This is visible in the 'Connect' menu of your cluster, look for a url ending `.mongodb.net`
+- MONGO_DEFAULT_DB: This is the name of the default database, it is set as 'todo_app' by default, but can be changed to any string you wish.
 
-When you have created an appropriate trello board you need to add the board id to the .env file. The board id can be found from the URL of the board, the url has the format of `https://trello.com/b/<boardID>/<boardName>`.
+One option for setting up a MongoDB cluster is to use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) which includes a free tier. Choosing "I'm learning MongoDB" option when signing up will give you very intuitive set-up instructions.
 
-You will also require a trello api key and api token. In order to generate these, ensure you are logged in to trello and then navigate to <https://trello.com/app-key>. At the top of the page will be your api key, and then below that a link to manually generate a Token. Clicking on this link will open a screen request you to confirm you are granting access to your boards, when you confirm this you will be presented with an api token. You should save the api key and token in your .env file, as the values of the TRELLO_API_KEY and TRELLO_API_SECRET variables respectively.
-
-More information about generation api keys and tokens for trello can be found [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/)
+Note that Alas is IP restricted by default, you will need to change your cluster's Network Access settings to allow access from anywhere in order for your app to work correctly from within docker.
 
 ## Running the app using docker
 
@@ -77,13 +76,29 @@ Tests are automatically run on any pull release branches, and the master branch 
 The Travis CI relies on several secure environment variables, which are defined by the `secure: <encoded environment variables>` line in the yml file. The encrypted key defining the variables is generated using the Travis CLI, as explained in [their documentation](https://docs.travis-ci.com/user/encryption-keys#usage). You can install the CLI using `gem install travis` and then to generate the encrypted key run the following (filling in the correct values for the environment variables).
 
 ```bash
-travis encrypt --pro TRELLO_API_KEY=<TRELLO_API_KEY> \
-TRELLO_API_SECRET=<TRELLO_API_SECRET> \
+travis encrypt --pro MONGO_URL=<MONGO_URL> \
+MONGO_PASSWORD=<MONGO_PASSWORD> \
 DOCKER_PASSWORD=<DOCKER_PASSSWORD> \
 HEROKU_API_KEY=<HEROKU_API_KEY>
 ```
 
-Instructions on generating a Trello API key and secret can be found under [trello setup](#trello-setup). To get a heroku api key to use here follow the instructions in [this article](https://medium.com/@zulhhandyplast/how-to-create-a-non-expiring-heroku-token-for-daemons-ops-work-da08346286c0) to generate a non-expiring token. Note that the heroku account used will need to have the appropriate permissions to deploy the app.
+To get a heroku api key to use here follow the instructions in [this article](https://medium.com/@zulhhandyplast/how-to-create-a-non-expiring-heroku-token-for-daemons-ops-work-da08346286c0) to generate a non-expiring token. Note that the heroku account used will need to have the appropriate permissions to deploy the app.
+
+In order for the app to run correctly when deployed, you will need to configure the production environment variables in Heroku. This can be done using commands such as
+
+```bash
+heroku config:set `cat .env | grep MONGO_USERNAME` --app <heroku_app_name>
+```
+
+You will need to configure the following environment variables for production:
+
+- MONGO_USERNAME
+- MONGO_PASSWORD
+- MONGO_URL
+- MONGO_DEFAULT_DB
+- CREATE_VIRTUAL_ENV=true
+
+Note, if any of these values are provided in quote marks in your .env file, then grep-ing them from there to set the heroku config will result in their values being saved with quote marks, which can cause errors.
 
 If you wish to deploy to heroku locally for any reason you will need to login to the heroku container registry using the heroku CLI (see the [heroku documentation](https://devcenter.heroku.com/articles/container-registry-and-runtime#logging-in-to-the-registry)) and then run `./scripts/heroku_deploy_local.sh` from the root of the project.
 
@@ -98,7 +113,7 @@ In order to run the project using vagrant you must have installed a Hypervisor ,
  To create the virtual environment and install required packages, run the following from a bash shell terminal, in the project root directory:
 
 ```bash
-$ vagrant up
+vagrant up
 ```
 
 Running the `vagrant up` command will cause the app to run as a background process, visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
@@ -106,27 +121,27 @@ Running the `vagrant up` command will cause the app to run as a background proce
 To stop the app running, destroy the virtual machine using
 
 ```bash
-$ vagrant destroy
+vagrant destroy
 ```
 
-#### Running the tests
+#### Running the tests within Vagrant
 
 To run the tests when using Vagrant you must access the vagrant shell using
 
 ```bash
-$ vagrant ssh
+vagrant ssh
 ```
 
 To run the tests navigate to the project directory by running
 
 ```bash
-$ cd /vagrant
+cd /vagrant
 ```
 
 and then run the tests using
 
 ```bash
-$ poetry run pytest
+poetry run pytest
 ```
 
 ### Running the project locally using poetry
@@ -144,7 +159,7 @@ poetry install
 Once the poetry install is complete, and the .env file set up, start the Flask app by running:
 
 ```bash
-$ poetry run flask run
+poetry run flask run
 ```
 
 You should see output similar to the following:
@@ -161,14 +176,14 @@ You should see output similar to the following:
 
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
-#### Running the tests
+#### Running the tests using poetry
 
 In order to run the tests you need to install the Chrome browser, and [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/). The chromedriver executable needs to be placed either in the project root directory, or in a location which is on your path.
 
 Tests can be run from the command line by running:
 
 ```bash
-$ poetry run pytest
+poetry run pytest
 ```
 
 If using VSCode can also set up to run tests from VSCode. In settings must set the following values:
