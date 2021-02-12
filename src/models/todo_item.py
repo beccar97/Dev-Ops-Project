@@ -8,10 +8,6 @@ class Item:
         self.dateLastActivity = dateLastActivity
 
     @classmethod
-    def from_trello_card(cls, card, list):
-        return cls(card['id'], card['name'], list['name'], parse(card['dateLastActivity']))
-
-    @classmethod
     def from_mongo_document(cls, document):
         return cls(document["_id"], document["name"], document["status"], document["dateLastActivity"])
 
