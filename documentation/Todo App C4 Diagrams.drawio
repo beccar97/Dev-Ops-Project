@@ -1,1 +1,166 @@
-<mxfile host="app.diagrams.net" modified="2020-10-09T16:50:49.625Z" agent="5.0 (Macintosh)" etag="2IICBUeIwKCMpFBrH96u" version="13.7.8" type="device" pages="3"><diagram id="5OUWf9cHC7LQuVnrr8T9" name="Context Diagram">3VjbcuM2DP0aPyZjSbacPPqWbNvtzM4kTbePtARLbChRpShf8vUFL7rbjprG0846M5EIUgBI4hyAHHnL5PAoSBb/ykNgI3ccHkbeauS6zsSd4ENJjkbizhzHSCJBQyMb14In+gZGeGeFBQ0ht9qMSHLOJM3awoCnKQSyJSNC8H172JazsCXISAQ9wVNAWF/6Ow1lbKWOf193fAEaxdb0nTszHQkpB9vp5TEJ+b4h8tYjbyk4l+YtOSyBqcVrL8vDmd7KMQGpHPIB/PLTy3e4fwmWHNbPs5U33/1841hvc3ksZwwhLoBtciFjHvGUsHUtXQhepCEotWNs5a8gAzVVBxv1B185z6zwT5DyaHeWFJKjKJYJs73Vumhlkgg5V/uGgpSnUMoeKGN2zJan8oEklKmQegERkpRYsTXiuLa95IwLPS3Pd++c+QrlkIalgYCRPKfBc0xT02GtKLf6y2tXPOeFCODCmtrIQK8jkBfG+WacWu+GAbt5j8ATkOKIAwQwIumuHZDExnVUjau3Hl/s7v+TSLBu7wgrrKmR6zOcwCKkO3yN1OsLBUQUmk9DHeMphr9uawN8q+YdAxV6/vkrdi1LLehVQ9EJ3TQNWBHSNFL6QvOy1PNP+K5qGcvl5xvRVfiumSAmaWSslK5ihEnAZ5Fr+VDVJ4DzlWyQAFvxTRiNUhVsGEiAwbjYgZAUGWZuOxIahgZXkNM3stH6VKBnnKZS7/N0MZquzsT4CSj0Y/ci+JVDcBidoFPrTIuxWrFpv7oZ37p3nlU3OF6tum9qmjjEZghndjvrfMS32xyh1A3xyo+PR/35oI/dcqN/y0E0g6Kx5/5fhaJvvQ83ud6YOQ5w3OxQd54Io1p5Kcw+rlf1ZCBynuLLnmLa0cg81hjElKlSMDcIuhjg2Sc6to+V2T0vmIIso69QulLk6pWoXthcybraeoW4LQkqu1xEJKXaOGI/wceG5JjJruaB3pMmzRT57SfHUsPjDiFhZs3Ua5GweSB5k3s0T33jOZWUtzioS04bLiVP2ozGC8loCsuq5Br30nizJsil4K9V9aRpC9NsmZptkv+XSb0kWQZbtRSsMz1hCrRFzAV9QxWEtXxraJyt5/56fCn/99jyLCtOPZviLbPdOP7YFoP7upb0rShuVJHOZHylNO8PILxSohZb54Jydeoo9Kbryb2qgbuB+cxXCmjzLGuEqFE0gAV1eh2Xm1lrt7nzLAw+4umcMa5rGSQjUZFkDnCxnKkoRFHa5lih2lCrIbcsNOUEftooLoy2qiiyhYz+AqsdrbksdqBhj6h/eASiAsIWdfSW88wqXypZ2pX8PqYSnjKiq9s9nucuFervILwJ5y/AdqBY5VQ11EPgvT/ziN9hCZSDE05hdgLcvcJqMLlJdUT5DKRPPKeDdM/tI92dnYL69FpQd6bXxjpWeoz/33H+hJmvcUYxoKTplgs8olOdoMkGU5otSCo2qJHaPJhUdEAlgwrFFuM/Pjh9/euDcztVf1cAZyfhm9+1QDv2/nvQ3g05hj+CzIdE8cAjcSPdbAVWe838hD5XydFktryqngcfi3+E+6SB90ZwoPK70nw7ta0/Gj2rgzWqG0fb0KBZkOA10kvRxJX+XYr3d6+j/IHXUWW6+Lz7qM75vqyKfa8DO8fvKDFzst81rzTfVTXu+mOm3VP1/v0BNuu7WTO8vuH21n8D</diagram><diagram id="euWOQJ6ljFwDd7lty8K_" name="Container Diagram">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</diagram><diagram id="GpSSWWHbdrlh_tIzkm8B" name="Component Diagram">7VnZUuM6EP2aPGbKS5zlMQQyMDMMMOy8TCm2HIvIkpGV9etHsqV4i0MIAapu3VBUrJbUkrtPdx8pDXsQLr4zEAXn1IO4YRneomEfNyzLbFkt8SUly1RidUwzlYwZ8tSoTHCNVlAJDSWdIg/GhYGcUsxRVBS6lBDo8oIMMEbnxWE+xcVVIzCGFcG1C3BVeo88Hiip2e5lHacQjQO1dNfqpB0h0IPVm8QB8Og8J7JPGvaAUcrTp3AxgFhaT9vlPsLoxF85d+2rqxt4tvxz239qpsqGb5myfgUGCd9btX00+30XRr3l5dR9vHAHRzfnM6065kttL+gJ86kmZTygY0oAPsmkR4xOiQelVkO0sjG/KI2E0BTCZ8j5UmEBTDkVooCHWPXCBeIPcvo3R7Uecz3HC6U5aSxVI+aA8b7EgxAQSqCWDRHGaoxPCR9QTFnyJraRfOS4CeRuoJcgnlZDI0hSSU5JahBphRJ+XjG+tiSdMldNxb+7fx/J88vox/K0HzSvXlB3ppxkiK2PId/imQxhIjYhDSFnSzGPQQw4mhU3B1SMjNfjMhyIBwWFzbDYtskZwFO1UsNqYy7daIunsXwaYhBPtFiskvVooYdma5FzdA9HQuWQgRDOKZs0nGM9bsTKM4W6/OQyRosInAeIw+sIJGafizRWRJsH4iAZa5ahEHNGJzCHmHbykUgSeMjJfUf+VRGWftY7nEHG4WIP2FTdvM6/yhMq+zZNp6sk81wyc5QsyOUx0zDeDw6yPCPm89NqNQ9In7z8HFwsxtvAYZUdKQ2WJHdts/bLlKYDbOek1ZNZOBOlc28ExjHNQSFVUkFIdbUEMwbAaEwKi7nCB5BVV3rPLq85ZaKuyeWkxXgApd2IT5koHIgS2TOiU6kXiP9pDFmcxH08Ed+DZLCLpx4i43Q6YvIbcSwVAeIlkAccbo2SGtMcLHjWNa+SR9Pg0SXVUlYcghBhCdZTiGeQIxeIDu0Q5YZ9Ag+DEcSXNEaJaXOqZMyJVfCv0oAQeV5SrfSAvtoEl0Xq0wO5a5YD2baqgWzZ5oZAtj4qkM0dArkfiZd1NaIHgh/WROC7UFaPhxo/5XGi2EB9ntf4w9DnGxAxopzT8AOd3yv7vtWq+r7d2ZDEbfsAvg9bDxfBeBmtjPDx6axDm/3rebP7buJXMPE+LJCI93jQXE82HhNOaDm6nTHBpPUWKvgay6ujipqaajKa31ItNz0gZayngjtQRuuTKONGQPVqk0muGN1Gnqhocbm0lStWZR71s9K5J2eU7kmKRBGFldpUzg7rQiKqPVqBUaJPej2iiPDEis6RJLP1oKrNK+rMq5RmJ808cuqjtzbfGN8Mo9cr5hx9jt8ZDEr7pXzLXCoraS3Op74fC4SWobTe4U7o2hYCuxxIDFGydj2WnAMijv8SjyK38ZSKpdSLwzCSlpKirz2llCiRB2DXd3djVW4XjvyPPJ44FVZjbDie2BsqW/cAhW0jUuwvL2wfWZ8+utRY1VJTfwb8hFKzcZOtXUrNOZgkgd2/PNu5zMiULI5zyTmN/sfrSn3w1IZ7UzChdqtTDHm7c5DCUj4fabUHLS2jO/+FRt7izy1Z/rW6x6Q1/L7lFJRz+yWjs+Qe2zIwivlexMXwKVM3Ae9iMZ9K0vVVbYEPd7bz4TWzX9P8/LQvYvZfkDm/9F532ybrsL7H1VlGr/S1nTHACBK+KwU7FXwLJ4GF5ErAVVcNcyT4g2UULwNfj5f/mVkyxTGqzMypMrNNdw69tzMz0cx+BkvzcvZron3yDw==</diagram></mxfile>
+<mxfile host="65bd71144e" modified="2021-02-15T14:42:59.244Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.53.2 Chrome/87.0.4280.141 Electron/11.2.1 Safari/537.36" etag="Ruc9mK7Fgy1KfSxSpc7z" version="14.2.4" type="embed" pages="3">
+    <diagram id="5OUWf9cHC7LQuVnrr8T9" name="Context Diagram">
+        <mxGraphModel dx="1257" dy="2250" grid="0" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="eKIVXe9VcCoeET7D3AvJ-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;shadow=0;startArrow=none;startFill=0;fontFamily=Verdana;fontSize=12;fontColor=#6281AD;endArrow=classicThin;endFill=1;" parent="1" source="eKIVXe9VcCoeET7D3AvJ-9" target="eKIVXe9VcCoeET7D3AvJ-6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eKIVXe9VcCoeET7D3AvJ-19" value="&lt;div&gt;Views and manages all of their tasks,&lt;/div&gt;&lt;div&gt;including adding, removing, and &lt;br&gt;&lt;/div&gt;&lt;div&gt;changing their state using&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontFamily=Verdana;" parent="eKIVXe9VcCoeET7D3AvJ-17" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2837" relative="1" as="geometry">
+                        <mxPoint y="17.71" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="eKIVXe9VcCoeET7D3AvJ-9" value="&lt;h2&gt;User&lt;br style=&quot;font-size: 12px&quot;&gt;&lt;/h2&gt;&lt;p style=&quot;font-size: 12px&quot;&gt;A person with many tasks to do, &lt;br&gt;&lt;/p&gt;&lt;p style=&quot;font-size: 12px&quot;&gt;who would like to use a web&lt;/p&gt;&lt;p style=&quot;font-size: 12px&quot;&gt; interface to organise them based&lt;/p&gt;&lt;p style=&quot;font-size: 12px&quot;&gt; on their status.&lt;br style=&quot;font-size: 12px&quot;&gt;&lt;/p&gt;" style="shape=umlActor;verticalLabelPosition=middle;verticalAlign=bottom;html=1;outlineConnect=0;shadow=0;sketch=1;strokeWidth=2;fillColor=none;fontFamily=Verdana;fontSize=12;fontColor=#6281AD;align=left;labelPosition=right;horizontal=1;strokeColor=#7EA6E0;" parent="1" vertex="1">
+                    <mxGeometry x="536" y="-1600" width="60" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="eKIVXe9VcCoeET7D3AvJ-6" value="&lt;h2&gt;&lt;font color=&quot;#5E4969&quot;&gt;ToDo App&lt;/font&gt;&lt;/h2&gt;&lt;div align=&quot;center&quot;&gt;&lt;font color=&quot;#5E4969&quot;&gt;Allows users to see all of their tasks organised by status, to update the state of tasks, and to add or remove tasks as desired.&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;sketch=1;strokeWidth=2;fontFamily=Helvetica;align=center;strokeColor=#9673a6;fillColor=#e1d5e7;labelPosition=center;verticalLabelPosition=middle;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="431" y="-1320" width="270" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="eKIVXe9VcCoeET7D3AvJ-15" value="&lt;h2&gt;&lt;span style=&quot;color: rgb(94 , 73 , 105)&quot;&gt;MongoDB&lt;/span&gt;&lt;/h2&gt;&lt;h2&gt;&lt;span style=&quot;color: rgb(94 , 73 , 105) ; font-size: 12px ; font-weight: normal&quot;&gt;Stores all the information about a users tasks, including their title and state&lt;/span&gt;&lt;br&gt;&lt;/h2&gt;" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;sketch=1;strokeWidth=2;fontFamily=Helvetica;align=center;strokeColor=#666666;fillColor=#f5f5f5;labelPosition=center;verticalLabelPosition=middle;verticalAlign=top;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="431" y="-1030" width="270" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="eKIVXe9VcCoeET7D3AvJ-18" value="&lt;div&gt;Gets information about a users&lt;/div&gt;&lt;div&gt; tasks from, and tells to updates them&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;shadow=0;startArrow=none;startFill=0;fontFamily=Verdana;fontSize=12;endArrow=classicThin;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;labelBackgroundColor=#ffffff;" parent="1" source="eKIVXe9VcCoeET7D3AvJ-6" target="eKIVXe9VcCoeET7D3AvJ-15" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="563" y="-1161" as="sourcePoint"/>
+                        <mxPoint x="563" y="-1021" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="euWOQJ6ljFwDd7lty8K_" name="Container Diagram">
+        <mxGraphModel dx="1257" dy="2250" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-0"/>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-1" parent="WXY9y2GWf0TfE6yYeOiG-0"/>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#5E4969;sketch=1;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-4" target="WXY9y2GWf0TfE6yYeOiG-8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-3" value="Views and manages tasks using " style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="WXY9y2GWf0TfE6yYeOiG-2" vertex="1" connectable="0">
+                    <mxGeometry x="-0.1003" y="76" relative="1" as="geometry">
+                        <mxPoint x="-7" y="14" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-4" value="&lt;h2&gt;User&lt;br style=&quot;font-size: 12px&quot;&gt;&lt;/h2&gt;&lt;p style=&quot;font-size: 12px&quot;&gt;A person with many tasks to do, &lt;br&gt;&lt;/p&gt;&lt;p style=&quot;font-size: 12px&quot;&gt;who would like to use a web&lt;/p&gt;&lt;p style=&quot;font-size: 12px&quot;&gt; interface to organise them based&lt;/p&gt;&lt;p style=&quot;font-size: 12px&quot;&gt; on their status.&lt;br style=&quot;font-size: 12px&quot;&gt;&lt;/p&gt;" style="shape=umlActor;verticalLabelPosition=middle;verticalAlign=bottom;html=1;outlineConnect=0;shadow=0;sketch=1;strokeWidth=2;fillColor=none;fontFamily=Verdana;fontSize=12;fontColor=#6281AD;align=left;labelPosition=right;horizontal=1;strokeColor=#7EA6E0;" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="430" y="-1600" width="60" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-5" value="&lt;h2&gt;&lt;font color=&quot;#5E4969&quot;&gt;Mongo DB&lt;/font&gt;&lt;/h2&gt;&lt;div align=&quot;center&quot;&gt;&lt;font color=&quot;#5E4969&quot;&gt;Stores all the information about a users tasks, including their title and state&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;sketch=1;strokeWidth=2;fontFamily=Helvetica;align=center;strokeColor=#666666;fillColor=#f5f5f5;labelPosition=center;verticalLabelPosition=middle;verticalAlign=top;fontColor=#333333;" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="910" y="-1075" width="231" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-6" value="&lt;div&gt;&lt;h2&gt;ToDo App&lt;/h2&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#9673a6;fillColor=none;dashed=1;sketch=1;labelPosition=center;verticalLabelPosition=middle;align=left;verticalAlign=bottom;fontColor=#5E4969;fontStyle=1" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="40" y="-1360" width="840" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-7" value="&lt;div&gt;Make requests for page &lt;br&gt;&lt;/div&gt;&lt;div&gt;to show, and to update&lt;/div&gt;&lt;div&gt;tasks&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-8" target="WXY9y2GWf0TfE6yYeOiG-12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-8" value="&lt;h3&gt;Single-page web application&lt;/h3&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="170" y="-1330" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontColor=#5E4969;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-12" target="WXY9y2GWf0TfE6yYeOiG-8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-10" value="&lt;div&gt;Serves page to&lt;/div&gt;&lt;div&gt; be displayed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="WXY9y2GWf0TfE6yYeOiG-9" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0375" y="3" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontColor=#5E4969;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-12" target="WXY9y2GWf0TfE6yYeOiG-15" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t26p23If-IifdbwC1JvO-0" value="Passes on requests" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="WXY9y2GWf0TfE6yYeOiG-11" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2806" y="3" relative="1" as="geometry">
+                        <mxPoint x="-100.5" y="5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-12" value="&lt;div&gt;&lt;h3&gt;Gunicorn &lt;/h3&gt;&lt;/div&gt;&lt;div&gt;[WSGI Application server]&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="480" y="-1330" width="170" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontColor=#5E4969;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-15" target="WXY9y2GWf0TfE6yYeOiG-12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t26p23If-IifdbwC1JvO-1" value="&lt;div&gt;Provides HTML pages&lt;/div&gt;&lt;div&gt; to be served&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" parent="WXY9y2GWf0TfE6yYeOiG-13" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3882" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontColor=#5E4969;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-15" target="WXY9y2GWf0TfE6yYeOiG-19" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t26p23If-IifdbwC1JvO-2" value="&lt;div&gt;Calls specific route&lt;/div&gt;&lt;div&gt;methods&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" parent="WXY9y2GWf0TfE6yYeOiG-14" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3887" y="2" relative="1" as="geometry">
+                        <mxPoint x="75.5" y="4" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-15" value="&lt;h3&gt;Flask&lt;/h3&gt;&lt;div&gt;[Web Framework]&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="240" y="-1175" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontColor=#5E4969;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-19" target="WXY9y2GWf0TfE6yYeOiG-15" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t26p23If-IifdbwC1JvO-3" value="&lt;div&gt;Provides templates and&lt;/div&gt;&lt;div&gt; data for web page to be shown&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" parent="WXY9y2GWf0TfE6yYeOiG-16" vertex="1" connectable="0">
+                    <mxGeometry x="0.2296" y="-3" relative="1" as="geometry">
+                        <mxPoint x="-21" y="-44.5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontColor=#5E4969;" parent="WXY9y2GWf0TfE6yYeOiG-1" source="WXY9y2GWf0TfE6yYeOiG-19" target="WXY9y2GWf0TfE6yYeOiG-5" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-18" value="&lt;div&gt;Makes API calls to get and&lt;/div&gt;&lt;div&gt; update information about tasks&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="WXY9y2GWf0TfE6yYeOiG-17" vertex="1" connectable="0">
+                    <mxGeometry x="0.0065" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="WXY9y2GWf0TfE6yYeOiG-19" value="&lt;h3&gt;Application code&lt;/h3&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" parent="WXY9y2GWf0TfE6yYeOiG-1" vertex="1">
+                    <mxGeometry x="530" y="-1020" width="190" height="130" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="GpSSWWHbdrlh_tIzkm8B" name="Component Diagram">
+        <mxGraphModel dx="1257" dy="2250" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="WpliEfz5V6QQTeIyRUAZ-0"/>
+                <mxCell id="WpliEfz5V6QQTeIyRUAZ-1" parent="WpliEfz5V6QQTeIyRUAZ-0"/>
+                <mxCell id="3BvNVmp9yPucYOcCBTMv-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;startArrow=none;startFill=0;fontColor=#000000;sketch=1;endArrow=open;endFill=0;" parent="WpliEfz5V6QQTeIyRUAZ-1" source="lN8_YnjqbJyHAh-Qqi8v-0" target="3BvNVmp9yPucYOcCBTMv-0" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="lN8_YnjqbJyHAh-Qqi8v-0" value="&lt;h3&gt;Flask&lt;/h3&gt;&lt;div&gt;[Web Framework]&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" parent="WpliEfz5V6QQTeIyRUAZ-1" vertex="1">
+                    <mxGeometry x="140" y="-1580" width="150" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="nyIn1jZzzwhnAnqKCOxg-0" value="&lt;h2&gt;&lt;font color=&quot;#5E4969&quot;&gt;MongoDB Atlas&lt;/font&gt;&lt;/h2&gt;&lt;div align=&quot;center&quot;&gt;&lt;font color=&quot;#5E4969&quot;&gt;Cloud hosted database stores all the information about a users tasks, including their title and state&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;sketch=1;strokeWidth=2;fontFamily=Helvetica;align=center;strokeColor=#666666;fillColor=#f5f5f5;labelPosition=center;verticalLabelPosition=middle;verticalAlign=top;fontColor=#333333;" parent="WpliEfz5V6QQTeIyRUAZ-1" vertex="1">
+                    <mxGeometry x="810" y="-1320" width="231" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="nyIn1jZzzwhnAnqKCOxg-1" value="&lt;h2&gt;Application Code&lt;/h2&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#666666;fontColor=#333333;fillColor=none;dashed=1;sketch=1;align=left;verticalAlign=bottom;" parent="WpliEfz5V6QQTeIyRUAZ-1" vertex="1">
+                    <mxGeometry x="90" y="-1440" width="670" height="330" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4XOhgypz0mYZI7o-ASw-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=open;endFill=0;fontColor=#000000;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="WpliEfz5V6QQTeIyRUAZ-1" source="3BvNVmp9yPucYOcCBTMv-0" target="3BvNVmp9yPucYOcCBTMv-2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4XOhgypz0mYZI7o-ASw-9" value="&lt;div&gt;Updates state&lt;/div&gt;&lt;div&gt;of tasks&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" parent="m4XOhgypz0mYZI7o-ASw-8" vertex="1" connectable="0">
+                    <mxGeometry x="0.0099" y="-24" relative="1" as="geometry">
+                        <mxPoint x="9" y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="3BvNVmp9yPucYOcCBTMv-0" value="&lt;h3&gt;Flask App&lt;/h3&gt;&lt;div&gt;Manages routing and templating&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;fillColor=#dae8fc;align=center;strokeColor=#6c8ebf;" parent="WpliEfz5V6QQTeIyRUAZ-1" vertex="1">
+                    <mxGeometry x="150" y="-1300" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="3BvNVmp9yPucYOcCBTMv-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=open;endFill=0;fontColor=#000000;" parent="WpliEfz5V6QQTeIyRUAZ-1" source="3BvNVmp9yPucYOcCBTMv-2" target="nyIn1jZzzwhnAnqKCOxg-0" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3BvNVmp9yPucYOcCBTMv-4" value="&lt;div&gt;Makes API&lt;/div&gt;&lt;div&gt; calls to&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;" parent="3BvNVmp9yPucYOcCBTMv-3" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2647" y="-37" relative="1" as="geometry">
+                        <mxPoint x="10" y="-37" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="bVfqopdxRUny_28Dn4FG-1" value="&lt;div&gt;Provides list&lt;/div&gt;&lt;div&gt;of tasks for user&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=open;endFill=0;fontColor=#000000;" parent="WpliEfz5V6QQTeIyRUAZ-1" source="3BvNVmp9yPucYOcCBTMv-2" target="3BvNVmp9yPucYOcCBTMv-0" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3BvNVmp9yPucYOcCBTMv-2" value="&lt;div align=&quot;center&quot;&gt;&lt;h3&gt;Mongo DB Client&lt;/h3&gt;&lt;div&gt;Handles interaction with Atlas cluster and Mongo DB&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;sketch=1;fillColor=#dae8fc;align=center;strokeColor=#6c8ebf;" parent="WpliEfz5V6QQTeIyRUAZ-1" vertex="1">
+                    <mxGeometry x="500" y="-1305" width="170" height="90" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
