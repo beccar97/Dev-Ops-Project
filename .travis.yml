@@ -6,7 +6,9 @@ env:
         - DOCKER_IMAGE_NAME=todo-app
         - HEROKU_USERNAME=becky.carter@softwire.com
         - HEROKU_APP_NAME=beccar-todo-app
-        - secure: "WoN9IXgVfvS3GoaT5B6fS7bnjYkpFISE05L5eHBi2J3AQf9pTR9ORsYKJMPgLC2hGwWPY+s81xG09e7uJiJhHfcYGa/XGJgKy6EUxcocePhCf6A9Jk0mA1BjjddSVO8fhJ2s8aJooxdqwSQ2pLOpA+vnaEmqRuknaotD1VsWR4BTVooS0gyA2B0dZsXJSEWaycwSZPVzowsrDxorR6GJQw8gM4wTT87VMJnbt8dtpPu7ctreTzB3IFOSPod0JlOkfoR4K2N+lncDdH+F/Ykv8uUR7vnIbKfHgMY+3VCUBL0bAuQX4SRUtWDq3ZncFY/zSu+JQm4SR78RJgUVYx8E/RtpEZEV7FAlRXzU/ca3U8QLal+VTNudUypMHKioV81eEs+1RkLQfsdXK6CZ4WrHsMGIM0EGLAlMIJUBCr8CrL82R0IQEBYvazNd1pCbMELzSrCCUzvjri5o2LzdaGliHULLPjWjItOFSbpD9zLpURE9gLASKUtvR/HtvJ+NL8I5DmVSDYLWp6xOwocN2xvZugBvrIPhor8Oi+Q9sAolsH+B/MtliM72w1733F73byube9259/HDEeMwgZABxgCc7W9eyTcTJboUGzpJdV6V7S97jqpHRfjsS6C7P+Cp+l/wYqBPnJcIUCtKxZJhjXTESzhkw2BemGENbeFi/faPxG8="
+        - MONGO_USERNAME='travis_user'
+        - MONGO_DEFAULT_DB='todo_app'
+        - secure: "Zv9d5qiKBtyvxoAwskUal65XsXDDsdvxzeX8vmrLecSCYW0pfMH5FHBYwy70+9HJ8DCLRw7DYFYvp+/gkvWuzpY+QFPRqNWK4lswciHALfNl5wlU/MonyHW75HRSWr4gN9hztPaQSxYijYRlwHw1krZ+wx8Pibyan7uEop8rrI5h9rkcNPxRpFPvPHL+ETAugQI9NcounyN5pkJc1HbMGzyS3vu3dUSt4s4cGosi957xSRM0aoNxKcVb3SMMRW3YQ6OwENo14AY8w8tMRo3AMWERr8FqPzgKRRRWTtBkKG9lzFfGRKjDmkO63W4Fkl85qUJcHhwn34ki1ZhFohWHdf7QRohp0bpO5lO1OtMpbyE1d7HYw7UAAdoJPPcyT2Yux/BVmpNWxAmxvwEc4SIXJVYdLdqqVHF9TnRgFSOWOGaivt8rsxF+C0sk7DRdIlqNc3O+zd0p+RpF2LuYmAbUH/KJ5t506HWf+uZ/+8/KBx8Z63+t1f9RYvNcnkyoZdsMdssPpqSLNxluKgHlrlZTc3haVFpU0CCXSB1CI9wgXO9PS6NMndMtLDpbB1YGvYqHFzmB8QLCGfcsELA0FJ9+zv+2KiJFgnY059vzcVrYaV6/h41MhpDSVq6DuQ8ZBQmSdDXsD9/nLmGChAN/LlBx5amtwmWm9zdmwnFK395VGG4="
 install:
     - docker pull $DOCKER_USERNAME/$DOCKER_IMAGE_NAME
     - docker build --target test --tag todo-app:test --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME .
@@ -14,7 +16,7 @@ install:
 script:
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
     - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
-    - docker run -e TRELLO_API_KEY -e TRELLO_API_SECRET --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
+    - docker run -e MONGO_USERNAME -e MONGO_PASSWORD -e MONGO_URL -e MONGO_DEFAULT_DB --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
     
 before_deploy:
     - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin

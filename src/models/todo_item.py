@@ -8,8 +8,8 @@ class Item:
         self.dateLastActivity = dateLastActivity
 
     @classmethod
-    def from_trello_card(cls, card, list):
-        return cls(card['id'], card['name'], list['name'], parse(card['dateLastActivity']))
+    def from_mongo_document(cls, document):
+        return cls(document["_id"], document["name"], document["status"], document["dateLastActivity"])
 
     def dateLastActivityString(self): 
         return datetime.strftime(self.dateLastActivity, "%a %-d %b")
@@ -25,3 +25,6 @@ class Item:
 
     def completedToday(self):
         return self.dateLastActivity.day == datetime.now().day
+
+    def __str__(self):
+        return f'Item({self.id},{self.name},{self.status}, {self.dateLastActivity})'
