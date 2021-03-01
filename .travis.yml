@@ -6,9 +6,9 @@ env:
         - DOCKER_IMAGE_NAME=todo-app
         - HEROKU_USERNAME=becky.carter@softwire.com
         - HEROKU_APP_NAME=beccar-todo-app
-        - MONGO_USERNAME='main_user'
+        - MONGO_USERNAME='travis_user'
         - MONGO_DEFAULT_DB='todo_app'
-        - secure: "mQ0SiVwfJ9gwF8gG7ObQl/KsQlCbAV2PMItSM6YgSZ9gf6hE3mjTIaPGts3Hb/O8e2q6s/I13QJ4TbIK4IPWJOUY4T+QDu/b17LFbz4OKJ2ZgTrSLU1sfpfIvDsb3bv+/dQR6bSAIqv+O9XP7kyE0NwEmhF7al8zYoSMvFl9IrwFtoxVz/F5zOvKTCh80zuk7hVcSr7YBOQrNKtx/04Q7ngVkEQQW+fWkU+bvv4mNqRYGzX/WjRe5c8DZqa01pHZpR5B3D/yketiWbPTeCLR42wzIENo6mGg74vXBV3jW7lpRkOSGGQ/t6MSo7yE2Eo/jIJZgYq6EcUg94CumYdjKiIYDaRWiIZ3tFrtA/eFkGhJh7VvAse17noVzfLLntseq95z6W2z6aQwsgAqLR1Lux5NmkRw9eswx8Ry1N/dsya2BHCqG/hjwX9VlxuN4mMhm0/ciy7PWblOpLMN6SLq+l4N8sc8eGcddZ1kE6vVxXLOeInGCA4xXHSF9spdr1ykL5NDK9CwOUUPRNWnAYcjydxQln2sN41hgGbmqHWpwouD2vqmFefqLEbKOGUoyOOb3N9jlxFPOa1im5r5H1CkHP6VaG76YnX+9YyXNDv8DPZLmiLia3BDxK8z7eEjk7XkRG7hmrWAASjwxI7+yVltiVgw7nzvB4ggkYKropU7y2M="
+        - secure: "Zv9d5qiKBtyvxoAwskUal65XsXDDsdvxzeX8vmrLecSCYW0pfMH5FHBYwy70+9HJ8DCLRw7DYFYvp+/gkvWuzpY+QFPRqNWK4lswciHALfNl5wlU/MonyHW75HRSWr4gN9hztPaQSxYijYRlwHw1krZ+wx8Pibyan7uEop8rrI5h9rkcNPxRpFPvPHL+ETAugQI9NcounyN5pkJc1HbMGzyS3vu3dUSt4s4cGosi957xSRM0aoNxKcVb3SMMRW3YQ6OwENo14AY8w8tMRo3AMWERr8FqPzgKRRRWTtBkKG9lzFfGRKjDmkO63W4Fkl85qUJcHhwn34ki1ZhFohWHdf7QRohp0bpO5lO1OtMpbyE1d7HYw7UAAdoJPPcyT2Yux/BVmpNWxAmxvwEc4SIXJVYdLdqqVHF9TnRgFSOWOGaivt8rsxF+C0sk7DRdIlqNc3O+zd0p+RpF2LuYmAbUH/KJ5t506HWf+uZ/+8/KBx8Z63+t1f9RYvNcnkyoZdsMdssPpqSLNxluKgHlrlZTc3haVFpU0CCXSB1CI9wgXO9PS6NMndMtLDpbB1YGvYqHFzmB8QLCGfcsELA0FJ9+zv+2KiJFgnY059vzcVrYaV6/h41MhpDSVq6DuQ8ZBQmSdDXsD9/nLmGChAN/LlBx5amtwmWm9zdmwnFK395VGG4="
 install:
     - docker pull $DOCKER_USERNAME/$DOCKER_IMAGE_NAME
     - docker build --target test --tag todo-app:test --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME .
