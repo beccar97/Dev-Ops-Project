@@ -28,7 +28,6 @@ class MongoClientMock:
         default_database = re.search(
             mongo_connection_string_regex, mongo_connection_string).group(1)
 
-        print(default_database)
         client = mongomock.MongoClient()
 
         db = client[default_database]
