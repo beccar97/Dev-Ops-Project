@@ -77,8 +77,7 @@ def create_app():
     @login_manager.unauthorized_handler
     def unauthenticated():
         # TODO: Add a state parameter to prevent CSRF
-        uri = oauth_client.prepare_request_uri(
-            'https://github.com/login/oauth/authorize')
+        uri = oauth_client.prepare_request_uri(auth_config.authorization_url)
         return redirect(uri)
 
     @login_manager.user_loader

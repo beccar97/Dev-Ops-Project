@@ -2,6 +2,7 @@ import os
 
 
 class AuthConfig:
+    authorization_url = 'https://github.com/login/oauth/authorize'
     access_token_url = 'https://github.com/login/oauth/access_token'
     user_info_url = 'https://api.github.com/user'
     def __init__(self):
