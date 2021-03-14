@@ -1,5 +1,6 @@
-from flask_login.mixins import UserMixin
+from flask_login.mixins import UserMixin, AnonymousUserMixin
 from enum import Enum
+import os
 
 
 class UserRole(Enum):
@@ -17,3 +18,13 @@ class User(UserMixin):
             return UserRole.WRITER
         else:
             return UserRole.READER
+
+class AnonymousUser(AnonymousUserMixin):
+    def __init__(self):
+        super().__init__()
+
+    def role(self) -> UserRole:
+        if os.environ.get('ANON_ID') == 'test_write_user':
+            return UserRole.WRITER
+
+        

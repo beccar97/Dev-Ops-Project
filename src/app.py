@@ -8,17 +8,23 @@ from src.flask_config import FlaskConfig
 from src.models.index_view_model import IndexViewModel
 from src.mongo_config import MongoConfig
 from src.mongo_db_client import MongoClient
-from src.user import User, UserRole
+from src.user import User, UserRole, AnonymousUser
 
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = FlaskConfig().secret_key
+    flask_config = FlaskConfig()
+    app.secret_key = flask_config.secret_key
 
     item_storage_client = MongoClient(MongoConfig())
 
     auth_config = AuthConfig()
     login_manager = LoginManager()
+
+    if flask_config.login_disabled:
+        app.config['LOGIN_DISABLED'] = True
+        login_manager.anonymous_user = AnonymousUser
+
     oauth_client = WebApplicationClient(auth_config.client_id)
 
     @app.route('/')
@@ -29,6 +35,7 @@ def create_app():
         return render_template('index.html', view_model=view_model)
 
     @app.route('/items/new', methods=['POST'])
+    @login_required
     @write_required
     def add_item():
         name = request.form['name']
@@ -36,24 +43,28 @@ def create_app():
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/start')
+    @login_required
     @write_required
     def start_item(id):
         item_storage_client.start_item(id)
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/complete')
+    @login_required
     @write_required
     def complete_item(id):
         item_storage_client.complete_item(id)
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/uncomplete')
+    @login_required
     @write_required
     def uncomplete_item(id):
         item_storage_client.uncomplete_item(id)
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/delete')
+    @login_required
     @write_required
     def delete_item(id):
         item_storage_client.delete_item(id)
@@ -93,9 +104,7 @@ def write_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         user = current_user
-        if not user.is_authenticated:
-            return current_app.login_manager.unauthorized()
-        elif user.role() != UserRole.WRITER:
+        if user.role() != UserRole.WRITER:
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
