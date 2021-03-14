@@ -28,7 +28,20 @@ To create the basic .env file for this project run
 cp -n .env.template .env
 ```
 
-from the project root directory. You will need to fill in values for the MongoDB related environment variables, as described below.
+from the project root directory. You will need to fill in values for several environment variables, as described below.
+
+
+- FLASK_SECRET_KEY: Any GUID, used by Flask to sign session cookies
+- For local development not using HTTPS add to the .env file `OAUTHLIB_INSECURE_TRANSPORT=1`
+
+### GitHub Auth setup
+
+This project uses GitHub Auth for authentication. If setting up with new app, follow the Github [documentation](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to create an OAuth app. For the homepage URL field enter the address for accessing the website locally. For the callback add a particular path to this URL for example `/login/callback`. Having created the app you will need the client id and secret, which should be entered into the .env file as the values of
+
+- GITHUB_AUTH_CLIENT_ID
+- GITHUB_AUTH_CLIENT_SECRET
+
+respectively.
 
 ### Mongo DB setup
 
@@ -79,7 +92,8 @@ The Travis CI relies on several secure environment variables, which are defined 
 travis encrypt --pro MONGO_URL=<MONGO_URL> \
 MONGO_PASSWORD=<MONGO_PASSWORD> \
 DOCKER_PASSWORD=<DOCKER_PASSSWORD> \
-HEROKU_API_KEY=<HEROKU_API_KEY>
+HEROKU_API_KEY=<HEROKU_API_KEY> \
+FLASK_SECRET_KEY=<FLASK_SECRET_KEY>
 ```
 
 To get a heroku api key to use here follow the instructions in [this article](https://medium.com/@zulhhandyplast/how-to-create-a-non-expiring-heroku-token-for-daemons-ops-work-da08346286c0) to generate a non-expiring token. Note that the heroku account used will need to have the appropriate permissions to deploy the app.
