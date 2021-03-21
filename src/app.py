@@ -1,5 +1,6 @@
 import requests
-from flask import Flask, redirect, render_template, url_for, current_app, request
+import secrets
+from flask import Flask, redirect, render_template, url_for, current_app, request, session
 from flask_login import LoginManager, login_required, login_user, current_user
 from functools import wraps
 from oauthlib.oauth2 import WebApplicationClient
@@ -72,9 +73,13 @@ def create_app():
 
     @app.route('/login/callback')
     def login():
-        oauth_client.parse_request_uri_response(request.full_path)
+        state = session['state']
+        oauth_client.parse_request_uri_response(request.full_path, state=state)
         url, headers, body = oauth_client.prepare_token_request(
-            auth_config.access_token_url, client_secret=auth_config.client_secret)
+            auth_config.access_token_url,
+            state=state,
+            client_secret=auth_config.client_secret
+        )
         access_token = requests.post(url, headers=headers, data=body).text
 
         oauth_client.parse_request_body_response(access_token)
@@ -87,8 +92,10 @@ def create_app():
 
     @login_manager.unauthorized_handler
     def unauthenticated():
-        # TODO: Add a state parameter to prevent CSRF
-        uri = oauth_client.prepare_request_uri(auth_config.authorization_url)
+        state = secrets.token_hex(16)
+        session['state'] = state
+        uri = oauth_client.prepare_request_uri(
+            auth_config.authorization_url, state=state)
         return redirect(uri)
 
     @login_manager.user_loader
