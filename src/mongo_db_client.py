@@ -3,6 +3,7 @@ import datetime
 from bson.objectid import ObjectId
 
 from src.models.todo_item import Item
+from src.models.user import User, UserRole
 from src.mongo_config import MongoConfig
 from src.mongo_collections import MongoCollection
 
@@ -17,6 +18,7 @@ class MongoClient:
         connection_string = f"mongodb+srv://{mongo_config.user_name}:{mongo_config.password}@{mongo_config.mongo_url}/{mongo_config.default_database}?w=majority"
         self.client = pymongo.MongoClient(connection_string)
         self.db = self.client[mongo_config.default_database]
+        self.user_db = self.client['users']
 
     def create_database(self, name='todo_app', use_as_default=False):
         """
@@ -24,7 +26,7 @@ class MongoClient:
 
         Args:
             name(str): The name of the database.
-            use_as_default(boolean): Boolean indicating whether this database should be used 
+            use_as_default(boolean): Boolean indicating whether this database should be used
             by default by this client
         """
 
@@ -38,7 +40,7 @@ class MongoClient:
     def delete_database(self, name):
         """
         Deletes the Atlas database with the given name.
-        If the given database was the default database for this client, will create a new 
+        If the given database was the default database for this client, will create a new
         database with the name determined by MongoConfig to use as default in future.
 
         Args:
@@ -51,6 +53,8 @@ class MongoClient:
             self.client.drop_database(name)
 
         return
+
+    # region items methods
 
     def get_items(self):
         """
@@ -130,6 +134,9 @@ class MongoClient:
         for collection in collections:
             self.db[collection].delete_one({"_id": id})
 
+    def _as_app_item(self, item):
+        return Item.from_mongo_document(item)
+
     def _move_item(self, id, from_collection: MongoCollection, to_collection: MongoCollection):
         id = ObjectId(id)
 
@@ -143,5 +150,42 @@ class MongoClient:
         to_db_collection.insert_one(item)
         from_db_collection.delete_one({"_id": id})
 
-    def _as_app_item(self, item):
-        return Item.from_mongo_document(item)
+    # endregion
+
+    # region user methods
+
+    def get_or_add_user(self, user_auth_id) -> User:
+        user_collection = self.user_db['users']
+
+        user_item = user_collection.find_one({"auth_id": user_auth_id})
+
+        if user_item is None:
+            return self._add_user(user_auth_id)
+        else:
+            return self._user_from_document(user_item)
+
+    def get_user(self, id):
+        user_collection = self.user_db['users']
+
+        user_item = user_collection.find_one({"_id": ObjectId(id)})
+
+        return self._user_from_document(user_item)
+
+    def _add_user(self, user_auth_id) -> User:
+        user_collection = self.user_db['users']
+
+        existing_admin = user_collection.find({"role": "ADMIN"}).count() > 0
+        role = UserRole.READER if existing_admin else UserRole.ADMIN
+
+        user_json = {
+            "auth_id": user_auth_id,
+            "role": role.value
+        }
+
+        user_id = user_collection.insert_one(user_json).inserted_id
+        return User(user_id, user_auth_id, role)
+
+    def _user_from_document(self, user_item):
+        return User(user_item['_id'], user_item['auth_id'], UserRole[user_item['role']])
+
+    # endregion
