@@ -20,7 +20,6 @@ script:
     
 before_deploy:
     - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-    - heroku container:login
 deploy:
     provider: script
     script:  bash scripts/deploy.sh

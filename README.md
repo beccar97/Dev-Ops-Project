@@ -48,7 +48,13 @@ This OAuth app can then be used for running the project locally. In order for th
 
 ### Mongo DB setup
 
-This project is set up to connect to a MongoDB cluster to store todo items. You will need to create a cluster authenticated with username and password, making note of these values. You will then need to update the .env file environment variables as follows:
+This project is set up to connect to a MongoDB cluster to store todo items. You will need to create a cluster authenticated with username and password, making note of these values.
+
+The connection can either be configured using the username, password, url and default database individually, or by providing a connection string.
+
+If using a connection string, set the MONGO_CONNECTION_STRING variable in the .env file.
+
+Otherwise update the .env file environment variables as follows:
 
 - MONGO_USERNAME: Username for connecting to MongoDB cluser, can be see in the 'Database Access' menu under the 'Security' heading
 - MONGO_PASSWORD: The password for the given user
