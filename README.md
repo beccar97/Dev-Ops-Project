@@ -5,9 +5,11 @@
 - [DevOps Apprenticeship: Project Exercise](#devops-apprenticeship-project-exercise)
   - [Getting started](#getting-started)
     - [Environment Variable setup](#environment-variable-setup)
+    - [GitHub Auth setup](#github-auth-setup)
     - [Mongo DB setup](#mongo-db-setup)
   - [Running the app using docker](#running-the-app-using-docker)
     - [Production](#production)
+      - [Troubleshooting](#troubleshooting)
     - [Development](#development)
     - [Test](#test)
   - [Continuous Integration and Deployment](#continuous-integration-and-deployment)
@@ -30,7 +32,6 @@ cp -n .env.template .env
 
 from the project root directory. You will need to fill in values for several environment variables, as described below.
 
-
 - FLASK_SECRET_KEY: Any GUID, used by Flask to sign session cookies
 - For local development not using HTTPS add to the .env file `OAUTHLIB_INSECURE_TRANSPORT=1`
 
@@ -42,6 +43,8 @@ This project uses GitHub Auth for authentication. If setting up with new app, fo
 - GITHUB_AUTH_CLIENT_SECRET
 
 respectively.
+
+This OAuth app can then be used for running the project locally. In order for the production site (see [Continuous Integration and Deployment](#continuous-integration-and-deployment)) to work with OAuth you will need to create a second OAuth app using the production URL, and set up the production environment variables appropriately.
 
 ### Mongo DB setup
 
@@ -63,9 +66,13 @@ There is a multi-stage docker file for this project, containing a production bui
 ### Production
 
 - To produce the image: `docker build --target production --tag todo-app:prod .`
-- To run: `docker run -p 5100:80 -e PORT=80 -d --env-file .env todo-app:prod`
+- To run: `docker run -p 5000:80 -e PORT=80 -d --env-file .env todo-app:prod`
 
-The app will then run be accessible on localhost:5100.
+The app will then run be accessible on localhost:5000. Note this cannot be run at the same time as the development version of the project, as they run on the same port. This is necessary for the Github auth redirection.
+
+#### Troubleshooting
+
+If when running the production image locally it fails to run, and you get the error `standard_init_linux.go:211: exec user process caused "no such file or directory"` the entrypoint script may have windows style line endings, causing issues. Run `dos2unix ./scripts/docker_entrypoint_prod.sh` from the project root and rebuild.
 
 ### Development
 
@@ -110,6 +117,8 @@ You will need to configure the following environment variables for production:
 - MONGO_PASSWORD
 - MONGO_URL
 - MONGO_DEFAULT_DB
+- GITHUB_AUTH_CLIENT_ID
+- GITHUB_AUTH_CLIENT_SECRET
 - CREATE_VIRTUAL_ENV=true
 
 Note, if any of these values are provided in quote marks in your .env file, then grep-ing them from there to set the heroku config will result in their values being saved with quote marks, which can cause errors.
