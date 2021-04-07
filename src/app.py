@@ -91,6 +91,42 @@ def create_app():
 
         return redirect(url_for('index'))
 
+
+    @app.route('/admin')
+    @login_required
+    @admin_required
+    def admin():
+        # implement
+        pass
+
+    @app.route('/admin/users/<id>')
+    @login_required
+    @admin_required
+    def get_user(id):
+        return storage_client.get_user(id)
+
+    @app.route('/admin/users/<id>', methods=['DELETE'])
+    @login_required
+    @admin_required
+    def delete_user(id):
+        return storage_client.delete_user(id)
+
+    @app.route('/admin/users/<id>', methods=['PUT'])
+    @login_required
+    @admin_required
+    def update_user():
+        id, auth_id, role = request.user
+        storage_client.update_user(id, auth_id, role)
+        return redirect(url_for('admin'))
+
+    @app.route('/admin/users/new', methods=['POST'])
+    @login_required
+    @admin_required
+    def add_user():
+        auth_id, role = request.user
+        storage_client.add_user(auth_id, role)
+
+
     @login_manager.unauthorized_handler
     def unauthenticated():
         state = secrets.token_hex(16)
@@ -114,6 +150,16 @@ def write_required(f):
         user = current_user
         if not user.has_write_permissions():
             return Response('You are not authorised to perform this action', 401)
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user = current_user
+        if user.role != UserRole.ADMIN:
+            return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
 

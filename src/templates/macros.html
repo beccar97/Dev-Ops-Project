@@ -40,3 +40,9 @@
         {{true}}
     {% endif %}
 {%- endmacro %}
+
+{% macro is_admin(user) -%}
+  {% if user.role.value === 'ADMIN' %}
+    {{true}}
+  {% endif %}
+{%- endmacro %}

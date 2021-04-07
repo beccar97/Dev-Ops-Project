@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}To-Do App{% endblock %}
+
+
+{% block content %}
+
+  <div class="jumbotron index-jumbotron">
+    <h1 class="display-4">To-Do App</h1>
+    <h2 class="display-5">Admin</h2>
+    <p class="lead">Just another to-do app.</p>
+  </div>
+
+  {% if not is_admin(current_user) %}
+    <p>
+        You are not authorised to view this page.
+    </p>
+  {% endif %}

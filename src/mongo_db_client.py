@@ -155,6 +155,15 @@ class MongoClient:
     # region user methods
 
     def get_or_add_user(self, user_auth_id) -> User:
+        """
+        If user with given auth id already exists, returns User object.
+        Otherwise creates new user in database and returns corresponding User object.
+        When creating a user, user is created with Admin role if no other admins exist in system,
+        and as a Reader otherwise.
+
+        Args:
+            user_auth_id (str): The ID of the user from the auth system
+        """
         user_collection = self.user_db['users']
 
         user_item = user_collection.find_one({"auth_id": user_auth_id})
@@ -165,6 +174,12 @@ class MongoClient:
             return self._user_from_document(user_item)
 
     def get_user(self, id):
+        """
+        Retrieves the user with the specified ID as a User object
+
+        Args:
+            id (str): The ID of the user.
+        """
         user_collection = self.user_db['users']
 
         user_item = user_collection.find_one({"_id": ObjectId(id)})
@@ -174,10 +189,58 @@ class MongoClient:
     def _add_user(self, user_auth_id) -> User:
         user_collection = self.user_db['users']
 
-        existing_admin = user_collection.find({"role": "ADMIN"}).count() > 0
-        role = UserRole.READER if existing_admin else UserRole.ADMIN
+        user_item = user_collection.find_one({"_id": ObjectId(id)})
+
+        return self._user_from_document(user_item)
+
+    def delete_user(self, id):
+        """
+        Deletes the user with the specified ID
+
+        Args:
+            id (str): The ID of the user.
+        """
+        collection = self.user_db['users']
+
+        collection.delete_one({"_id": ObjectId(id)})
+
+    def update_user(self, id, auth_id, role):
+        """
+        Updates the user with the specified ID to have the specified auth_id and role
+
+        """
+        user_collection = self.user_db['users']
+
+        user_document_query = {"_id": ObjectId(id)}
+
+        user_item = user_collection.find_one(user_document_query)
+
+        if user_item is None:
+            return self._add_user(id, auth_id, role)
+
+        user_collection.update_one(
+            user_document_query,
+            {
+                '$set', {'auth_id': auth_id, 'role': role}
+            }
+        )
+
+    def add_user(self, auth_id, role):
+        """
+        Add users with specified auth ID and role
+        """
+        self._add_user(auth_id, role)
+
+    def _add_user(self, user_auth_id, role=None, id=None) -> User:
+        user_collection = self.user_db['users']
+
+        if role is None:
+            existing_admin = user_collection.find(
+                {"role": "ADMIN"}).count() > 0
+            role = UserRole.READER if existing_admin else UserRole.ADMIN
 
         user_json = {
+            "_id": ObjectId(id),
             "auth_id": user_auth_id,
             "role": role.value
         }
@@ -188,4 +251,4 @@ class MongoClient:
     def _user_from_document(self, user_item):
         return User(user_item['_id'], user_item['auth_id'], UserRole[user_item['role']])
 
-    # endregion
+        # endregion
