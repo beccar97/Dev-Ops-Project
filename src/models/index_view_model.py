@@ -9,7 +9,7 @@ class IndexViewModel:
     def get_items(self, status):
         return [item for item in self._items if item.status == status]
 
-    def show_all_done_items(self):
+    def show_all_done_items(self) -> bool:
         return len(self.get_items('Done')) <=5
 
     def recent_done_items(self):

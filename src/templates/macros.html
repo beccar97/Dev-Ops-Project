@@ -35,6 +35,36 @@
 </li>
 {%- endmacro %}
 
+{%macro user_action_buttons(user) -%}
+{% if  user.id == current_user.id %}
+  <span class="badge badge-info">This is you</span>
+{% else %}
+<a href="{{ url_for('delete_user', id=user.id) }}" class="delete-btn btn btn-sm btn-outline-dark">Delete</a>
+{% endif %}
+{%- endmacro %}
+
+{% macro display_user(user) -%}
+<li class="list-group-item">
+  <div class="row">
+    <div class="col-sm-10">
+      <h5 >{{ user.id }}</h5>
+      <div>
+        {% if user.is_admin() %}
+          {% set badge_style = 'badge-success' %}
+        {% elif user.is_writer() %}
+          {% set badge_style = 'badge-primary' %}
+        {% else %}
+          {% set badge_style = 'badge-primary' %}
+        {% endif %}
+        <div><span class="badge {{ badge_style }}">{{ user.role_name }}</span></div>
+      </div>
+    </div>
+    <div class="col-sm-2 d-sm-flex align-items-center justify-content-end p-3">
+      {{ user_action_buttons(user) }}
+  </div>
+</li>
+{%- endmacro %}
+
 {% macro has_writer_role(user) -%}
     {% if user.has_write_permissions() %}
         {{true}}
@@ -42,7 +72,7 @@
 {%- endmacro %}
 
 {% macro is_admin(user) -%}
-  {% if user.role.value === 'ADMIN' %}
+  {% if user.is_admin() %}
     {{true}}
   {% endif %}
 {%- endmacro %}

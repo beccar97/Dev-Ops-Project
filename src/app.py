@@ -1,3 +1,4 @@
+from src.models.admin_view_model import AdminViewModel
 import requests
 import secrets
 from flask import Flask, redirect, render_template, url_for, request, session, Response
@@ -28,6 +29,7 @@ def create_app():
 
     oauth_client = WebApplicationClient(auth_config.client_id)
 
+    # region item routes
     @app.route('/')
     @login_required
     def index():
@@ -71,6 +73,42 @@ def create_app():
         storage_client.delete_item(id)
         return redirect(url_for('index'))
 
+    # endregion
+
+    # region admin routes
+    @login_required
+    @admin_required
+    @app.route('/admin')
+    def admin():
+        users = storage_client.get_users()
+        view_model = AdminViewModel(users)
+        return render_template('admin.html', view_model=view_model)
+
+    @app.route('/admin/users/<id>')
+    @login_required
+    @admin_required
+    def get_user(id):
+        user = storage_client.get_user(id)
+        return redirect(url_for('admin'))
+
+    @app.route('/admin/users/<id>/delete')
+    @login_required
+    @admin_required
+    def delete_user(id):
+        storage_client.delete_user(id)
+        return redirect(url_for('admin'))
+
+    @app.route('/admin/users/<id>/setRole/<role>', methods=['PUT'])
+    @login_required
+    @admin_required
+    def set_user_role(id, role):
+        storage_client.set_user_role(id, role)
+        return redirect(url_for('admin'))
+
+    # endregion
+
+    # region login routes
+
     @app.route('/login/callback')
     def login():
         state = session['state']
@@ -91,42 +129,6 @@ def create_app():
 
         return redirect(url_for('index'))
 
-
-    @app.route('/admin')
-    @login_required
-    @admin_required
-    def admin():
-        # implement
-        pass
-
-    @app.route('/admin/users/<id>')
-    @login_required
-    @admin_required
-    def get_user(id):
-        return storage_client.get_user(id)
-
-    @app.route('/admin/users/<id>', methods=['DELETE'])
-    @login_required
-    @admin_required
-    def delete_user(id):
-        return storage_client.delete_user(id)
-
-    @app.route('/admin/users/<id>', methods=['PUT'])
-    @login_required
-    @admin_required
-    def update_user():
-        id, auth_id, role = request.user
-        storage_client.update_user(id, auth_id, role)
-        return redirect(url_for('admin'))
-
-    @app.route('/admin/users/new', methods=['POST'])
-    @login_required
-    @admin_required
-    def add_user():
-        auth_id, role = request.user
-        storage_client.add_user(auth_id, role)
-
-
     @login_manager.unauthorized_handler
     def unauthenticated():
         state = secrets.token_hex(16)
@@ -138,6 +140,8 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return storage_client.get_user(user_id)
+
+    # endregion
 
     login_manager.init_app(app)
 
@@ -158,8 +162,8 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         user = current_user
-        if user.role != UserRole.ADMIN:
-            return redirect(url_for('index'))
+        if not user.is_admin():
+            return Response('You are not authorised to perform this action. Admin permissions required.', 401)
         return f(*args, **kwargs)
     return decorated_function
 

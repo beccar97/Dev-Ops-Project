@@ -186,12 +186,18 @@ class MongoClient:
 
         return self._user_from_document(user_item)
 
-    def _add_user(self, user_auth_id) -> User:
+    def get_users(self):
+        """
+        Fetches all users from Atlas database.
+
+        Returns:
+            list: A list of the saved items
+        """        
         user_collection = self.user_db['users']
+        all_users = user_collection.find()
 
-        user_item = user_collection.find_one({"_id": ObjectId(id)})
-
-        return self._user_from_document(user_item)
+        users = list(map(self._user_from_document, all_users))
+        return users
 
     def delete_user(self, id):
         """
@@ -204,9 +210,9 @@ class MongoClient:
 
         collection.delete_one({"_id": ObjectId(id)})
 
-    def update_user(self, id, auth_id, role):
+    def set_user_role(self, id, role):
         """
-        Updates the user with the specified ID to have the specified auth_id and role
+        Updates the user with the specified ID to have the specified role
 
         """
         user_collection = self.user_db['users']
@@ -216,12 +222,12 @@ class MongoClient:
         user_item = user_collection.find_one(user_document_query)
 
         if user_item is None:
-            return self._add_user(id, auth_id, role)
+            raise FileNotFoundError
 
         user_collection.update_one(
             user_document_query,
             {
-                '$set', {'auth_id': auth_id, 'role': role}
+                '$set', {'role': role}
             }
         )
 
