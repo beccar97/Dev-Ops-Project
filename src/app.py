@@ -1,6 +1,6 @@
 import requests
 import secrets
-from flask import Flask, redirect, render_template, url_for, current_app, request, session
+from flask import Flask, redirect, render_template, url_for, request, session, Response
 from flask_login import LoginManager, login_required, login_user, current_user
 from functools import wraps
 from oauthlib.oauth2 import WebApplicationClient
@@ -112,7 +112,7 @@ def write_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if user.role() != UserRole.WRITER:
-            return redirect(url_for('index'))
+            return Response('You are not authorised to perform this action', 401)
         return f(*args, **kwargs)
     return decorated_function
 

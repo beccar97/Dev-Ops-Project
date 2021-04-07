@@ -39,8 +39,6 @@ def driver():
     with webdriver.Chrome(options=opts) as driver:
         yield driver
 
-        driver.close()
-
 
 def get_items_in_list(driver, listClassName):
     try:
