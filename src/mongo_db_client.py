@@ -154,7 +154,7 @@ class MongoClient:
 
     # region user methods
 
-    def get_or_add_user(self, user_auth_id) -> User:
+    def get_or_add_user(self, user_auth_id, login, name) -> User:
         """
         If user with given auth id already exists, returns User object.
         Otherwise creates new user in database and returns corresponding User object.
@@ -163,13 +163,15 @@ class MongoClient:
 
         Args:
             user_auth_id (str): The ID of the user from the auth system
+            login (str): The login of the user for the auth system
+            name (str): The name of the user from the auth system
         """
         user_collection = self.user_db['users']
 
         user_item = user_collection.find_one({"auth_id": user_auth_id})
 
         if user_item is None:
-            return self._add_user(user_auth_id)
+            return self._add_user(user_auth_id, login, name)
         else:
             return self._user_from_document(user_item)
 
@@ -210,7 +212,7 @@ class MongoClient:
 
         collection.delete_one({"_id": ObjectId(id)})
 
-    def set_user_role(self, id, role):
+    def set_user_role(self, id, role: UserRole):
         """
         Updates the user with the specified ID to have the specified role
 
@@ -227,34 +229,30 @@ class MongoClient:
         user_collection.update_one(
             user_document_query,
             {
-                '$set', {'role': role}
+                '$set': {'role': role.value}
             }
         )
 
-    def add_user(self, auth_id, role):
-        """
-        Add users with specified auth ID and role
-        """
-        self._add_user(auth_id, role)
-
-    def _add_user(self, user_auth_id, role=None, id=None) -> User:
+    def _add_user(self, user_auth_id, login, name) -> User:
         user_collection = self.user_db['users']
 
-        if role is None:
-            existing_admin = user_collection.find(
-                {"role": "ADMIN"}).count() > 0
-            role = UserRole.READER if existing_admin else UserRole.ADMIN
+
+        existing_admin = user_collection.find(
+            {"role": "ADMIN"}).count() > 0
+        role = UserRole.READER if existing_admin else UserRole.ADMIN
 
         user_json = {
             "_id": ObjectId(id),
             "auth_id": user_auth_id,
-            "role": role.value
+            "role": role.value,
+            "login": login,
+            "name": name,
         }
 
         user_id = user_collection.insert_one(user_json).inserted_id
-        return User(user_id, user_auth_id, role)
+        return User(user_id, user_auth_id, login, name, role)
 
     def _user_from_document(self, user_item):
-        return User(user_item['_id'], user_item['auth_id'], UserRole[user_item['role']])
+        return User(user_item['_id'], user_item['auth_id'], user_item['login'], user_item['name'], UserRole[user_item['role']])
 
         # endregion

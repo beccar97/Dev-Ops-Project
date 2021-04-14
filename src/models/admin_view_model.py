@@ -1,6 +1,3 @@
-from src.models.user import UserRole
-
-
 class AdminViewModel:
     def __init__(self, users):
         self._users = users

@@ -1,12 +1,14 @@
 {%macro action_buttons(item) -%}
 {% if item.status == 'Done' %}
-<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="uncomplete-btn btn btn-sm btn-outline-secondary mr-3">Mark as Incomplete</a>
+<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="uncomplete-btn btn btn-sm btn-outline-secondary mr-3">Mark
+  as Incomplete</a>
 {% elif item.status == 'To Do' %}
 <a href="{{ url_for('start_item', id=item.id) }}" class="start-btn btn btn-sm btn-outline-success mr-3">Start</a>
 {% else %}
-<a href="{{ url_for('complete_item', id=item.id) }}" class="complete-btn btn btn-sm btn-outline-primary mr-3">Complete</a>
+<a href="{{ url_for('complete_item', id=item.id) }}"
+  class="complete-btn btn btn-sm btn-outline-primary mr-3">Complete</a>
 {% endif %}
-<a href="{{ url_for('delete_item', id=item.id) }}" class="delete-btn btn btn-sm btn-outline-dark">Delete</a>
+<a href="{{ url_for('delete_item', id=item.id) }}" class="delete-btn btn btn-sm btn-outline-danger">Delete</a>
 
 {%- endmacro %}
 
@@ -14,14 +16,14 @@
 <li class="list-group-item">
   <div class="row">
     <div class="col-sm-10">
-      <h5 >{{ item.name }}</h5>
+      <h5>{{ item.name }}</h5>
       <div>
         {% if item.status == 'Done' %}
-          {% set badge_style = 'badge-success' %}
+        {% set badge_style = 'badge-success' %}
         {% elif item.status == 'To Do' %}
-          {% set badge_style = 'badge-secondary' %}
+        {% set badge_style = 'badge-secondary' %}
         {% else %}
-          {% set badge_style = 'badge-primary' %}
+        {% set badge_style = 'badge-primary' %}
         {% endif %}
         <div><span class="badge {{ badge_style }}">{{ item.status }}</span></div>
       </div>
@@ -35,44 +37,72 @@
 </li>
 {%- endmacro %}
 
+{% macro make_admin_button(user) %}
+<a href="{{ url_for('set_user_role', id=user.id, role='ADMIN') }}"
+  class="change-role-btn btn btn-sm btn-outline-success mr-3">Make admin</a>
+{%- endmacro %}
+
+{% macro make_writer_button(user) %}
+<a href="{{ url_for('set_user_role', id=user.id, role='WRITER') }}"
+  class="change-role-btn btn btn-sm btn-outline-primary mr-3">Make writer</a>
+{%- endmacro %}
+
+{% macro make_reader_button(user) %}
+<a href="{{ url_for('set_user_role', id=user.id, role='READER') }}"
+  class="change-role-btn btn btn-sm btn-outline-secondary mr-3">Make reader</a>
+{%- endmacro %}
+
+
 {%macro user_action_buttons(user) -%}
 {% if  user.id == current_user.id %}
-  <span class="badge badge-info">This is you</span>
+<span class="badge badge-info">This is you</span>
 {% else %}
-<a href="{{ url_for('delete_user', id=user.id) }}" class="delete-btn btn btn-sm btn-outline-dark">Delete</a>
+{% if user.is_admin() %}
+{{ make_writer_button(user) }}
+{{ make_reader_button(user) }}
+{% elif user.is_writer() %}
+{{ make_admin_button(user) }}
+{{ make_reader_button(user) }}
+{% else %}
+{{ make_admin_button(user) }}
+{{ make_writer_button(user) }}
+
+{% endif %}
+
+<a href="{{ url_for('delete_user', id=user.id) }}" class="delete-btn btn btn-sm btn-outline-danger">Delete</a>
 {% endif %}
 {%- endmacro %}
 
 {% macro display_user(user) -%}
 <li class="list-group-item">
   <div class="row">
-    <div class="col-sm-10">
-      <h5 >{{ user.id }}</h5>
+    <div class="col-sm-8">
+      <h5>{{ user.name }}</h5>
       <div>
         {% if user.is_admin() %}
-          {% set badge_style = 'badge-success' %}
+        {% set badge_style = 'badge-success' %}
         {% elif user.is_writer() %}
-          {% set badge_style = 'badge-primary' %}
+        {% set badge_style = 'badge-primary' %}
         {% else %}
-          {% set badge_style = 'badge-primary' %}
+        {% set badge_style = 'badge-secondary' %}
         {% endif %}
         <div><span class="badge {{ badge_style }}">{{ user.role_name }}</span></div>
       </div>
     </div>
-    <div class="col-sm-2 d-sm-flex align-items-center justify-content-end p-3">
+    <div class="col-sm-4 d-sm-flex align-items-center justify-content-end p-3">
       {{ user_action_buttons(user) }}
-  </div>
+    </div>
 </li>
 {%- endmacro %}
 
 {% macro has_writer_role(user) -%}
-    {% if user.has_write_permissions() %}
-        {{true}}
-    {% endif %}
+{% if user.has_write_permissions() %}
+{{true}}
+{% endif %}
 {%- endmacro %}
 
 {% macro is_admin(user) -%}
-  {% if user.is_admin() %}
-    {{true}}
-  {% endif %}
+{% if user.is_admin() %}
+{{true}}
+{% endif %}
 {%- endmacro %}

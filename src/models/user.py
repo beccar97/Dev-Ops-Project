@@ -13,10 +13,12 @@ class UserRole(Enum):
 WritePermissionRoles = [UserRole.WRITER, UserRole.ADMIN]
 
 class User(UserMixin):
-    def __init__(self, id, auth_id, role: UserRole):
+    def __init__(self, id, auth_id, login, name, role: UserRole):
         super().__init__()
         self.id = id
         self.auth_id = auth_id
+        self.login = login
+        self.name = name
         self.role = role
 
     def has_write_permissions(self):
