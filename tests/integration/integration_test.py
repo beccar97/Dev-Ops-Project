@@ -27,3 +27,12 @@ def test_index_page(client):
     assert "TO DO ITEM" in htmlResponse
     assert "DOING ITEM" in htmlResponse
     assert "DONE ITEM" in htmlResponse
+
+def test_admin_page(client):
+
+    response = client.get('/admin')
+    htmlResponse = response.data.decode("utf-8")
+
+    assert "ADMIN USER" in htmlResponse
+    assert "WRITER USER" in htmlResponse
+    assert "READER USER" in htmlResponse

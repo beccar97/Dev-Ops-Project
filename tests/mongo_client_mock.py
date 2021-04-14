@@ -1,6 +1,7 @@
 import mongomock
 import re
 from datetime import datetime, timedelta
+from bson.objectid import ObjectId
 
 
 class MongoClientMock:
@@ -23,6 +24,27 @@ class MongoClientMock:
             "dateLastActivity": yesterday
         }
 
+        self.admin_user_json = {
+            "auth_id": 1,
+            "role": "ADMIN",
+            "login": "admin_user",
+            "name": "ADMIN USER"
+        }
+
+        self.writer_user_json = {
+            "auth_id": 2,
+            "role": "WRITER",
+            "login": "writer_user",
+            "name": "WRITER USER"
+        }
+
+        self.reader_user_json = {
+            "auth_id": 3,
+            "role": "READER",
+            "login": "reader_user",
+            "name": "READER USER"
+        }
+
     def mock_mongo_client(self, mongo_connection_string):
         mongo_connection_string_regex = r'^mongodb\+srv:\/\/(?:[\w\-_]+):(?:[\w\-_]+)@(?:[\w\-_]+)\/([\w\-_]+)\?w=majority$'
         default_database = re.search(
@@ -35,5 +57,10 @@ class MongoClientMock:
         db['to_do'].insert_one(self.todo_item_json)
         db['doing'].insert_one(self.doing_item_json)
         db['done'].insert_one(self.done_item_json)
+
+        user_db = client['users']
+        user_db['users'].insert_one(self.admin_user_json)
+        user_db['users'].insert_one(self.writer_user_json)
+        user_db['users'].insert_one(self.reader_user_json)
 
         return client
