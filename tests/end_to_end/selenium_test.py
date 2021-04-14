@@ -1,4 +1,5 @@
 import pytest
+import os
 import src.app as app
 from threading import Thread
 from selenium import webdriver
@@ -14,6 +15,7 @@ def test_app():
 
     selenium_env_file_path = find_dotenv('.env.selenium.test')
     load_dotenv(selenium_env_file_path, override=True)
+    os.environ['ANON_ID'] = 'test_write_user'
 
     application = app.create_app()
 
@@ -27,12 +29,13 @@ def test_app():
     thread.join(1)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def driver():
     opts = webdriver.ChromeOptions()
     opts.add_argument('--headless')
     opts.add_argument('--no-sandbox')
     opts.add_argument('--disable-dev-shm-usage')
+
     with webdriver.Chrome(options=opts) as driver:
         yield driver
 
@@ -128,5 +131,3 @@ def test_task_journey(driver, test_app):
     check_in_list(driver, newTaskName, 'todo-items', shouldBeInList=False)
     check_in_list(driver, newTaskName, 'doing-items', shouldBeInList=False)
     check_in_done_list(driver, newTaskName, shouldBeInList=False)
-
-    driver.close()

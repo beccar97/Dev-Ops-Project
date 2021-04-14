@@ -138,6 +138,7 @@ class MongoClient:
 
         item = from_db_collection.find_one({"_id": id})
         item['status'] = to_collection.status
+        item['dateLastActivity'] = datetime.datetime.utcnow()
 
         to_db_collection.insert_one(item)
         from_db_collection.delete_one({"_id": id})

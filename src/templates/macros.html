@@ -1,0 +1,42 @@
+{%macro action_buttons(item) -%}
+{% if item.status == 'Done' %}
+<a href="{{ url_for('uncomplete_item', id=item.id) }}" class="uncomplete-btn btn btn-sm btn-outline-secondary mr-3">Mark as Incomplete</a>
+{% elif item.status == 'To Do' %}
+<a href="{{ url_for('start_item', id=item.id) }}" class="start-btn btn btn-sm btn-outline-success mr-3">Start</a>
+{% else %}
+<a href="{{ url_for('complete_item', id=item.id) }}" class="complete-btn btn btn-sm btn-outline-primary mr-3">Complete</a>
+{% endif %}
+<a href="{{ url_for('delete_item', id=item.id) }}" class="delete-btn btn btn-sm btn-outline-dark">Delete</a>
+
+{%- endmacro %}
+
+{% macro display_item(item) -%}
+<li class="list-group-item">
+  <div class="row">
+    <div class="col-sm-10">
+      <h5 >{{ item.name }}</h5>
+      <div>
+        {% if item.status == 'Done' %}
+          {% set badge_style = 'badge-success' %}
+        {% elif item.status == 'To Do' %}
+          {% set badge_style = 'badge-secondary' %}
+        {% else %}
+          {% set badge_style = 'badge-primary' %}
+        {% endif %}
+        <div><span class="badge {{ badge_style }}">{{ item.status }}</span></div>
+      </div>
+    </div>
+    {%if has_writer_role(current_user) %}
+    <div class="col-sm-2 d-sm-flex align-items-center justify-content-end p-3">
+      {{ action_buttons(item) }}
+    </div>
+    {% endif %}
+  </div>
+</li>
+{%- endmacro %}
+
+{% macro has_writer_role(user) -%}
+    {% if user.role().value == 'WRITER'%}
+        {{true}}
+    {% endif %}
+{%- endmacro %}
