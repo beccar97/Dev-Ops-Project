@@ -1,4 +1,3 @@
-from binascii import Error
 from src.models.admin_view_model import AdminViewModel
 import requests
 import secrets
@@ -107,7 +106,7 @@ def create_app():
         return redirect(url_for('admin'))
 
     # endregion
- 
+
     # region login routes
 
     @app.route('/login/callback')
@@ -125,7 +124,8 @@ def create_app():
         url, headers, body = oauth_client.add_token(auth_config.user_info_url)
         user_info = requests.get(url, headers=headers)
 
-        user = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()['login'], user_info.json()['name'])
+        user = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
+                                              'login'], user_info.json()['name'])
         login_user(user)
 
         return redirect(url_for('index'))

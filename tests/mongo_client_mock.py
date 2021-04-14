@@ -1,7 +1,6 @@
 import mongomock
 import re
 from datetime import datetime, timedelta
-from bson.objectid import ObjectId
 
 
 class MongoClientMock:
@@ -58,9 +57,8 @@ class MongoClientMock:
         db['doing'].insert_one(self.doing_item_json)
         db['done'].insert_one(self.done_item_json)
 
-        user_db = client['users']
-        user_db['users'].insert_one(self.admin_user_json)
-        user_db['users'].insert_one(self.writer_user_json)
-        user_db['users'].insert_one(self.reader_user_json)
+        db['users'].insert_one(self.admin_user_json)
+        db['users'].insert_one(self.writer_user_json)
+        db['users'].insert_one(self.reader_user_json)
 
         return client

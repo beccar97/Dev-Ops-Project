@@ -33,7 +33,7 @@ cp -n .env.template .env
 from the project root directory. You will need to fill in values for several environment variables, as described below.
 
 - FLASK_SECRET_KEY: Any GUID, used by Flask to sign session cookies
-- For local development not using HTTPS add to the .env file `OAUTHLIB_INSECURE_TRANSPORT=1`
+- For environments not using HTTPS add to the .env file `OAUTHLIB_INSECURE_TRANSPORT=1`
 
 ### GitHub Auth setup
 
@@ -119,7 +119,9 @@ You will need to configure the following environment variables for production:
 - MONGO_DEFAULT_DB
 - GITHUB_AUTH_CLIENT_ID
 - GITHUB_AUTH_CLIENT_SECRET
+- FLASK_SECRET_KEY
 - CREATE_VIRTUAL_ENV=true
+- OUATH_LIB_INSECURE_TRANSPORT=1
 
 Note, if any of these values are provided in quote marks in your .env file, then grep-ing them from there to set the heroku config will result in their values being saved with quote marks, which can cause errors.
 

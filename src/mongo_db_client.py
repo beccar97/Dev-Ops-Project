@@ -18,7 +18,6 @@ class MongoClient:
         connection_string = f"mongodb+srv://{mongo_config.user_name}:{mongo_config.password}@{mongo_config.mongo_url}/{mongo_config.default_database}?w=majority"
         self.client = pymongo.MongoClient(connection_string)
         self.db = self.client[mongo_config.default_database]
-        self.user_db = self.client['users']
 
     def create_database(self, name='todo_app', use_as_default=False):
         """
@@ -166,7 +165,7 @@ class MongoClient:
             login (str): The login of the user for the auth system
             name (str): The name of the user from the auth system
         """
-        user_collection = self.user_db['users']
+        user_collection = self.db['users']
 
         user_item = user_collection.find_one({"auth_id": user_auth_id})
 
@@ -182,7 +181,7 @@ class MongoClient:
         Args:
             id (str): The ID of the user.
         """
-        user_collection = self.user_db['users']
+        user_collection = self.db['users']
 
         user_item = user_collection.find_one({"_id": ObjectId(id)})
 
@@ -195,7 +194,7 @@ class MongoClient:
         Returns:
             list: A list of the saved items
         """        
-        user_collection = self.user_db['users']
+        user_collection = self.db['users']
         all_users = user_collection.find()
 
         users = list(map(self._user_from_document, all_users))
@@ -208,7 +207,7 @@ class MongoClient:
         Args:
             id (str): The ID of the user.
         """
-        collection = self.user_db['users']
+        collection = self.db['users']
 
         collection.delete_one({"_id": ObjectId(id)})
 
@@ -217,7 +216,7 @@ class MongoClient:
         Updates the user with the specified ID to have the specified role
 
         """
-        user_collection = self.user_db['users']
+        user_collection = self.db['users']
 
         user_document_query = {"_id": ObjectId(id)}
 
@@ -234,15 +233,13 @@ class MongoClient:
         )
 
     def _add_user(self, user_auth_id, login, name) -> User:
-        user_collection = self.user_db['users']
-
+        user_collection = self.db['users']
 
         existing_admin = user_collection.find(
             {"role": "ADMIN"}).count() > 0
         role = UserRole.READER if existing_admin else UserRole.ADMIN
 
         user_json = {
-            "_id": ObjectId(id),
             "auth_id": user_auth_id,
             "role": role.value,
             "login": login,
