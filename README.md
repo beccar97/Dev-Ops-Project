@@ -1,6 +1,6 @@
 # DevOps Apprenticeship: Project Exercise
 
-[![Build Status](https://travis-ci.com/beccar97/Dev-Ops-Project.svg?branch=master)](https://travis-ci.com/beccar97/Dev-Ops-Project)
+[![Build Status](https://travis-ci.com/beccar97/Dev-Ops-Project.svg?branch=main)](https://travis-ci.com/beccar97/Dev-Ops-Project)
 
 - [DevOps Apprenticeship: Project Exercise](#devops-apprenticeship-project-exercise)
   - [Getting started](#getting-started)
@@ -91,7 +91,7 @@ The development container can be launched using `docker-compose up -d --build`. 
 ## Continuous Integration and Deployment
 
 Continuous integration and deployment is provided using Travis CI, specified in `.travis.yml`.
-Tests are automatically run on any pull release branches, and the master branch is built and deployed to both docker hub and heroku. The heroku web app is released so it is always up to date with the current master. The live web app can be reached at [beccar-todo-app.herokuapp.com](https://beccar-todo-app.herokuapp.com/).
+Tests are automatically run on any pull release branches, and the main branch is built and deployed to both docker hub and heroku. The heroku web app is released so it is always up to date with the current main branch. The live web app can be reached at [beccar-todo-app.herokuapp.com](https://beccar-todo-app.herokuapp.com/).
 
 The Travis CI relies on several secure environment variables, which are defined by the `secure: <encoded environment variables>` line in the yml file. The encrypted key defining the variables is generated using the Travis CLI, as explained in [their documentation](https://docs.travis-ci.com/user/encryption-keys#usage). You can install the CLI using `gem install travis` and then to generate the encrypted key run the following (filling in the correct values for the environment variables).
 

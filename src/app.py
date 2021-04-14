@@ -84,13 +84,6 @@ def create_app():
         view_model = AdminViewModel(users)
         return render_template('admin.html', view_model=view_model)
 
-    @app.route('/admin/users/<id>')
-    @login_required
-    @admin_required
-    def get_user(id):
-        user = storage_client.get_user(id)
-        return redirect(url_for('admin'))
-
     @app.route('/admin/users/<id>/delete')
     @login_required
     @admin_required
