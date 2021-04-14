@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% from "macros.html" import display_user, is_admin with context %}
+
+{% block title %}To-Do App{% endblock %}
+
+
+{% block content %}
+
+<div class="jumbotron index-jumbotron">
+  <h1 class="display-4">To-Do App</h1>
+  <p class="lead">Admin Page</p>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2>Admins</h2>
+    <ul id="users" class="list-group mb-4">
+      {% for user in view_model.get_users('ADMIN') %}
+        {{ display_user(user) }}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-12">
+    <h2>Writers</h2>
+    <ul id="users" class="list-group mb-4">
+      {% for user in view_model.get_users('WRITER') %}
+        {{ display_user(user) }}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-12">
+    <h2>Readers</h2>
+    <ul id="users" class="list-group mb-4">
+      {% for user in view_model.get_users('READER') %}
+        {{ display_user(user) }}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

@@ -3,6 +3,7 @@ import datetime
 from bson.objectid import ObjectId
 
 from src.models.todo_item import Item
+from src.models.user import User, UserRole
 from src.mongo_config import MongoConfig
 from src.mongo_collections import MongoCollection
 
@@ -24,7 +25,7 @@ class MongoClient:
 
         Args:
             name(str): The name of the database.
-            use_as_default(boolean): Boolean indicating whether this database should be used 
+            use_as_default(boolean): Boolean indicating whether this database should be used
             by default by this client
         """
 
@@ -38,7 +39,7 @@ class MongoClient:
     def delete_database(self, name):
         """
         Deletes the Atlas database with the given name.
-        If the given database was the default database for this client, will create a new 
+        If the given database was the default database for this client, will create a new
         database with the name determined by MongoConfig to use as default in future.
 
         Args:
@@ -51,6 +52,8 @@ class MongoClient:
             self.client.drop_database(name)
 
         return
+
+    # region items methods
 
     def get_items(self):
         """
@@ -130,6 +133,9 @@ class MongoClient:
         for collection in collections:
             self.db[collection].delete_one({"_id": id})
 
+    def _as_app_item(self, item):
+        return Item.from_mongo_document(item)
+
     def _move_item(self, id, from_collection: MongoCollection, to_collection: MongoCollection):
         id = ObjectId(id)
 
@@ -143,5 +149,107 @@ class MongoClient:
         to_db_collection.insert_one(item)
         from_db_collection.delete_one({"_id": id})
 
-    def _as_app_item(self, item):
-        return Item.from_mongo_document(item)
+    # endregion
+
+    # region user methods
+
+    def get_or_add_user(self, user_auth_id, login, name) -> User:
+        """
+        If user with given auth id already exists, returns User object.
+        Otherwise creates new user in database and returns corresponding User object.
+        When creating a user, user is created with Admin role if no other admins exist in system,
+        and as a Reader otherwise.
+
+        Args:
+            user_auth_id (str): The ID of the user from the auth system
+            login (str): The login of the user for the auth system
+            name (str): The name of the user from the auth system
+        """
+        user_collection = self.db['users']
+
+        user_item = user_collection.find_one({"auth_id": user_auth_id})
+
+        if user_item is None:
+            return self._add_user(user_auth_id, login, name)
+        else:
+            return self._user_from_document(user_item)
+
+    def get_user(self, id):
+        """
+        Retrieves the user with the specified ID as a User object
+
+        Args:
+            id (str): The ID of the user.
+        """
+        user_collection = self.db['users']
+
+        user_item = user_collection.find_one({"_id": ObjectId(id)})
+
+        return self._user_from_document(user_item)
+
+    def get_users(self):
+        """
+        Fetches all users from Atlas database.
+
+        Returns:
+            list: A list of the saved items
+        """        
+        user_collection = self.db['users']
+        all_users = user_collection.find()
+
+        users = list(map(self._user_from_document, all_users))
+        return users
+
+    def delete_user(self, id):
+        """
+        Deletes the user with the specified ID
+
+        Args:
+            id (str): The ID of the user.
+        """
+        collection = self.db['users']
+
+        collection.delete_one({"_id": ObjectId(id)})
+
+    def set_user_role(self, id, role: UserRole):
+        """
+        Updates the user with the specified ID to have the specified role
+
+        """
+        user_collection = self.db['users']
+
+        user_document_query = {"_id": ObjectId(id)}
+
+        user_item = user_collection.find_one(user_document_query)
+
+        if user_item is None:
+            raise FileNotFoundError
+
+        user_collection.update_one(
+            user_document_query,
+            {
+                '$set': {'role': role.value}
+            }
+        )
+
+    def _add_user(self, user_auth_id, login, name) -> User:
+        user_collection = self.db['users']
+
+        existing_admin = user_collection.find(
+            {"role": "ADMIN"}).count() > 0
+        role = UserRole.READER if existing_admin else UserRole.ADMIN
+
+        user_json = {
+            "auth_id": user_auth_id,
+            "role": role.value,
+            "login": login,
+            "name": name,
+        }
+
+        user_id = user_collection.insert_one(user_json).inserted_id
+        return User(user_id, user_auth_id, login, name, role)
+
+    def _user_from_document(self, user_item):
+        return User(user_item['_id'], user_item['auth_id'], user_item['login'], user_item['name'], UserRole[user_item['role']])
+
+        # endregion
