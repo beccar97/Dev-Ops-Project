@@ -22,4 +22,4 @@ deploy:
     provider: script
     script:  bash scripts/deploy.sh
     on:
-      branch: module_11
+      branch: main
