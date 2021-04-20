@@ -15,9 +15,11 @@ class MongoClient:
 
     def __init__(self, mongo_config: MongoConfig):
         self.mongo_config = mongo_config
-        connection_string = f"mongodb+srv://{mongo_config.user_name}:{mongo_config.password}@{mongo_config.mongo_url}/{mongo_config.default_database}?w=majority"
-        self.client = pymongo.MongoClient(connection_string)
-        self.db = self.client[mongo_config.default_database]
+        self.client = pymongo.MongoClient(mongo_config.connection_string)
+        if hasattr(mongo_config, 'default_database') and mongo_config.default_database is not None:
+            self.db = self.client[mongo_config.default_database]
+        else: 
+            self.db = self.client.get_default_database()
 
     def create_database(self, name='todo_app', use_as_default=False):
         """

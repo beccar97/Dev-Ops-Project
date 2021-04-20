@@ -124,3 +124,6 @@ env/
 
 ### Logs ###
 logfile
+
+### Azure ###
+azure_webapp_settings.json

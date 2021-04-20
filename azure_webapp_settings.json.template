@@ -1,0 +1,27 @@
+[
+    {
+        "name": "GITHUB_AUTH_CLIENT_ID",
+        "slotSetting": false,
+        "value": ""
+    },
+    {
+        "name": "GITHUB_AUTH_CLIENT_SECRET",
+        "slotSetting": false,
+        "value": ""
+    },
+    {
+        "name": "FLASK_SECRET_KEY",
+        "slotSetting": false,
+        "value": ""
+    },
+    {
+        "name": "MONGO_CONNECTION_STRING",
+        "slotSetting": false,
+        "value": ""
+    }, 
+    {
+        "name": "OAUTHLIB_INSECURE_TRANSPORT",
+        "slotSetting": false,
+        "value": "1"
+    }
+]

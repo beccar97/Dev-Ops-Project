@@ -48,7 +48,13 @@ This OAuth app can then be used for running the project locally. In order for th
 
 ### Mongo DB setup
 
-This project is set up to connect to a MongoDB cluster to store todo items. You will need to create a cluster authenticated with username and password, making note of these values. You will then need to update the .env file environment variables as follows:
+This project is set up to connect to a MongoDB cluster to store todo items. You will need to create a cluster authenticated with username and password, making note of these values.
+
+The connection can either be configured using the username, password, url and default database individually, or by providing a connection string. Likely you will wish to use the former for local development and testing, and the latter in production.
+
+If using a connection string, set the MONGO_CONNECTION_STRING variable in the .env file.
+
+Otherwise update the .env file environment variables as follows:
 
 - MONGO_USERNAME: Username for connecting to MongoDB cluser, can be see in the 'Database Access' menu under the 'Security' heading
 - MONGO_PASSWORD: The password for the given user
@@ -58,6 +64,8 @@ This project is set up to connect to a MongoDB cluster to store todo items. You 
 One option for setting up a MongoDB cluster is to use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) which includes a free tier. Choosing "I'm learning MongoDB" option when signing up will give you very intuitive set-up instructions.
 
 Note that Alas is IP restricted by default, you will need to change your cluster's Network Access settings to allow access from anywhere in order for your app to work correctly from within docker.
+
+For a production setup recommend using Azure's Cosmos DB and providing the connection string to the app.
 
 ## Running the app using docker
 
@@ -91,7 +99,7 @@ The development container can be launched using `docker-compose up -d --build`. 
 ## Continuous Integration and Deployment
 
 Continuous integration and deployment is provided using Travis CI, specified in `.travis.yml`.
-Tests are automatically run on any pull release branches, and the main branch is built and deployed to both docker hub and heroku. The heroku web app is released so it is always up to date with the current main branch. The live web app can be reached at [beccar-todo-app.herokuapp.com](https://beccar-todo-app.herokuapp.com/).
+Tests are automatically run on any pull release branches, and the main branch is built and deployed to docker hub.
 
 The Travis CI relies on several secure environment variables, which are defined by the `secure: <encoded environment variables>` line in the yml file. The encrypted key defining the variables is generated using the Travis CLI, as explained in [their documentation](https://docs.travis-ci.com/user/encryption-keys#usage). You can install the CLI using `gem install travis` and then to generate the encrypted key run the following (filling in the correct values for the environment variables).
 
@@ -99,33 +107,25 @@ The Travis CI relies on several secure environment variables, which are defined 
 travis encrypt --pro MONGO_URL=<MONGO_URL> \
 MONGO_PASSWORD=<MONGO_PASSWORD> \
 DOCKER_PASSWORD=<DOCKER_PASSSWORD> \
-HEROKU_API_KEY=<HEROKU_API_KEY> \
-FLASK_SECRET_KEY=<FLASK_SECRET_KEY>
+WEBHOOK_URL=<AZURE_WEBHOOK_URL>
 ```
 
-To get a heroku api key to use here follow the instructions in [this article](https://medium.com/@zulhhandyplast/how-to-create-a-non-expiring-heroku-token-for-daemons-ops-work-da08346286c0) to generate a non-expiring token. Note that the heroku account used will need to have the appropriate permissions to deploy the app.
+- The Mongo URL and Password here are used for running the selenium tests.
+- The Webhook URL is used during the deployment step, when a post request is made to trigger the webapp to update
 
-In order for the app to run correctly when deployed, you will need to configure the production environment variables in Heroku. This can be done using commands such as
+The production webapp can be hosted using Azure App Services, using the container image from the DockerHub registry.
 
-```bash
-heroku config:set `cat .env | grep MONGO_USERNAME` --app <heroku_app_name>
-```
+In order for the app to run correctly when deployed, you will need to configure the production environment variables in the Webapp.
+
+This can be done using the portal, or via the CLI using `az webapp config appsettings set`. The file `azure_webapp_settings.json.template` provides a template json file which can be passed to this in order to load the variables at once.
 
 You will need to configure the following environment variables for production:
 
-- MONGO_USERNAME
-- MONGO_PASSWORD
-- MONGO_URL
-- MONGO_DEFAULT_DB
 - GITHUB_AUTH_CLIENT_ID
 - GITHUB_AUTH_CLIENT_SECRET
 - FLASK_SECRET_KEY
-- CREATE_VIRTUAL_ENV=true
-- OUATH_LIB_INSECURE_TRANSPORT=1
-
-Note, if any of these values are provided in quote marks in your .env file, then grep-ing them from there to set the heroku config will result in their values being saved with quote marks, which can cause errors.
-
-If you wish to deploy to heroku locally for any reason you will need to login to the heroku container registry using the heroku CLI (see the [heroku documentation](https://devcenter.heroku.com/articles/container-registry-and-runtime#logging-in-to-the-registry)) and then run `./scripts/heroku_deploy_local.sh` from the root of the project.
+- MONGO_CONNECTION_STRING
+- OAUTHLIB_INSECURE_TRANSPORT=1
 
 ## Virtual environment setup
 
