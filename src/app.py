@@ -10,7 +10,7 @@ from src.flask_config import FlaskConfig
 from src.models.index_view_model import IndexViewModel
 from src.mongo_config import MongoConfig
 from src.mongo_db_client import MongoClient
-from src.models.user import User, UserRole, AnonymousUser
+from src.models.user import UserRole, AnonymousUser
 
 
 def create_app():
@@ -76,9 +76,9 @@ def create_app():
     # endregion
 
     # region admin routes
+    @app.route('/admin')
     @login_required
     @admin_required
-    @app.route('/admin')
     def admin():
         users = storage_client.get_users()
         view_model = AdminViewModel(users)
