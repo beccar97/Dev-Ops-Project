@@ -1,4 +1,3 @@
-import logging
 from flask_login.mixins import UserMixin, AnonymousUserMixin
 from enum import Enum
 import os
@@ -37,12 +36,16 @@ class User(UserMixin):
 
 class AnonymousUser(AnonymousUserMixin):
     def __init__(self):
-        super().__init__()
-        self.role = UserRole.WRITER if os.environ.get(
-            'ANON_ID') == 'test_write_user' else UserRole.READER
+        super().__init__()        
+        if os.environ.get('ANON_ID') == 'test_write_user':
+            self.role = UserRole.WRITER
+        elif os.environ.get('ANON_ID') == 'test_admin_user':
+            self.role = UserRole.ADMIN
+        else:
+            self.role = UserRole.READER
 
     def has_write_permissions(self):
         return self.role in WritePermissionRoles
 
     def is_admin(self):
-        return False
+        return self.role is UserRole.ADMIN

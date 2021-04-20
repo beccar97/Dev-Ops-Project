@@ -1,3 +1,4 @@
+import os
 import pytest
 import pymongo
 import src.app as app
@@ -28,7 +29,8 @@ def test_index_page(client):
     assert "DOING ITEM" in htmlResponse
     assert "DONE ITEM" in htmlResponse
 
-def test_admin_page(client):
+def test_admin_page(client):    
+    os.environ['ANON_ID'] = 'test_admin_user'
 
     response = client.get('/admin')
     htmlResponse = response.data.decode("utf-8")
