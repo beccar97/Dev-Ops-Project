@@ -1,3 +1,5 @@
+{% from "macros.html" import is_admin with context %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,6 +15,13 @@
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
       <a class="navbar-brand" href="/">To-Do App</a>
+      {% if is_admin(current_user) %} 
+      <ul class="navbar-nav">
+        <li class="navbar-item">
+          <a class="nav-link" href="/admin">Admin</a>
+        </li>
+      </ul>
+      {% endif %}
     </nav>
 
     <div class="container body-content">
