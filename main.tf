@@ -1,4 +1,11 @@
 terraform {
+  backend "azurerm" {
+    resource_group_name = "SoftwirePilot_BeckyCarter_ProjectExercise"
+    storage_account_name = "beccarterraformstate5033"
+    container_name = "beccarterraformstate"
+    key = "terraform.tfstate"
+  }
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
