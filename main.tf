@@ -20,7 +20,7 @@ data "azurerm_resource_group" "main" {
 }
 
 resource "azurerm_cosmosdb_account" "main" {
-  name                = "beccar-terraform-cosmosdb-account"
+  name                = "beccar-${var.prefix}-cosmosdb-account"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   offer_type          = "Standard"
@@ -45,17 +45,15 @@ resource "azurerm_cosmosdb_account" "main" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "main" {
-  name                = "beccar-terraform-cosmosdb-mongo-db"
+  name                = "beccar-${var.prefix}-todo-app"
   resource_group_name = data.azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.main.name
 
-  lifecycle {
-    prevent_destroy = true
-  }
+  
 }
 
 resource "azurerm_app_service_plan" "main" {
-  name                = "beccar-terraform-app-service-plan"
+  name                = "beccar-${var.prefix}-app-service-plan"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   kind                = "Linux"
@@ -66,7 +64,7 @@ resource "azurerm_app_service_plan" "main" {
   }
 }
 resource "azurerm_app_service" "main" {
-  name                = "beccar-terraform-webapp"
+  name                = "beccar-${var.prefix}-webapp"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   app_service_plan_id = azurerm_app_service_plan.main.id
