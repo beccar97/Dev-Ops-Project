@@ -43,7 +43,9 @@ jobs:
           before_deploy:
             - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
             - terraform apply -auto-approve
-
+            -  echo "$(terraform output -raw webhook_url)"
+            - echo $(terraform output -raw webhook_url)
+            
           deploy:
             provider: script
             script:  bash scripts/deploy.sh
