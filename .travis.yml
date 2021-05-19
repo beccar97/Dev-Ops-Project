@@ -22,7 +22,7 @@ jobs:
             - docker run -e MONGO_USERNAME -e MONGO_PASSWORD -e MONGO_URL -e MONGO_DEFAULT_DB --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
 
         - stage: release
-          if: branch = module_12
+          if: branch = main
           env:
             - TF_VERSION=0.14.7
             - TF_VAR_prefix='prod'
@@ -48,5 +48,3 @@ jobs:
             skip_cleanup: true
             provider: script
             script:  bash scripts/deploy.sh
-            on:
-                branch: module_12
