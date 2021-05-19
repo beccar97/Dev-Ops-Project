@@ -13,6 +13,9 @@
     - [Development](#development)
     - [Test](#test)
   - [Continuous Integration and Deployment](#continuous-integration-and-deployment)
+    - [Azure Service Principal](#azure-service-principal)
+    - [Travis Environment Variable Configuration](#travis-environment-variable-configuration)
+    - [Environment Variables in the App Service](#environment-variables-in-the-app-service)
   - [Virtual environment setup](#virtual-environment-setup)
     - [Running the project using vagrant](#running-the-project-using-vagrant)
       - [Running the tests within Vagrant](#running-the-tests-within-vagrant)
@@ -98,22 +101,56 @@ The development container can be launched using `docker-compose up -d --build`. 
 
 ## Continuous Integration and Deployment
 
-Continuous integration and deployment is provided using Travis CI, specified in `.travis.yml`.
-Tests are automatically run on any pull release branches, and the main branch is built and deployed to docker hub.
+Continuous integration and deployment is provided using Travis CI, specified in `.travis.yml`. The CI is designed around the app being hosted in Azure, using a serverless CosmosDB database and an App Service for the main site. The infrastructure for the app is defined in main.tf.
 
-The Travis CI relies on several secure environment variables, which are defined by the `secure: <encoded environment variables>` line in the yml file. The encrypted key defining the variables is generated using the Travis CLI, as explained in [their documentation](https://docs.travis-ci.com/user/encryption-keys#usage). You can install the CLI using `gem install travis` and then to generate the encrypted key run the following (filling in the correct values for the environment variables).
+Tests are automatically run on any pull release branches, and the main branch is deployed to the production system.
+
+### Azure Service Principal
+
+In order for Travis to access and alter Azure resources, a Service Principal is required, one can be created through the CLI using the following command:
 
 ```bash
-travis encrypt --pro MONGO_URL=<MONGO_URL> \
-MONGO_PASSWORD=<MONGO_PASSWORD> \
-DOCKER_PASSWORD=<DOCKER_PASSSWORD> \
-WEBHOOK_URL=<AZURE_WEBHOOK_URL>
+$ az ad sp create-for-rbac --role="Contributor" -n name_for_principal
+{
+  "appId": SERVICE_PRINCIPAL_APP_ID,
+  "displayName": NAME_FOR_PRINCIPAL,
+  "name": "http://name_for_principal",
+  "password" SERVICE_PRINCIPAL_PASSWORD,
+  "tenant": SERVICE_PRINCIPAL_TENANT_ID
+}
 ```
 
-- The Mongo URL and Password here are used for running the selenium tests.
-- The Webhook URL is used during the deployment step, when a post request is made to trigger the webapp to update
+Note the values output by this command will be needed as environment variables to Travis, so should be saved somewhere secure.
 
-The production webapp can be hosted using Azure App Services, using the container image from the DockerHub registry.
+### Travis Environment Variable Configuration
+
+Travis requires many environment variables to be set, some which can be entered plainly into the .travis.yml file, and other secure environment variables which are defined by the `secure: <encoded environment variables>` lines in the yml file. The encrypted key defining the variables is generated using the Travis CLI, as explained in [their documentation](https://docs.travis-ci.com/user/encryption-keys#usage). You can install the CLI using `gem install travis` and then to generate the encrypted keys run the following,
+
+- for the test stage:
+
+```bash
+travis encrypt --pro \
+MONGO_URL=<MONGO_URL> \
+MONGO_PASSWORD=<MONGO_PASSWORD> \
+```
+
+- for the release stage:
+
+```bash
+travis encrypt --pro \
+DOCKER_PASSWORD=<DOCKER_PASSSWORD> \
+ARM_CLIENT_ID=<SERVICE_PRINCIPAL_APP_ID> \
+ARM_TENANT_ID=<SERVICE_PRINCIPAL_TENANT_ID> \
+ARM_CLIENT_SECRET=<SERVICE_PRINCIPAL_PASSWORD> \
+ARM_SUBSCRIPTION_ID=<SUBSCRIPTION_ID>
+TF_github_auth_client_secret=<GITHUB_CLIENT_SECRET> \
+```
+
+- Environment variables with the prefix MONGO_ define the database connection used for running the selenium tests. Explanations of the individual variables can be found in [Mongo DB setup](#mongo-db-setup).
+- Environment variables with the prefix TF_ are used by terraform, explanations can be found in [variables.tf](variables.tf)
+- The values for ARM_CLIENT_ID, ARM_TENANT_ID, and ARM_CLIENT_SECRET all come from the output of creating the Service Principal ( see [Azure Service Principal](#azure-service-principal)).
+
+### Environment Variables in the App Service
 
 In order for the app to run correctly when deployed, you will need to configure the production environment variables in the Webapp.
 
