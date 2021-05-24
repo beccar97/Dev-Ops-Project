@@ -1,7 +1,8 @@
+
 from src.models.admin_view_model import AdminViewModel
 import requests
 import secrets
-from flask import Flask, redirect, render_template, url_for, request, session, Response
+from flask import Flask, redirect, render_template, url_for, request, session, Response, current_app
 from flask_login import LoginManager, login_required, login_user, current_user
 from functools import wraps
 from oauthlib.oauth2 import WebApplicationClient
@@ -10,7 +11,7 @@ from src.flask_config import FlaskConfig
 from src.models.index_view_model import IndexViewModel
 from src.mongo_config import MongoConfig
 from src.mongo_db_client import MongoClient
-from src.models.user import UserRole, AnonymousUser
+from src.models.user import User, UserRole, AnonymousUser
 
 
 def create_app():
@@ -24,12 +25,13 @@ def create_app():
     login_manager = LoginManager()
 
     if flask_config.login_disabled:
+        app.logger.info("Login disabled")
         app.config['LOGIN_DISABLED'] = True
         login_manager.anonymous_user = AnonymousUser
 
     oauth_client = WebApplicationClient(auth_config.client_id)
 
-    # region item routes
+    # region item routes    
     @app.route('/')
     @login_required
     def index():
@@ -124,8 +126,11 @@ def create_app():
         url, headers, body = oauth_client.add_token(auth_config.user_info_url)
         user_info = requests.get(url, headers=headers)
 
-        user = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
+        user: User = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
                                               'login'], user_info.json()['name'])
+
+        app.logger.debug("User ${user.name} with id ${user.id} logged in successfully.")
+        
         login_user(user)
 
         return redirect(url_for('index'))
@@ -154,6 +159,7 @@ def write_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.has_write_permissions():
+            current_app.logger.debug("User ${user.id} attempted to use a write_required endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action', 401)
         return f(*args, **kwargs)
     return decorated_function
@@ -164,6 +170,7 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.is_admin():
+            current_app.logger.debug("User ${user.id} attempted to use an admin endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action. Admin permissions required.', 401)
         return f(*args, **kwargs)
     return decorated_function
