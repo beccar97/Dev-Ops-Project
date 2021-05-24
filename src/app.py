@@ -17,6 +17,7 @@ from src.models.user import User, UserRole, AnonymousUser
 def create_app():
     app = Flask(__name__)
     flask_config = FlaskConfig()
+    app.logger.setLevel(flask_config.log_level)
     app.secret_key = flask_config.secret_key
 
     storage_client = MongoClient(MongoConfig())

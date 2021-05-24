@@ -37,6 +37,7 @@ from the project root directory. You will need to fill in values for several env
 
 - FLASK_SECRET_KEY: Any GUID, used by Flask to sign session cookies
 - For environments not using HTTPS add to the .env file `OAUTHLIB_INSECURE_TRANSPORT=1`
+- The log level can be configured using the environment variable FLASK_LOG_LEVEL; if not set the log level will default to ERROR, note the .env.template file sets it to DEBUG as is designed for local use.
 
 ### GitHub Auth setup
 
