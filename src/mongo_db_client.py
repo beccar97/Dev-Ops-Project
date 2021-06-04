@@ -20,8 +20,8 @@ class MongoClient:
         self.client = pymongo.MongoClient(mongo_config.connection_string)
         if hasattr(mongo_config, 'default_database') and mongo_config.default_database is not None:
             self.db = self.client[mongo_config.default_database]
-        else: 
-            self.db = self.client.get_default_database()            
+        else:
+            self.db = self.client.get_default_database()
 
     def create_database(self, name='todo_app', use_as_default=False):
         """
@@ -52,8 +52,9 @@ class MongoClient:
         """
         app.logger.debug(f"Dropping database {name}")
         if (self.db.name == name):
-            self.client.drop_database(name)           
-            app.logger.warn(f"Database {name} is default database, recreating after dropping")
+            self.client.drop_database(name)
+            app.logger.warn(
+                f"Database {name} is default database, recreating after dropping")
             self.db = self.client[self.mongo_config.default_database]
         else:
             app.logger.debug(f"Database {name} successfully dropped")
@@ -70,7 +71,6 @@ class MongoClient:
         Returns:
             list: A list of the saved items
         """
-        app.logger.debug(f"Fetching all items for user {current_user.id}")
         todo_items = self.db[self.TODO_COLLECTION.name].find()
         doing_items = self.db[self.DOING_COLLECTION.name].find()
         done_items = self.db[self.DONE_COLLECTION.name].find()
@@ -91,8 +91,6 @@ class MongoClient:
         Args:
             name (str): The name of the item.
         """
-        app.logger.debug(f"Item with id {id} added by user{current_user.id}")
-
         todo_collection = self.db[self.TODO_COLLECTION.name]
 
         item_json = {
@@ -101,7 +99,10 @@ class MongoClient:
             "dateLastActivity": datetime.datetime.utcnow()
         }
 
-        todo_collection.insert_one(item_json)
+        added_item = todo_collection.insert_one(item_json)
+
+        app.logger.debug(
+            f"Item '{name}' added with id: {added_item.inserted_id}")
 
     def start_item(self, id: str):
         """
@@ -110,9 +111,9 @@ class MongoClient:
         Args:
             id (str): The ID of the item.
         """
-        app.logger.debug(f"Item with id {id} started by user {current_user.id}")
-
         self._move_item(id, self.TODO_COLLECTION, self.DOING_COLLECTION)
+
+        app.logger.debug(f"Item with id {id} started")
 
     def complete_item(self, id: str):
         """
@@ -121,8 +122,9 @@ class MongoClient:
         Args:
             id (str): The ID of the item.
         """
-        app.logger.debug(f"Item with id {id} marked as complete by user {current_user.id}")
         self._move_item(id, self.DOING_COLLECTION, self.DONE_COLLECTION)
+
+        app.logger.debug(f"Item with id {id} marked as complete")
 
     def uncomplete_item(self, id: str):
         """
@@ -131,9 +133,9 @@ class MongoClient:
         Args:
             id (str): The ID of the item.
         """
-        app.logger.debug(f"Item with id {id} uncompleted by user {current_user.id}")
-
         self._move_item(id, self.DONE_COLLECTION, self.DOING_COLLECTION)
+
+        app.logger.debug(f"Item with id {id} marked as incomplete")
 
     def delete_item(self, id: str):
         """
@@ -142,13 +144,14 @@ class MongoClient:
         Args:
             id (str): The ID of the item.
         """
-        app.logger.debug(f"Item with id {id} deleted by user {current_user.id}")
 
         id = ObjectId(id)
         collections = self.db.list_collection_names()
 
         for collection in collections:
             self.db[collection].delete_one({"_id": id})
+
+        app.logger.debug(f"Item with id {id} deleted")
 
     def _as_app_item(self, item):
         return Item.from_mongo_document(item)
@@ -210,11 +213,9 @@ class MongoClient:
 
         Returns:
             list: A list of the saved items
-        """        
+        """
         user_collection = self.db['users']
         all_users = user_collection.find()
-
-        app.logger.debug("Fetching user list")
 
         users = list(map(self._user_from_document, all_users))
         return users
@@ -228,16 +229,15 @@ class MongoClient:
         """
         collection = self.db['users']
 
-        app.logger.debug(f"Deleting user {id}")
-
         collection.delete_one({"_id": ObjectId(id)})
+
+        app.logger.debug(f"User {id} deleted")
 
     def set_user_role(self, id: str, role: UserRole):
         """
         Updates the user with the specified ID to have the specified role
 
         """
-        app.logger.debug(f"Updating user {id} to have role {role.name}")
         user_collection = self.db['users']
 
         user_document_query = {"_id": ObjectId(id)}
@@ -255,6 +255,8 @@ class MongoClient:
             }
         )
 
+        app.logger.debug(f"Updated user {id} to have role {role.name}")
+
     def _add_user(self, user_auth_id, login, name) -> User:
         user_collection = self.db['users']
 
@@ -269,9 +271,10 @@ class MongoClient:
             "name": name,
         }
 
-        app.logger.debug(f"Adding new user with properties {user_json}")
-
         user_id = user_collection.insert_one(user_json).inserted_id
+
+        app.logger.debug(
+            f"Added new user with properties {user_json} and id {user_id}")
         return User(user_id, user_auth_id, login, name, role)
 
     def _user_from_document(self, user_item):

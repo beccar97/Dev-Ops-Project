@@ -45,6 +45,7 @@ def create_app():
     @write_required
     def add_item():
         name = request.form['name']
+        app.logger.debug(f"User {current_user.id} added item '{name}'")
         storage_client.add_item(name)
         return redirect(url_for('index'))
 
@@ -52,6 +53,7 @@ def create_app():
     @login_required
     @write_required
     def start_item(id):
+        app.logger.debug(f"User {current_user.id} started item {id}")
         storage_client.start_item(id)
         return redirect(url_for('index'))
 
@@ -59,6 +61,7 @@ def create_app():
     @login_required
     @write_required
     def complete_item(id):
+        app.logger.debug(f"User {current_user.id} completed item {id}")
         storage_client.complete_item(id)
         return redirect(url_for('index'))
 
@@ -66,6 +69,8 @@ def create_app():
     @login_required
     @write_required
     def uncomplete_item(id):
+        app.logger.debug(
+            f"User {current_user.id} marked item {id} as incomplete")
         storage_client.uncomplete_item(id)
         return redirect(url_for('index'))
 
@@ -73,6 +78,7 @@ def create_app():
     @login_required
     @write_required
     def delete_item(id):
+        app.logger.debug(f"User {current_user.id} deleted item {id}")
         storage_client.delete_item(id)
         return redirect(url_for('index'))
 
@@ -83,6 +89,7 @@ def create_app():
     @login_required
     @admin_required
     def admin():
+        app.logger.debug(f"User {current_user.id} accessed admin page")
         users = storage_client.get_users()
         view_model = AdminViewModel(users)
         return render_template('admin.html', view_model=view_model)
@@ -91,6 +98,7 @@ def create_app():
     @login_required
     @admin_required
     def delete_user(id):
+        app.logger.debug(f"User {id} deleted by user {current_user.id}")
         storage_client.delete_user(id)
         return redirect(url_for('admin'))
 
@@ -98,6 +106,8 @@ def create_app():
     @login_required
     @admin_required
     def set_user_role(id, role):
+        app.logger.debug(
+            f"User {id} given role {role} by user {current_user.id}")
         storage_client.set_user_role(id, UserRole(role))
         return redirect(url_for('admin'))
 
@@ -130,7 +140,8 @@ def create_app():
         user: User = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
                                               'login'], user_info.json()['name'])
 
-        app.logger.debug("User ${user.name} with id ${user.id} logged in successfully.")
+        app.logger.debug(
+            f"User {user.name} with id {user.id} logged in successfully.")
         
         login_user(user)
 
@@ -160,7 +171,8 @@ def write_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.has_write_permissions():
-            current_app.logger.debug("User ${user.id} attempted to use a write_required endpoint without sufficient permissions")
+            current_app.logger.debug(
+                f"User {user.id} attempted to use a write_required endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action', 401)
         return f(*args, **kwargs)
     return decorated_function
@@ -171,7 +183,8 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.is_admin():
-            current_app.logger.debug("User ${user.id} attempted to use an admin endpoint without sufficient permissions")
+            current_app.logger.debug(
+                f"User {user.id} attempted to use an admin endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action. Admin permissions required.', 401)
         return f(*args, **kwargs)
     return decorated_function
