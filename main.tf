@@ -85,6 +85,5 @@ resource "azurerm_app_service" "main" {
     "GITHUB_AUTH_CLIENT_ID" = var.github_auth_client_id
     "GITHUB_AUTH_CLIENT_SECRET" = var.github_auth_client_secret
     "FLASK_SECRET_KEY" = random_uuid.uuid.result
-    "OAUTHLIB_INSECURE_TRANSPORT" = 1
   }
 }

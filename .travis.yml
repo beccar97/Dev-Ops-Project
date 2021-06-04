@@ -22,12 +22,12 @@ jobs:
             - docker run -e MONGO_USERNAME -e MONGO_PASSWORD -e MONGO_URL -e MONGO_DEFAULT_DB --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
 
         - stage: release
-          if: branch = main
+          if: branch = module_12
           env:
             - TF_VERSION=0.14.7
             - TF_VAR_prefix='prod'
-            - TF_VAR_github_auth_client_id='c71c5ae68c2baaf32915'
-            - secure: "Ia+thzEyITr2TVgt5BimiR3FzpJ5YoNHQYT03xUCIwGAZvq45bUYgzfcPccMpV6X4j+2A1tBu3trIK8kutm4Ffwc2citQZJibc2i5+kfqsygYV7JM72tr3FVUVeq32Wnyg2QdLMn23I3q1CEFFv84U3h1v1YXvvtq6l5HFkUEimFCj1xCjtSz8h0ke+1hcrVfWQCUpyqB+j1vETqiYbkaHLHvyuGJkNvjUK9OnT9vS5S0DLvS7EuhTi1knL0qGMWgc4NQxWIycDF4VhcsZsjszmylYrC1UrEf8s1HpzsqyAw3k11gPwT1jwZdWjyvVzvu9L9h7Ka9D5Gle0NkQGV5+Tq3OyvGp4HJrL3jcpj5iT647gvhdrPwGOpGvfPKgH3uV1+l0kz+Q+S7mTxJGsJHYGL2m/kIRIKmbn9DtHJ40RkpZ3LgTz41rm/svkGSKOIVX5JA+paMB+c119Tkm9g1Q3BLqNK5Bd4EzvDpkVy3fo8ubEn9ppmE2VpGRYtOAaoqEu3SAYgIK1uTYFwHgqfKwpbPwle96iDj1+D8cadrtwPpDDuYT54qonmtJOMdtGsXRdgiN3HTlor0NpZYn33CCOvsg3BuJSeIZNrgFuvH15wPzaNcVe+7PTcmxcNZKr2z73pYuUlQiCTIVo+xW6EMAKStDCICPUkdjfEJnkaWjQ="
+            - TF_VAR_github_auth_client_id='b7834dc6edae04be0509'
+            - secure: "PDaXbFm4TzvagOAoczXlBDaNQ8wLNxXnqpnqqz1iE1GYGPpx3m0w0273mhpIF4tZKwfxyQGSBVwjblgsvV9f8wMcwfiDIpsqYz1ZB8gFqeXs3omNOZYlqCxLsjusAaj6CPdUt+8DzEbeU4+9Er5IJG7va5ByeM5NBnktFdO+W0Kfyhf+h9kZfAYK53fv5QOXmwcr9XIfrX9MgI9XWOfsh5AmEc72TdC6npoBnsIV6UNc8uKxAB/S+ah1vHgKuPblTs12fZrzjwCN+J+PCPIGmbpRT+F4zVeXyjKVPIu/0vu1wDGaxNYfRh7kmcxtz6d3vHIg6FFi6DdvoeuKAKxPmzwX3zdxUb4nEnqNWdHKbLdhtjEdOaud0F/23lFYMvjpUI+IBRZYZzi5cRw3iOAWmE6nll+2QihSQz/6nXFghfhA9XpRcAgKgZmxFClpRgMwH2CyGOYvkb+ZfOOmF5yhp7Wxx4ylGC725KTBPWL3TlkMpQTQH7T3y2adY4+7SyuTZr1xjp37628Dpz2XgmZFPwwq3I2w9UQIu/yZMN3lPRRXD00tPz+QX9xd9nRVRng5Nj1LsueZWNIB6+pQ3enruDTgUC5zNq4YN7NmjhcI1mrhrAu0ZaJNFla0g0QV+W32qKzUPDSyPOShUFG80yqi5ixjTEFPUokN4yf4lpDrTYg="
             
           install:
             - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
@@ -48,3 +48,5 @@ jobs:
             skip_cleanup: true
             provider: script
             script:  bash scripts/deploy.sh
+            on:
+              all_branches: true

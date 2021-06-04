@@ -162,7 +162,6 @@ You will need to configure the following environment variables for production:
 - GITHUB_AUTH_CLIENT_SECRET
 - FLASK_SECRET_KEY
 - MONGO_CONNECTION_STRING
-- OAUTHLIB_INSECURE_TRANSPORT=1
 
 ## Virtual environment setup
 
