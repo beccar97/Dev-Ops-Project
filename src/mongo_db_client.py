@@ -275,6 +275,7 @@ class MongoClient:
 
         app.logger.debug(
             f"Added new user with properties {user_json} and id {user_id}")
+            
         return User(user_id, user_auth_id, login, name, role)
 
     def _user_from_document(self, user_item):

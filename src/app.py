@@ -1,4 +1,3 @@
-
 from src.models.admin_view_model import AdminViewModel
 import requests
 import secrets
@@ -6,6 +5,9 @@ from flask import Flask, redirect, render_template, url_for, request, session, R
 from flask_login import LoginManager, login_required, login_user, current_user
 from functools import wraps
 from oauthlib.oauth2 import WebApplicationClient
+from logging import Formatter
+from loggly.handlers import HTTPSHandler
+from pythonjsonlogger import jsonlogger
 from src.auth_config import AuthConfig
 from src.flask_config import FlaskConfig
 from src.models.index_view_model import IndexViewModel
@@ -17,7 +19,18 @@ from src.models.user import User, UserRole, AnonymousUser
 def create_app():
     app = Flask(__name__)
     flask_config = FlaskConfig()
+
     app.logger.setLevel(flask_config.log_level)
+    if flask_config.loggly_token is not None:
+        logglyBaseUrl = f"https://logs-01.loggly.com/inputs/{flask_config.loggly_token}"
+        handler = HTTPSHandler(
+            logglyBaseUrl + '/tag/todo-app')
+        formatter = jsonlogger.JsonFormatter(
+            fmt='%(asctime)s %(levelname)s %(name)s %(message)s'
+        )
+        handler.setFormatter(formatter)
+        app.logger.addHandler(handler)
+
     app.secret_key = flask_config.secret_key
 
     storage_client = MongoClient(MongoConfig())
@@ -32,7 +45,7 @@ def create_app():
 
     oauth_client = WebApplicationClient(auth_config.client_id)
 
-    # region item routes    
+    # region item routes
     @app.route('/')
     @login_required
     def index():
@@ -89,7 +102,6 @@ def create_app():
     @login_required
     @admin_required
     def admin():
-        app.logger.debug(f"User {current_user.id} accessed admin page")
         users = storage_client.get_users()
         view_model = AdminViewModel(users)
         return render_template('admin.html', view_model=view_model)
@@ -138,12 +150,12 @@ def create_app():
         user_info = requests.get(url, headers=headers)
 
         user: User = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
-                                              'login'], user_info.json()['name'])
+            'login'], user_info.json()['name'])
+
+        login_user(user)
 
         app.logger.debug(
             f"User {user.name} with id {user.id} logged in successfully.")
-        
-        login_user(user)
 
         return redirect(url_for('index'))
 

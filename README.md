@@ -145,6 +145,7 @@ ARM_TENANT_ID=<SERVICE_PRINCIPAL_TENANT_ID> \
 ARM_CLIENT_SECRET=<SERVICE_PRINCIPAL_PASSWORD> \
 ARM_SUBSCRIPTION_ID=<SUBSCRIPTION_ID>
 TF_VAR_github_auth_client_secret=<GITHUB_CLIENT_SECRET> \
+TF_VAR_loggly_token=<LOGGLY_TOKEN>
 ```
 
 - Environment variables with the prefix MONGO_ define the database connection used for running the selenium tests. Explanations of the individual variables can be found in [Mongo DB setup](#mongo-db-setup).
