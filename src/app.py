@@ -104,8 +104,15 @@ def create_app():
 
     @app.route('/login/callback')
     def login():
+        
+        forwarded_protocol = request.headers.get('X-Forwarded_Proto') 
+        if forwarded_protocol is not None:
+            original_uri = f"{forwarded_protocol}://{request.url.split('://')[-1]}"
+        else:
+             original_uri = request.url
+
         state = session['state']
-        oauth_client.parse_request_uri_response(request.full_path, state=state)
+        oauth_client.parse_request_uri_response(original_uri, state=state)
         url, headers, body = oauth_client.prepare_token_request(
             auth_config.access_token_url,
             state=state,

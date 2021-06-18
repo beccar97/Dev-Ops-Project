@@ -18,10 +18,5 @@
         "name": "MONGO_CONNECTION_STRING",
         "slotSetting": false,
         "value": ""
-    }, 
-    {
-        "name": "OAUTHLIB_INSECURE_TRANSPORT",
-        "slotSetting": false,
-        "value": "1"
     }
 ]

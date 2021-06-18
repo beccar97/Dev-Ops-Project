@@ -4,22 +4,49 @@ env:
     global:
         - DOCKER_USERNAME=beckycarter
         - DOCKER_IMAGE_NAME=todo-app
-        - MONGO_USERNAME='travis_user'
-        - MONGO_DEFAULT_DB='todo_app'
-        - secure: "OpfT3rQxl14I2bbokQ7uPRkCeTqSZ6SaqHHln1gsi7j6IdICZVNo6WpfGJqH8gMp1XS1S159trtarMo8avwnXA1i2ylaf1pf60Fkntt3jGJFX7B3r8J6bgc+5Q1YnBK1C+GSDWCRf+nKJtzb6T2VE2FzjCuZ4Ueeohp+eMVxjBYRL2sGptQxf2LCDbop0lxVdoPaUuPNR7798E98L2vGQJgwC/n0TqNm73RZB2S+PBSc+OAX72aU6LzVM4fLoboXMB7U7R1ATxlWWh/12yAqON0G7yFIivJAOAQArKgR/NzwJFB7G8jMJKcPYC0hjD7Qf6+sQuA+edi2mE4B0Yn1mPdsFg5lQYQ1SfCarpm89UNRNCGC1ZD+o915xGUCcOGggCvvgsuiDkdJ05ezwI1Bfh8Vq+rT3gunWHovjvujiTemm6KI2nMBxCC+1kHwXWZd7JP/5iiGd61E7HdhXAAre5hA6bFAFT84te3ObFof1hcu4IE/jprWytdQfe2WLncDIefESW50lavr2u2Ufd36ncs0GmcG8YLO2ZxcLC0Dx8bD4dsESjob8WtFjy89ddduSMBzLSrgx0w2Eg6/YSmCDTN5+2BP2SB1Jmn9NfBgDeZcZSrMwnQJs4/WbWzAUJcAo7waRtpi50EFNXCGgFH+9rQ+ZArHKkNMBxn1JzoIHMY="
-install:
-    - docker pull $DOCKER_USERNAME/$DOCKER_IMAGE_NAME
-    - docker build --target test --tag todo-app:test --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME .
 
-script:
-    - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
-    - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
-    - docker run -e MONGO_USERNAME -e MONGO_PASSWORD -e MONGO_URL -e MONGO_DEFAULT_DB --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
-    
-before_deploy:
-    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-deploy:
-    provider: script
-    script:  bash scripts/deploy.sh
-    on:
-      branch: main
+jobs:
+    include:
+        - stage: test
+          env: 
+            - MONGO_USERNAME='travis_user'
+            - MONGO_DEFAULT_DB='todo_app'
+            - secure: "ZVATQHFn/vJrhTS77UNrNg7K5+5+Pgz0zOUZ/JwlRmJiEL2Gc5y++CPt3Qq+T9GvbaiWbCUQIUNKYC/jRjUxcxMjbImn4RHDgUGYtqTBtIh3YbK1A0/LOzjWxdqnTEjZ7q6dHV3iP3OFysQOZwk/om2QuI6n320HMhADzl5LUGoDjKF6W+/jycEYo6+9pH8GyM+TntEZlpvQKnPEj6RSwWCHrgUtlu1F3iUN4XHxJSQIPp0cToQQo3/cPsyy/d3sBGQ4YRWJysJEtfZF28sjwI3sxX7GwGAhn8ap+x/PacP/A+au1KorNAnlI1pUfIm9Wn08FQJUCOWh2MXkjdsSY+5bbNeB+nJEha3uDrINWqV/hXPUgwya/CessPZikTfEwFfd23HUCPj0T/EUOscNmrja/PsUVwr+99oZWubsDhMErT/3qdRd7WSJcN/tl1Nery+MKZRa2rvDsTeRBbsLV+RKP0Q17hfGQM96h6V37fNTMsuAjb6cHaXi88J10B8APydizlxE2cX0mRrLSfFBYtvjQytmjWcM/jVyl5wjo5WmSUOhlYMyyyhj+ajxtj6BMMXstLWXx0tCNxXM0ybhZ1wNm+rEl4E7lhbIKLAf0vb4cNBJrTeg4LUMyZ8r918peaVvNh/lcY7PE2kahI1NVeC1SVcoLacuJIF7sJRgYCM="
+          install:
+            - docker pull $DOCKER_USERNAME/$DOCKER_IMAGE_NAME
+            - docker build --target test --tag todo-app:test --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME .
+
+          script:
+            - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/unit
+            - docker run --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/integration
+            - docker run -e MONGO_USERNAME -e MONGO_PASSWORD -e MONGO_URL -e MONGO_DEFAULT_DB --mount type=bind,source="$(pwd)",target=/app todo-app:test tests/end_to_end
+
+        - stage: release
+          if: branch = module_12
+          env:
+            - TF_VERSION=0.14.7
+            - TF_VAR_prefix='prod'
+            - TF_VAR_github_auth_client_id='b7834dc6edae04be0509'
+            - secure: "PDaXbFm4TzvagOAoczXlBDaNQ8wLNxXnqpnqqz1iE1GYGPpx3m0w0273mhpIF4tZKwfxyQGSBVwjblgsvV9f8wMcwfiDIpsqYz1ZB8gFqeXs3omNOZYlqCxLsjusAaj6CPdUt+8DzEbeU4+9Er5IJG7va5ByeM5NBnktFdO+W0Kfyhf+h9kZfAYK53fv5QOXmwcr9XIfrX9MgI9XWOfsh5AmEc72TdC6npoBnsIV6UNc8uKxAB/S+ah1vHgKuPblTs12fZrzjwCN+J+PCPIGmbpRT+F4zVeXyjKVPIu/0vu1wDGaxNYfRh7kmcxtz6d3vHIg6FFi6DdvoeuKAKxPmzwX3zdxUb4nEnqNWdHKbLdhtjEdOaud0F/23lFYMvjpUI+IBRZYZzi5cRw3iOAWmE6nll+2QihSQz/6nXFghfhA9XpRcAgKgZmxFClpRgMwH2CyGOYvkb+ZfOOmF5yhp7Wxx4ylGC725KTBPWL3TlkMpQTQH7T3y2adY4+7SyuTZr1xjp37628Dpz2XgmZFPwwq3I2w9UQIu/yZMN3lPRRXD00tPz+QX9xd9nRVRng5Nj1LsueZWNIB6+pQ3enruDTgUC5zNq4YN7NmjhcI1mrhrAu0ZaJNFla0g0QV+W32qKzUPDSyPOShUFG80yqi5ixjTEFPUokN4yf4lpDrTYg="
+            
+          install:
+            - wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
+            - unzip terraform_"$TF_VERSION"_linux_amd64.zip
+            - sudo mv terraform /usr/local/bin/
+            - rm terraform_"$TF_VERSION"_linux_amd64.zip
+            - terraform init
+
+          script:
+            - chmod +x ./scripts/docker_entrypoint_prod.sh
+            - docker build --target production --cache-from $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest --tag $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest --tag $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT .
+
+          before_deploy:          
+            - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+            - terraform apply -auto-approve
+            
+          deploy:
+            skip_cleanup: true
+            provider: script
+            script:  bash scripts/deploy.sh
+            on:
+              all_branches: true
