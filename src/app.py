@@ -5,7 +5,7 @@ from flask import Flask, redirect, render_template, url_for, request, session, R
 from flask_login import LoginManager, login_required, login_user, current_user
 from functools import wraps
 from oauthlib.oauth2 import WebApplicationClient
-from logging import Formatter
+from logging import getLogger
 from loggly.handlers import HTTPSHandler
 from pythonjsonlogger import jsonlogger
 from src.auth_config import AuthConfig
@@ -23,6 +23,7 @@ def create_app():
     app.logger.setLevel(flask_config.log_level)
     if flask_config.loggly_token is not None:
         logglyBaseUrl = f"https://logs-01.loggly.com/inputs/{flask_config.loggly_token}"
+        
         handler = HTTPSHandler(
             logglyBaseUrl + '/tag/todo-app')
         formatter = jsonlogger.JsonFormatter(
@@ -30,6 +31,7 @@ def create_app():
         )
         handler.setFormatter(formatter)
         app.logger.addHandler(handler)
+        getLogger('werkzeug').addHandler(HTTPSHandler(logglyBaseUrl + '/tag/todoapp-requests'))
 
     app.secret_key = flask_config.secret_key
 

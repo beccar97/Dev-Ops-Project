@@ -7,6 +7,7 @@
     - [Environment Variable setup](#environment-variable-setup)
     - [GitHub Auth setup](#github-auth-setup)
     - [Mongo DB setup](#mongo-db-setup)
+  - [Loggly Setup](#loggly-setup)
   - [Running the app using docker](#running-the-app-using-docker)
     - [Production](#production)
       - [Troubleshooting](#troubleshooting)
@@ -70,6 +71,10 @@ One option for setting up a MongoDB cluster is to use [MongoDB Atlas](https://ww
 Note that Alas is IP restricted by default, you will need to change your cluster's Network Access settings to allow access from anywhere in order for your app to work correctly from within docker.
 
 For a production setup recommend using Azure's Cosmos DB and providing the connection string to the app.
+
+## Loggly Setup
+
+The app is set up to send logs to [Loggly](https://www.loggly.com/) if provided with a token. Having created an account, find the 'Customer Tokens' tab of the 'Source Setup' page under 'Logs' in the left-hand menu. Copy the value of the token and use this to set the LOGGLY_TOKEN environment variable (or TF_VAR_loggly_token for travis set-up, see [Travis Environment Variable Configuration](#travis-environment-variable-configuration)).
 
 ## Running the app using docker
 
