@@ -1,0 +1,53 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: module-14
+spec:
+  selector:
+    matchLabels:
+      app: module-14
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: module-14
+    spec:
+      containers:
+        - name: todo-app
+          image: todo-app:prod
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+            - name: MONGO_CONNECTION_STRING
+              valueFrom: 
+                secretKeyRef:
+                  name: mongodb-connection
+                  key: connection-string
+            - name: GITHUB_AUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef: 
+                  name: github-auth-client
+                  key: id
+            - name: GITHUB_AUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef: 
+                  name: github-auth-client
+                  key: secret
+            - name: LOGGLY_TOKEN
+              valueFrom: 
+                secretKeyRef:
+                  name: loggly-token
+                  key: token
+            - name: FLASK_LOG_LEVEL
+              value: INFO
+            - name: FLASK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: flask-secret-key
+                  key: secret-key
+            - name: OAUTHLIB_INSECURE_TRANSPORT
+              value: '1'
+            - name: PORT
+              value: '80'
