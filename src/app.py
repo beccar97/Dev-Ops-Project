@@ -21,7 +21,7 @@ def create_app():
     flask_config = FlaskConfig()
 
     app.logger.setLevel(flask_config.log_level)
-    if flask_config.loggly_token is not None:
+    if flask_config.loggly_token:
         logglyBaseUrl = f"https://logs-01.loggly.com/inputs/{flask_config.loggly_token}"
         
         handler = HTTPSHandler(
@@ -60,41 +60,41 @@ def create_app():
     @write_required
     def add_item():
         name = request.form['name']
-        app.logger.debug(f"User {current_user.id} added item '{name}'")
         storage_client.add_item(name)
+        app.logger.debug(f"User {current_user.id} added item '{name}'")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/start')
     @login_required
     @write_required
     def start_item(id):
-        app.logger.debug(f"User {current_user.id} started item {id}")
         storage_client.start_item(id)
+        app.logger.debug(f"User {current_user.id} started item {id}")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/complete')
     @login_required
     @write_required
     def complete_item(id):
-        app.logger.debug(f"User {current_user.id} completed item {id}")
         storage_client.complete_item(id)
+        app.logger.debug(f"User {current_user.id} completed item {id}")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/uncomplete')
     @login_required
     @write_required
     def uncomplete_item(id):
+        storage_client.uncomplete_item(id)
         app.logger.debug(
             f"User {current_user.id} marked item {id} as incomplete")
-        storage_client.uncomplete_item(id)
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/delete')
     @login_required
     @write_required
     def delete_item(id):
-        app.logger.debug(f"User {current_user.id} deleted item {id}")
         storage_client.delete_item(id)
+        app.logger.debug(f"User {current_user.id} deleted item {id}")
         return redirect(url_for('index'))
 
     # endregion
@@ -112,17 +112,17 @@ def create_app():
     @login_required
     @admin_required
     def delete_user(id):
-        app.logger.debug(f"User {id} deleted by user {current_user.id}")
         storage_client.delete_user(id)
+        app.logger.debug(f"User {id} deleted by user {current_user.id}")
         return redirect(url_for('admin'))
 
     @app.route('/admin/users/<id>/setRole/<role>')
     @login_required
     @admin_required
     def set_user_role(id, role):
+        storage_client.set_user_role(id, UserRole(role))
         app.logger.debug(
             f"User {id} given role {role} by user {current_user.id}")
-        storage_client.set_user_role(id, UserRole(role))
         return redirect(url_for('admin'))
 
     # endregion
@@ -185,7 +185,7 @@ def write_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.has_write_permissions():
-            current_app.logger.debug(
+            current_app.logger.warn(
                 f"User {user.id} attempted to use a write_required endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action', 401)
         return f(*args, **kwargs)
@@ -197,7 +197,7 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.is_admin():
-            current_app.logger.debug(
+            current_app.logger.warn(
                 f"User {user.id} attempted to use an admin endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action. Admin permissions required.', 401)
         return f(*args, **kwargs)
