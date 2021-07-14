@@ -1,6 +1,8 @@
 import pymongo
 import datetime
 from bson.objectid import ObjectId
+from flask import session, current_app as app
+from flask_login import current_user as current_user
 
 from src.models.todo_item import Item
 from src.models.user import User, UserRole
@@ -18,7 +20,7 @@ class MongoClient:
         self.client = pymongo.MongoClient(mongo_config.connection_string)
         if hasattr(mongo_config, 'default_database') and mongo_config.default_database is not None:
             self.db = self.client[mongo_config.default_database]
-        else: 
+        else:
             self.db = self.client.get_default_database()
 
     def create_database(self, name='todo_app', use_as_default=False):
@@ -32,8 +34,9 @@ class MongoClient:
         """
 
         db = self.client[name]
-
+        app.logger.debug(f"Creating database {name}")
         if use_as_default:
+            app.logger.debug(f"Setting {name} as default database")
             self.db = db
 
         return db
@@ -47,10 +50,14 @@ class MongoClient:
         Args:
             name (str): The id of the board to be deleted.
         """
+        app.logger.debug(f"Dropping database {name}")
         if (self.db.name == name):
             self.client.drop_database(name)
+            app.logger.warn(
+                f"Database {name} is default database, recreating after dropping")
             self.db = self.client[self.mongo_config.default_database]
         else:
+            app.logger.debug(f"Database {name} successfully dropped")
             self.client.drop_database(name)
 
         return
@@ -77,14 +84,13 @@ class MongoClient:
 
         return items
 
-    def add_item(self, name):
+    def add_item(self, name: str):
         """
         Adds a new document with the specified name to the collection of not started tasks.
 
         Args:
             name (str): The name of the item.
         """
-
         todo_collection = self.db[self.TODO_COLLECTION.name]
 
         item_json = {
@@ -93,9 +99,12 @@ class MongoClient:
             "dateLastActivity": datetime.datetime.utcnow()
         }
 
-        todo_collection.insert_one(item_json)
+        added_item = todo_collection.insert_one(item_json)
 
-    def start_item(self, id):
+        app.logger.debug(
+            f"Item '{name}' added with id: {added_item.inserted_id}")
+
+    def start_item(self, id: str):
         """
         Moves the item with the specified ID from the "To Do" collection to the "Doing" collection in the database.
 
@@ -104,7 +113,9 @@ class MongoClient:
         """
         self._move_item(id, self.TODO_COLLECTION, self.DOING_COLLECTION)
 
-    def complete_item(self, id):
+        app.logger.debug(f"Item with id {id} started")
+
+    def complete_item(self, id: str):
         """
         Moves the item with the specified ID from the "Doing" collection to the "Done" collection in the database.
 
@@ -113,7 +124,9 @@ class MongoClient:
         """
         self._move_item(id, self.DOING_COLLECTION, self.DONE_COLLECTION)
 
-    def uncomplete_item(self, id):
+        app.logger.debug(f"Item with id {id} marked as complete")
+
+    def uncomplete_item(self, id: str):
         """
         Moves the item with the specified ID from the "Done" collection to the "Doing" collection in the database.
 
@@ -122,23 +135,28 @@ class MongoClient:
         """
         self._move_item(id, self.DONE_COLLECTION, self.DOING_COLLECTION)
 
-    def delete_item(self, id):
+        app.logger.debug(f"Item with id {id} marked as incomplete")
+
+    def delete_item(self, id: str):
         """
         Deletes the item with the specified ID
 
         Args:
             id (str): The ID of the item.
         """
+
         id = ObjectId(id)
         collections = self.db.list_collection_names()
 
         for collection in collections:
             self.db[collection].delete_one({"_id": id})
 
+        app.logger.debug(f"Item with id {id} deleted")
+
     def _as_app_item(self, item):
         return Item.from_mongo_document(item)
 
-    def _move_item(self, id, from_collection: MongoCollection, to_collection: MongoCollection):
+    def _move_item(self, id: str, from_collection: MongoCollection, to_collection: MongoCollection):
         id = ObjectId(id)
 
         from_db_collection = self.db[from_collection.name]
@@ -176,7 +194,7 @@ class MongoClient:
         else:
             return self._user_from_document(user_item)
 
-    def get_user(self, id):
+    def get_user(self, id: str):
         """
         Retrieves the user with the specified ID as a User object
 
@@ -195,14 +213,14 @@ class MongoClient:
 
         Returns:
             list: A list of the saved items
-        """        
+        """
         user_collection = self.db['users']
         all_users = user_collection.find()
 
         users = list(map(self._user_from_document, all_users))
         return users
 
-    def delete_user(self, id):
+    def delete_user(self, id: str):
         """
         Deletes the user with the specified ID
 
@@ -213,7 +231,9 @@ class MongoClient:
 
         collection.delete_one({"_id": ObjectId(id)})
 
-    def set_user_role(self, id, role: UserRole):
+        app.logger.debug(f"User {id} deleted")
+
+    def set_user_role(self, id: str, role: UserRole):
         """
         Updates the user with the specified ID to have the specified role
 
@@ -225,6 +245,7 @@ class MongoClient:
         user_item = user_collection.find_one(user_document_query)
 
         if user_item is None:
+            app.logger.error(f"No user with id {id}")
             raise FileNotFoundError
 
         user_collection.update_one(
@@ -233,6 +254,8 @@ class MongoClient:
                 '$set': {'role': role.value}
             }
         )
+
+        app.logger.debug(f"Updated user {id} to have role {role.name}")
 
     def _add_user(self, user_auth_id, login, name) -> User:
         user_collection = self.db['users']
@@ -249,6 +272,10 @@ class MongoClient:
         }
 
         user_id = user_collection.insert_one(user_json).inserted_id
+
+        app.logger.debug(
+            f"Added new user with properties {user_json} and id {user_id}")
+            
         return User(user_id, user_auth_id, login, name, role)
 
     def _user_from_document(self, user_item):

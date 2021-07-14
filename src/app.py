@@ -1,21 +1,38 @@
 from src.models.admin_view_model import AdminViewModel
 import requests
 import secrets
-from flask import Flask, redirect, render_template, url_for, request, session, Response
+from flask import Flask, redirect, render_template, url_for, request, session, Response, current_app
 from flask_login import LoginManager, login_required, login_user, current_user
 from functools import wraps
 from oauthlib.oauth2 import WebApplicationClient
+from logging import getLogger
+from loggly.handlers import HTTPSHandler
+from pythonjsonlogger import jsonlogger
 from src.auth_config import AuthConfig
 from src.flask_config import FlaskConfig
 from src.models.index_view_model import IndexViewModel
 from src.mongo_config import MongoConfig
 from src.mongo_db_client import MongoClient
-from src.models.user import UserRole, AnonymousUser
+from src.models.user import User, UserRole, AnonymousUser
 
 
 def create_app():
     app = Flask(__name__)
     flask_config = FlaskConfig()
+
+    app.logger.setLevel(flask_config.log_level)
+    if flask_config.loggly_token:
+        logglyBaseUrl = f"https://logs-01.loggly.com/inputs/{flask_config.loggly_token}"
+        
+        handler = HTTPSHandler(
+            logglyBaseUrl + '/tag/todo-app')
+        formatter = jsonlogger.JsonFormatter(
+            fmt='%(asctime)s %(levelname)s %(name)s %(message)s'
+        )
+        handler.setFormatter(formatter)
+        app.logger.addHandler(handler)
+        getLogger('werkzeug').addHandler(HTTPSHandler(logglyBaseUrl + '/tag/todoapp-requests'))
+
     app.secret_key = flask_config.secret_key
 
     storage_client = MongoClient(MongoConfig())
@@ -24,6 +41,7 @@ def create_app():
     login_manager = LoginManager()
 
     if flask_config.login_disabled:
+        app.logger.info("Login disabled")
         app.config['LOGIN_DISABLED'] = True
         login_manager.anonymous_user = AnonymousUser
 
@@ -43,6 +61,7 @@ def create_app():
     def add_item():
         name = request.form['name']
         storage_client.add_item(name)
+        app.logger.debug(f"User {current_user.id} added item '{name}'")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/start')
@@ -50,6 +69,7 @@ def create_app():
     @write_required
     def start_item(id):
         storage_client.start_item(id)
+        app.logger.debug(f"User {current_user.id} started item {id}")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/complete')
@@ -57,6 +77,7 @@ def create_app():
     @write_required
     def complete_item(id):
         storage_client.complete_item(id)
+        app.logger.debug(f"User {current_user.id} completed item {id}")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/uncomplete')
@@ -64,6 +85,8 @@ def create_app():
     @write_required
     def uncomplete_item(id):
         storage_client.uncomplete_item(id)
+        app.logger.debug(
+            f"User {current_user.id} marked item {id} as incomplete")
         return redirect(url_for('index'))
 
     @app.route('/items/<id>/delete')
@@ -71,6 +94,7 @@ def create_app():
     @write_required
     def delete_item(id):
         storage_client.delete_item(id)
+        app.logger.debug(f"User {current_user.id} deleted item {id}")
         return redirect(url_for('index'))
 
     # endregion
@@ -89,6 +113,7 @@ def create_app():
     @admin_required
     def delete_user(id):
         storage_client.delete_user(id)
+        app.logger.debug(f"User {id} deleted by user {current_user.id}")
         return redirect(url_for('admin'))
 
     @app.route('/admin/users/<id>/setRole/<role>')
@@ -96,6 +121,8 @@ def create_app():
     @admin_required
     def set_user_role(id, role):
         storage_client.set_user_role(id, UserRole(role))
+        app.logger.debug(
+            f"User {id} given role {role} by user {current_user.id}")
         return redirect(url_for('admin'))
 
     # endregion
@@ -124,9 +151,13 @@ def create_app():
         url, headers, body = oauth_client.add_token(auth_config.user_info_url)
         user_info = requests.get(url, headers=headers)
 
-        user = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
-                                              'login'], user_info.json()['name'])
+        user: User = storage_client.get_or_add_user(user_info.json()['id'], user_info.json()[
+            'login'], user_info.json()['name'])
+
         login_user(user)
+
+        app.logger.debug(
+            f"User {user.name} with id {user.id} logged in successfully.")
 
         return redirect(url_for('index'))
 
@@ -154,6 +185,8 @@ def write_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.has_write_permissions():
+            current_app.logger.warn(
+                f"User {user.id} attempted to use a write_required endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action', 401)
         return f(*args, **kwargs)
     return decorated_function
@@ -164,6 +197,8 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         user = current_user
         if not user.is_admin():
+            current_app.logger.warn(
+                f"User {user.id} attempted to use an admin endpoint without sufficient permissions")
             return Response('You are not authorised to perform this action. Admin permissions required.', 401)
         return f(*args, **kwargs)
     return decorated_function

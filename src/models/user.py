@@ -49,3 +49,6 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_admin(self):
         return self.role is UserRole.ADMIN
+
+    def id(self):
+        'anonymous_user'

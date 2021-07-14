@@ -7,6 +7,7 @@
     - [Environment Variable setup](#environment-variable-setup)
     - [GitHub Auth setup](#github-auth-setup)
     - [Mongo DB setup](#mongo-db-setup)
+  - [Loggly Setup](#loggly-setup)
   - [Running the app using docker](#running-the-app-using-docker)
     - [Production](#production)
       - [Troubleshooting](#troubleshooting)
@@ -37,6 +38,7 @@ from the project root directory. You will need to fill in values for several env
 
 - FLASK_SECRET_KEY: Any GUID, used by Flask to sign session cookies
 - For environments not using HTTPS add to the .env file `OAUTHLIB_INSECURE_TRANSPORT=1`
+- The log level can be configured using the environment variable FLASK_LOG_LEVEL; if not set the log level will default to ERROR, note the .env.template file sets it to DEBUG as is designed for local use.
 
 ### GitHub Auth setup
 
@@ -69,6 +71,10 @@ One option for setting up a MongoDB cluster is to use [MongoDB Atlas](https://ww
 Note that Alas is IP restricted by default, you will need to change your cluster's Network Access settings to allow access from anywhere in order for your app to work correctly from within docker.
 
 For a production setup recommend using Azure's Cosmos DB and providing the connection string to the app.
+
+## Loggly Setup
+
+The app is set up to send logs to [Loggly](https://www.loggly.com/) if provided with a token. Having created an account, find the 'Customer Tokens' tab of the 'Source Setup' page under 'Logs' in the left-hand menu. Copy the value of the token and use this to set the LOGGLY_TOKEN environment variable (or TF_VAR_loggly_token for travis set-up, see [Travis Environment Variable Configuration](#travis-environment-variable-configuration)).
 
 ## Running the app using docker
 
@@ -144,6 +150,7 @@ ARM_TENANT_ID=<SERVICE_PRINCIPAL_TENANT_ID> \
 ARM_CLIENT_SECRET=<SERVICE_PRINCIPAL_PASSWORD> \
 ARM_SUBSCRIPTION_ID=<SUBSCRIPTION_ID>
 TF_VAR_github_auth_client_secret=<GITHUB_CLIENT_SECRET> \
+TF_VAR_loggly_token=<LOGGLY_TOKEN>
 ```
 
 - Environment variables with the prefix MONGO_ define the database connection used for running the selenium tests. Explanations of the individual variables can be found in [Mongo DB setup](#mongo-db-setup).

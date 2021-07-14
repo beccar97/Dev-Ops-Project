@@ -85,5 +85,8 @@ resource "azurerm_app_service" "main" {
     "GITHUB_AUTH_CLIENT_ID" = var.github_auth_client_id
     "GITHUB_AUTH_CLIENT_SECRET" = var.github_auth_client_secret
     "FLASK_SECRET_KEY" = random_uuid.uuid.result
+    "LOGGLY_TOKEN" = var.loggly_token
+    "FLASK_LOG_LEVEL" = "INFO"
+    "FLASK_ENV" = "production"
   }
 }

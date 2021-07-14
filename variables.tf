@@ -11,3 +11,7 @@ variable "github_auth_client_id" {
 variable "github_auth_client_secret" {
   description = "The GitHub Auth Client Secret for this environment"
 }
+variable "loggly_token" {
+  description = "The Loggly token for this environment"
+  sensitive = true
+}
