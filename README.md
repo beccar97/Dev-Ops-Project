@@ -17,6 +17,7 @@
     - [Azure Service Principal](#azure-service-principal)
     - [Travis Environment Variable Configuration](#travis-environment-variable-configuration)
     - [Environment Variables in the App Service](#environment-variables-in-the-app-service)
+  - [Running the App with Minikube](#running-the-app-with-minikube)
   - [Virtual environment setup](#virtual-environment-setup)
     - [Running the project using vagrant](#running-the-project-using-vagrant)
       - [Running the tests within Vagrant](#running-the-tests-within-vagrant)
@@ -169,6 +170,24 @@ You will need to configure the following environment variables for production:
 - GITHUB_AUTH_CLIENT_SECRET
 - FLASK_SECRET_KEY
 - MONGO_CONNECTION_STRING
+
+## Running the App with Minikube
+
+If you wish to run the app with minikube, deployment files are provided. Install the kubernetes command-line tool [kubectl](https://kubernetes.io/docs/tasks/tools/) and[minikube](https://minikube.sigs.k8s.io/docs/start/). The below assumes that you have the production docker image available, with the tag todo-app:prod, and that the Github auth client is expecting the project to be running on port 5000. You will also need to create secret files, for all the required secrets, examples can be found in kubernetes_secrets.yaml.template
+
+To create and start running the app in a kubernetets cluster, run the following from the project root in an admin terminal.
+
+```shell
+minikube start                                     # Spin up cluster 
+minikube image load todo-app:prod                  # Load docker image
+
+kubectl apply -f Deployment.yaml                   # Deploy app
+kubectl apply -f Service.yaml                      # Deploy service
+
+kubectl apply -f kubernetes_secrets.yaml             # Load secrets
+
+kubectl port-forward service/module-14 5000:80     # Connect minikube Service to port on localhost 
+```
 
 ## Virtual environment setup
 
