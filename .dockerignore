@@ -58,4 +58,4 @@ terraform.rc
 
 
 # Kubernetes Secrets
-*_secret.yaml
+kubernetes_secrets.yaml

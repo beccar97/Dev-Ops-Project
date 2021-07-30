@@ -166,4 +166,4 @@ override.tf.json
 terraform.rc
 
 # Kubernetes secrets
-*_secret.yaml
+kubernetes_secrets.yaml

@@ -184,10 +184,7 @@ minikube image load todo-app:prod                  # Load docker image
 kubectl apply -f Deployment.yaml                   # Deploy app
 kubectl apply -f Service.yaml                      # Deploy service
 
-kubectl apply -f flask_key_secret.yaml             # Load secrets
-kubectl apply -f github_client_secret.yaml
-kubectl apply -f loggly_token_secret.yaml
-kubectl apply -f mongodb_connection_secret.yaml
+kubectl apply -f kubernetes_secrets.yaml             # Load secrets
 
 kubectl port-forward service/module-14 5000:80     # Connect minikube Service to port on localhost 
 ```
